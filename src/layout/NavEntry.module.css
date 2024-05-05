@@ -1,0 +1,20 @@
+.entry {
+	> ::before {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: -2px;
+
+		width: calc(100% + 4px);
+		height: 1.5px;
+
+		transform: scaleX(0);
+		transition: transform 0.3s ease-in-out;
+	}
+
+	&[data-active], &:hover {
+		> ::before {
+			transform: scaleX(1);
+		}
+	}
+}
