@@ -29,7 +29,7 @@ export default function Navigation({ user }: { user?: User }) {
 			</NavbarBrand>
 
 			<NavbarContent className="hidden sm:flex gap-7" justify="center">
-				<NavEntry path="/">Home</NavEntry>
+				<NavEntry path="/">Login</NavEntry>
 				<NavEntry path="/test">Test</NavEntry>
 				<NavEntry path="/abc">Abc</NavEntry>
 			</NavbarContent>
