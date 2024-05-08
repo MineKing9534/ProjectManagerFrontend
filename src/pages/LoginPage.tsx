@@ -47,14 +47,14 @@ export default function LoginPage() {
 						value={ email } onValueChange={ setEmail }
 						isInvalid={ !emailValid } errorMessage={ emailValid || "Bitte geben sie eine gültige E-Mail Adresse ein" }
 						type="email" autoComplete="email webauthn" isRequired
-						variant="faded" label="E-Mail" placeholder="name@example.com"
+						label="E-Mail" placeholder="name@example.com"
 						startContent={ <Mail height="15px" strokeWidth="3" className="text-default-500"/> }
 					/>
 					<Input
 						value={ password } onValueChange={ setPassword }
 						isInvalid={ !passwordValid } errorMessage={ passwordValid || "Bitte geben sie eine gültige E-Mail Adresse ein" }
 						type={ visible ? "text" : "password" } autoComplete="current-password webauthn" minLength={ 8 } isRequired
-						variant="faded" label="Passwort" placeholder="Passwort"
+						label="Passwort" placeholder="Passwort"
 						startContent={ <KeyRound height="15px" strokeWidth="3" className="text-default-500"/> }
 						endContent={
 							<button className="focus:outline-none" type="button" onClick={ () => setVisible(v => !v) }>
