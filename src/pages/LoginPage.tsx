@@ -7,6 +7,7 @@ import ErrorModal from "../components/ErrorModal.tsx"
 import { useToken } from "../hooks/useToken.ts"
 import { useLocation, useNavigate } from "react-router"
 import { validateEmail, validatePassword } from "../utils/validate.ts"
+import ErrorDescription from "../components/ErrorDescription.tsx"
 
 export default function LoginPage() {
 	const { setToken } = useToken()
@@ -15,7 +16,6 @@ export default function LoginPage() {
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const { state, error, post } = useRest<{ token: string }>("/login", {
-		onError: onOpen,
 		onSuccess: data => {
 			setToken(data.token)
 			navigate(location.state ? location.state : "/@me")
@@ -69,6 +69,9 @@ export default function LoginPage() {
 					<Button color="primary" disabled={ !emailValid || !passwordValid } className="font-bold w-full" spinner={ <Spinner/> } isLoading={ state === "loading" } type="submit">Anmelden</Button>
 
 					<ErrorModal error={ error! } isOpen={ isOpen } onOpenChange={ onOpenChange }/>
+					{ error && <div className="mt-5 text-danger font-bold w-full text-center cursor-pointer" onClick={ onOpen }>
+						<ErrorDescription error={ error }/>
+					</div> }
 				</form>
 			</CardBody>
 		</Card>
