@@ -47,14 +47,14 @@ export default function LoginPage() {
 						value={ email } onValueChange={ setEmail }
 						isInvalid={ !emailValid } errorMessage={ emailValid || "Bitte geben sie eine gültige E-Mail Adresse ein" }
 						type="email" autoComplete="email webauthn" isRequired
-						label="E-Mail" placeholder="name@example.com"
+						variant="faded" label="E-Mail" placeholder="name@example.com"
 						startContent={ <Mail height="15px" strokeWidth="3" className="text-default-500"/> }
 					/>
 					<Input
 						value={ password } onValueChange={ setPassword }
 						isInvalid={ !passwordValid } errorMessage={ passwordValid || "Bitte geben sie eine gültige E-Mail Adresse ein" }
 						type={ visible ? "text" : "password" } autoComplete="current-password webauthn" minLength={ 8 } isRequired
-						label="Passwort" placeholder="Passwort"
+						variant="faded" label="Passwort" placeholder="Passwort"
 						startContent={ <KeyRound height="15px" strokeWidth="3" className="text-default-500"/> }
 						endContent={
 							<button className="focus:outline-none" type="button" onClick={ () => setVisible(v => !v) }>
@@ -66,12 +66,14 @@ export default function LoginPage() {
 						}
 					/>
 					<Spacer/>
-					<Button color="primary" disabled={ !emailValid || !passwordValid } className="font-bold w-full" spinner={ <Spinner/> } isLoading={ state === "loading" } type="submit">Anmelden</Button>
+					<Button variant="solid" color="primary" disabled={ !emailValid || !passwordValid } className="font-bold w-full" spinner={ <Spinner/> } isLoading={ state === "loading" } type="submit">Anmelden</Button>
 
 					<ErrorModal error={ error! } isOpen={ isOpen } onOpenChange={ onOpenChange }/>
-					{ error && <div className="mt-5 text-danger font-bold w-full text-center cursor-pointer" onClick={ onOpen }>
-						<ErrorDescription error={ error }/>
-					</div> }
+					{ error &&
+						<div className="mt-5 text-danger font-bold w-full text-center cursor-pointer" onClick={ onOpen }>
+							<ErrorDescription error={ error }/>
+						</div>
+					}
 				</form>
 			</CardBody>
 		</Card>

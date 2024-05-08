@@ -1,11 +1,14 @@
-import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@nextui-org/react";
 import { useToken } from "../hooks/useToken.ts";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { User } from "../types/User.ts"
 
 export default function UserInfo({ user }: { user: User }) {
+	const { pathname } = useLocation()
 	const navigate = useNavigate()
 	const { setToken } = useToken()
+
+	console.log(pathname)
 
 	return (
 		<>
@@ -17,16 +20,20 @@ export default function UserInfo({ user }: { user: User }) {
 						src={ undefined }
 					/>
 				</DropdownTrigger>
-				<DropdownMenu aria-label="Nutzer Optionen" variant="flat">
-					<DropdownItem className="h-14 gap-2" textValue="Nutzer Info" onClick={ () => navigate("/@me") }>
-						<p className="font-semibold">Aktuell angemeldet als</p>
-						<p className="font-semibold text-primary">{ user.email }</p>
-					</DropdownItem>
+				<DropdownMenu aria-label="Nutzer Optionen" variant="solid">
+					<DropdownSection showDivider>
+						<DropdownItem className="h-14 gap-2" textValue="Nutzer Info" onClick={ () => navigate("/@me") }>
+							<p className="font-semibold">Aktuell angemeldet als</p>
+							<p className="font-semibold text-primary">{ user.email }</p>
+						</DropdownItem>
+					</DropdownSection>
 
-					<DropdownItem onClick={ () => navigate("/@me/meetings") }>Treffen</DropdownItem>
-					<DropdownItem onClick={ () => navigate("/@me/teams") }>Teams</DropdownItem>
+					<DropdownSection showDivider>
+						<DropdownItem className={ pathname === "/@me/meetings" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/meetings") }>Treffen</DropdownItem>
+						<DropdownItem className={ pathname === "/@me/teams" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/teams") }>Teams</DropdownItem>
+					</DropdownSection>
 
-					<DropdownItem color="danger" onPress={ () => {
+					<DropdownItem  color="danger" onPress={ () => {
 						setToken("")
 						navigate("/")
 					} }>Abmelden</DropdownItem>
