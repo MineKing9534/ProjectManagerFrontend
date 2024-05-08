@@ -21,7 +21,6 @@ export default function AccountLayout() {
 
 	return (
 		<>
-			{ user.email }
 			<Outlet/>
 		</>
 	)

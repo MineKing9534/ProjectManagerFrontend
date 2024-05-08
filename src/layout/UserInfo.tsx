@@ -8,8 +8,6 @@ export default function UserInfo({ user }: { user: User }) {
 	const navigate = useNavigate()
 	const { setToken } = useToken()
 
-	console.log(pathname)
-
 	return (
 		<>
 			<Dropdown placement="bottom-end">
@@ -29,7 +27,8 @@ export default function UserInfo({ user }: { user: User }) {
 					</DropdownSection>
 
 					<DropdownSection showDivider>
-						<DropdownItem className={ pathname === "/@me/meetings" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/meetings") }>Treffen</DropdownItem>
+						{ (user.admin && <DropdownItem className={ pathname === "/@me/users" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/users") }>Nutzer</DropdownItem>) as never }
+						<DropdownItem className={ pathname === "/@me/meetings" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/meetings") }>Veranstaltungen</DropdownItem>
 						<DropdownItem className={ pathname === "/@me/teams" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/teams") }>Teams</DropdownItem>
 					</DropdownSection>
 
