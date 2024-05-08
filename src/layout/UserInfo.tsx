@@ -2,6 +2,7 @@ import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownSection, Dropdown
 import { useToken } from "../hooks/useToken.ts";
 import { useLocation, useNavigate } from "react-router";
 import { User } from "../types/User.ts"
+import { Book, CalendarDays, LogOut, Users } from "lucide-react"
 
 export default function UserInfo({ user }: { user: User }) {
 	const { pathname } = useLocation()
@@ -27,12 +28,12 @@ export default function UserInfo({ user }: { user: User }) {
 					</DropdownSection>
 
 					<DropdownSection showDivider>
-						{ (user.admin && <DropdownItem className={ pathname === "/@me/users" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/users") }>Nutzer</DropdownItem>) as never }
-						<DropdownItem className={ pathname === "/@me/meetings" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/meetings") }>Veranstaltungen</DropdownItem>
-						<DropdownItem className={ pathname === "/@me/teams" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/teams") }>Teams</DropdownItem>
+						{ (user.admin && <DropdownItem startContent={ <Users width="20px"/> } className={ pathname === "/@me/users" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/users") }>Nutzer</DropdownItem>) as never }
+						<DropdownItem startContent={ <CalendarDays width="20px"/> } className={ pathname === "/@me/meetings" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/meetings") }>Veranstaltungen</DropdownItem>
+						<DropdownItem startContent={ <Book width="20px"/> } className={ pathname === "/@me/teams" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/teams") }>Teams</DropdownItem>
 					</DropdownSection>
 
-					<DropdownItem  color="danger" onPress={ () => {
+					<DropdownItem startContent={ <LogOut width="20px"/> } color="danger" onPress={ () => {
 						setToken("")
 						navigate("/")
 					} }>Abmelden</DropdownItem>
