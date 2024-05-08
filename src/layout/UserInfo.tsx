@@ -18,10 +18,13 @@ export default function UserInfo({ user }: { user: User }) {
 					/>
 				</DropdownTrigger>
 				<DropdownMenu aria-label="Nutzer Optionen" variant="flat">
-					<DropdownItem className="h-14 gap-2" textValue="Nutzer Info">
+					<DropdownItem className="h-14 gap-2" textValue="Nutzer Info" onClick={ () => navigate("/@me") }>
 						<p className="font-semibold">Aktuell angemeldet als</p>
 						<p className="font-semibold text-primary">{ user.email }</p>
 					</DropdownItem>
+
+					<DropdownItem onClick={ () => navigate("/@me/meetings") }>Treffen</DropdownItem>
+					<DropdownItem onClick={ () => navigate("/@me/teams") }>Teams</DropdownItem>
 
 					<DropdownItem color="danger" onPress={ () => {
 						setToken("")

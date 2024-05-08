@@ -1,5 +1,5 @@
 import { ErrorResponse } from "../types/ErrorResponse.ts";
-import { Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react";
+import { Divider, Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react";
 import ErrorDescription from "./ErrorDescription.tsx";
 
 export default function ErrorModal({ error, isOpen, onOpenChange, onClose }: { error: ErrorResponse, isOpen: boolean, onOpenChange: (isOpen: boolean) => void, onClose?: () => void }) {
@@ -7,6 +7,7 @@ export default function ErrorModal({ error, isOpen, onOpenChange, onClose }: { e
 		<Modal isOpen={ isOpen } onOpenChange={ onOpenChange } onClose={ onClose }>
 			<ModalContent>
 				<ModalHeader className="py-3 text-danger">Fehler</ModalHeader>
+				<Divider/>
 				<ModalBody className="pb-5">
 					<span className="flex gap-2">
 						<span>{ error?.status }:</span>

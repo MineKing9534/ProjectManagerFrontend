@@ -1,7 +1,6 @@
 import { Link, Navbar, NavbarBrand, NavbarContent, Switch } from "@nextui-org/react";
 import { NavLink } from "react-router-dom"
 import icon from "../assets/icon.svg"
-import NavEntry from "./NavEntry.tsx";
 import { Moon, Sun } from "lucide-react";
 import { useDarkMode } from "../hooks/useDarkMode.ts";
 import { lazy, Suspense, useEffect } from "react";
@@ -27,12 +26,6 @@ export default function Navigation({ user }: { user?: User }) {
 					</NavLink>
 				</Link>
 			</NavbarBrand>
-
-			<NavbarContent className="hidden sm:flex gap-7" justify="center">
-				<NavEntry path="/">Login</NavEntry>
-				<NavEntry path="/test">Test</NavEntry>
-				<NavEntry path="/abc">Abc</NavEntry>
-			</NavbarContent>
 
 			<NavbarContent justify="end">
 				<Switch
