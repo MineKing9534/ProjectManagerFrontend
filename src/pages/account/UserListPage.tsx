@@ -76,7 +76,7 @@ export default function UserListPage() {
 
 	return (
 		<Card className="h-full max-h-full">
-			<CardHeader className="text-3xl font-bold justify-center">Nutzer</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">Nutzer Liste</CardHeader>
 			<Divider/>
 			<CardBody>
 				{ state === "loading" && <CircularProgress aria-label="Lade Nutzer" className="mt-auto"/> }
