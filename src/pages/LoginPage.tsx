@@ -23,10 +23,10 @@ export default function LoginPage() {
 	})
 
 	const [ email, setEmail ] = useState("")
-	const emailValid = useMemo(() => validateEmail(email), [email])
+	const emailValid = useMemo(() => validateEmail(email), [ email ])
 
 	const [ password, setPassword ] = useState("")
-	const passwordValid = useMemo(() => validatePassword(password), [password])
+	const passwordValid = useMemo(() => validatePassword(password), [ password ])
 
 	const [ visible, setVisible ] = useState(false)
 

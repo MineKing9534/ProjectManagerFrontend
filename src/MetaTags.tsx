@@ -1,4 +1,4 @@
-export default function MetaTags({ url }:  { url: string }) {
+export default function MetaTags({ url }: { url: string }) {
 	const path = url.replace(import.meta.env._BASE, "")
 
 	return (

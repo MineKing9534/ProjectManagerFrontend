@@ -36,7 +36,7 @@ function Error() {
 	const navigate = useNavigate()
 	useEffect(() => {
 		navigate("/")
-	}, [ ])
+	}, [])
 
 	return undefined
 }
@@ -51,7 +51,7 @@ function Join({ token }: { token: string }) {
 
 	useEffect(() => {
 		put()
-	}, [ ])
+	}, [])
 
 	return (
 		<>
