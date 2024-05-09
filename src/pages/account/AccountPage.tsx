@@ -106,23 +106,27 @@ export default function AccountPage() {
 							<ModalContent>
 								<ModalHeader className="py-2">Fähigkeit { current ? "Bearbeiten" : "Erstellen" }</ModalHeader>
 								<Divider/>
-								<ModalBody className="pt-5 pb-0">
-									<Input
-										value={ name } onValueChange={ setName } isDisabled={ skillUpdateState === "loading" }
-										type="text" autoComplete="given-name" minLength={ 3 } isRequired={ !current }
-										label="Name" placeholder="Violine"
-										startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
-									/>
-								</ModalBody>
-								<ModalFooter>
-									<Button isLoading={ skillUpdateState === "loading" } spinner={ <Spinner/> } isDisabled={ name.length < 2 } className="font-bold" size="sm" color="primary" onClick={ () => {
-										if(current) patch({
-											path: `/${ current }`,
-											data: { name }
-										})
-										else post({ data: { name } })
-									} }>{ current ? "Speichern" : "Erstellen" }</Button>
-								</ModalFooter>
+								<form onSubmit={ event => {
+									event.preventDefault()
+
+									if(current) patch({
+										path: `/${ current }`,
+										data: { name }
+									})
+									else post({ data: { name } })
+								} }>
+									<ModalBody className="pt-5 pb-0">
+										<Input
+											value={ name } onValueChange={ setName } isDisabled={ skillUpdateState === "loading" }
+											type="text" autoComplete="given-name" minLength={ 3 } isRequired={ !current }
+											label="Name" placeholder="Violine"
+											startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
+										/>
+									</ModalBody>
+									<ModalFooter>
+										<Button type="submit" isLoading={ skillUpdateState === "loading" } spinner={ <Spinner/> } isDisabled={ name.length < 2 } className="font-bold" size="sm" color="primary">{ current ? "Speichern" : "Erstellen" }</Button>
+									</ModalFooter>
+								</form>
 							</ModalContent>
 						</Modal>
 					</CardBody>
