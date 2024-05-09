@@ -41,11 +41,11 @@ export default function AccountPage() {
 	const lastNameValid = useMemo(() => lastName.length >= 2, [ lastName ])
 
 	return (
-		<Card className="h-full max-h-full">
+		<Card className="h-full max-h-full select-none">
 			<CardHeader className="text-3xl font-bold justify-center">Nutzer Informationen</CardHeader>
 			<Divider/>
-			<CardBody className="flex flex-row gap-5 [&>div]:flex-grow">
-				<Card className="w-2/3">
+			<CardBody className="flex md:flex-row gap-5 [&>div]:flex-grow">
+				<Card className="md:w-3/5">
 					<CardHeader className="text-xl font-bold">Informationen</CardHeader>
 					<CardBody className="pt-1">
 						<div className="flex gap-3 flex-col md:flex-row">
@@ -72,11 +72,11 @@ export default function AccountPage() {
 							>Speichern</Button>
 						}
 
-						<span className="absolute bottom-2 left-2">Ihre ID: <b>{ user?.id }</b></span>
+						<span className="absolute bottom-2 left-2">Ihre ID: <b className="select-text">{ user?.id }</b></span>
 					</CardBody>
 				</Card>
 
-				<Card className="w-1/3">
+				<Card className="md:w-2/5">
 					<CardHeader className="text-xl font-bold">Fähigkeiten</CardHeader>
 					<CardBody className="pt-1">
 						<CheckboxGroup isDisabled={ skillState === "loading" } value={ user.skills } onValueChange={ values => put({ data: { skills: values } }) }>
