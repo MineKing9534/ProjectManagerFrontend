@@ -84,7 +84,7 @@ export default function AccountPage() {
 
 
 					</CardBody>
-					<CardFooter className="p-2 flex-shrink-0">
+					<CardFooter className="p-2 flex-shrink-0 flex gap-2">
 					Ihre ID: <b className="select-text">{ user?.id }</b>
 					</CardFooter>
 				</Card>
