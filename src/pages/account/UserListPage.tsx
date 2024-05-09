@@ -158,7 +158,7 @@ export default function UserListPage() {
 			</Modal>
 
 			{ chunks.length && <Pagination
-				aria-label="Seitenauswahl" className="m-0 !p-0 absolute bottom-2 left-2 left-1/2 transform -translate-x-1/2"
+				aria-label="Seitenauswahl" className="m-0 !p-0 absolute bottom-2 left-2 md:left-1/2 md:transform md:-translate-x-1/2"
 				isCompact showControls
 				page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }
 			/> }

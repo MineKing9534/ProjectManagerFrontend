@@ -45,7 +45,7 @@ export default function AccountPage() {
 			<CardHeader className="text-3xl font-bold justify-center">Nutzer Informationen</CardHeader>
 			<Divider/>
 			<CardBody className="flex md:flex-row gap-5 [&>div]:flex-grow">
-				<Card className="md:w-3/5">
+				<Card className="md:w-3/5 h-1/2 md:h-full">
 					<CardHeader className="text-xl font-bold">Informationen</CardHeader>
 					<CardBody className="pt-1">
 						<div className="flex gap-3 flex-col md:flex-row">
@@ -72,11 +72,14 @@ export default function AccountPage() {
 							>Speichern</Button>
 						}
 
-						<span className="absolute bottom-2 left-2">Ihre ID: <b className="select-text">{ user?.id }</b></span>
+
 					</CardBody>
+					<CardFooter className="p-2 flex-shrink-0">
+						Ihre ID: <b className="select-text">{ user?.id }</b>
+					</CardFooter>
 				</Card>
 
-				<Card className="md:w-2/5">
+				<Card className="md:w-2/5 h-1/2 md:h-full">
 					<CardHeader className="text-xl font-bold">Fähigkeiten</CardHeader>
 					<CardBody className="pt-1">
 						<CheckboxGroup isDisabled={ skillState === "loading" } value={ user.skills } onValueChange={ values => put({ data: { skills: values } }) }>
@@ -130,7 +133,7 @@ export default function AccountPage() {
 							</ModalContent>
 						</Modal>
 					</CardBody>
-					<CardFooter className="p-2">
+					<CardFooter className="p-2 flex-shrink-0">
 						{ user.admin && <Tooltip content="Neue Fähigkeit erstellen" closeDelay={ 0 }>
 							<Button size="sm" color="default" className="ml-auto hover:bg-success" isIconOnly onClick={ () => {
 								setCurrent("")
