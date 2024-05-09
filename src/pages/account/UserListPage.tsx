@@ -2,7 +2,7 @@ import { useRest } from "../../hooks/useRest.ts"
 import {
 	Button,
 	Card,
-	CardBody,
+	CardBody, CardFooter,
 	CardHeader,
 	Checkbox,
 	CheckboxGroup,
@@ -165,9 +165,10 @@ export default function UserListPage() {
 					</ModalContent>
 				</Modal>
 			</CardBody>
-
-			<Download target="_blank" ref={ download }/>
-			<Button className="absolute bottom-3 right-3" onClick={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) }>Exportieren</Button>
+			<CardFooter className="p-2">
+				<Download target="_blank" ref={ download }/>
+				<Button className="ml-auto" onClick={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) }>Exportieren</Button>
+			</CardFooter>
 		</Card>
 	)
 }

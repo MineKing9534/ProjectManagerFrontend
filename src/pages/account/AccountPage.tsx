@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardHeader, Checkbox, CheckboxGroup, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from "@nextui-org/react"
 import { useUser, useUserRequest } from "../../hooks/useUser.ts"
 import { useRest } from "../../hooks/useRest.ts"
 import { Skill } from "../../types/Skill.ts"
@@ -102,15 +102,6 @@ export default function AccountPage() {
 								</Checkbox>
 							) }
 						</CheckboxGroup>
-
-						{ user.admin && <Tooltip content="Neue Fähigkeit erstellen">
-							<Button size="sm" color="default" className="hover:bg-success absolute right-2 bottom-2" isIconOnly onClick={ () => {
-								setCurrent("")
-								setName("")
-								onOpen()
-							} }><Plus/></Button>
-						</Tooltip> }
-
 						<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>
 							<ModalContent>
 								<ModalHeader className="py-2">Fähigkeit { current ? "Bearbeiten" : "Erstellen" }</ModalHeader>
@@ -135,6 +126,15 @@ export default function AccountPage() {
 							</ModalContent>
 						</Modal>
 					</CardBody>
+					<CardFooter className="p-2">
+						{ user.admin && <Tooltip content="Neue Fähigkeit erstellen">
+							<Button size="sm" color="default" className="ml-auto hover:bg-success" isIconOnly onClick={ () => {
+								setCurrent("")
+								setName("")
+								onOpen()
+							} }><Plus/></Button>
+						</Tooltip> }
+					</CardFooter>
 				</Card>
 			</CardBody>
 		</Card>
