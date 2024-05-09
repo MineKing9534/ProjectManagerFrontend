@@ -12,7 +12,7 @@ export default function AccountLayout() {
 			<ModalContent>
 				<ModalHeader className="py-3 text-danger">Fehler</ModalHeader>
 				<Divider/>
-				<ModalBody>
+				<ModalBody className="py-5">
 					Sie sind nicht angemeldet! Melden Sie sich zunächst an, bevor Sie diese Seite verwenden können!
 				</ModalBody>
 			</ModalContent>

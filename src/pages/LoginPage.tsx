@@ -1,5 +1,5 @@
 import { Button, Card, CardBody, CardHeader, Divider, Input, Spacer, useDisclosure } from "@nextui-org/react"
-import { FormEvent, useMemo, useState } from "react"
+import { FormEvent, useEffect, useMemo, useState } from "react"
 import { Eye, EyeOff, KeyRound, Mail } from "lucide-react"
 import { useRest } from "../hooks/useRest.ts"
 import Spinner from "../components/Spinner.tsx"
@@ -8,9 +8,12 @@ import { useToken } from "../hooks/useToken.ts"
 import { useLocation, useNavigate } from "react-router"
 import { validateEmail, validatePassword } from "../utils/validate.ts"
 import ErrorDescription from "../components/ErrorDescription.tsx"
+import { useUser } from "../hooks/useUser.ts"
 
 export default function LoginPage() {
-	const { setToken } = useToken()
+	const user = useUser()
+
+	const { token, setToken } = useToken()
 	const location = useLocation()
 	const navigate = useNavigate()
 
@@ -29,6 +32,10 @@ export default function LoginPage() {
 	const passwordValid = useMemo(() => validatePassword(password), [ password ])
 
 	const [ visible, setVisible ] = useState(false)
+
+	useEffect(() => {
+		if(user && token) navigate("/@me")
+	}, [ user ])
 
 	function login(event: FormEvent) {
 		event.preventDefault()
