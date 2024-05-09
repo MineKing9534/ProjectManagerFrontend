@@ -28,7 +28,7 @@ export default function UserInfo({ user }: { user: User }) {
 					</DropdownSection>
 
 					<DropdownSection showDivider>
-						{ (user.admin && <DropdownItem startContent={ <Users width="20px"/> } className={ pathname === "/@me/users" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/users") }>Nutzer</DropdownItem>) as never }
+						{ (user.admin && <DropdownItem startContent={ <Users width="20px"/> } className={ pathname === "/@me/users" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/users") }>Nutzerliste</DropdownItem>) as never }
 						<DropdownItem startContent={ <CalendarDays width="20px"/> } className={ pathname === "/@me/meetings" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/meetings") }>Veranstaltungen</DropdownItem>
 						<DropdownItem startContent={ <Book width="20px"/> } className={ pathname === "/@me/teams" ? "[&>span]:font-bold" : "" } onClick={ () => navigate("/@me/teams") }>Teams</DropdownItem>
 					</DropdownSection>

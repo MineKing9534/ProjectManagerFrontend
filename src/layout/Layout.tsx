@@ -13,9 +13,9 @@ export default function Layout() {
 	return (
 		<div className="w-screen h-screen gap-4 h-md:gap-12 h-lg:gap-24 flex flex-col items-start justify-center">
 			<Navigation user={ request.data }/>
-			<div className="w-[95vw] lg:w-[80vw] mx-auto flex-grow flex gap-5 justify-start flex-col overflow-auto p-5">
+			<div className="w-[95vw] lg:w-[75vw] mx-auto flex-grow flex gap-5 justify-start flex-col overflow-auto p-5">
 				<Suspense fallback={ <CircularProgress className="m-auto" aria-label="Lade Seite"/> }>
-					{ request.state === "loading" ? <CircularProgress className="m-auto" aria-label="Lade Nutzer"/> :
+					{ request.state === "idle" ? <CircularProgress className="m-auto" aria-label="Lade Nutzer"/> :
 						<UserContext.Provider value={ request.data }>
 							<UserRequestContext.Provider value={ request }>
 								<Outlet/>

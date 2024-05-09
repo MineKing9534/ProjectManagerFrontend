@@ -114,7 +114,7 @@ export default function UserListPage() {
 								<TableCell><Chip variant="flat" color={ user.admin ? "primary" : "success" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
 								<TableCell className="relative flex items-center gap-2">
 									<Tooltip content="Fähigkeiten">
-										<button className="text-lg text-default-400 active:opacity-50" onClick={ () => {
+										<button className="text-lg text-default-400 hover:opacity-70" onClick={ () => {
 											setCurrent(user)
 											onDetailsOpen()
 										} }>
@@ -122,7 +122,7 @@ export default function UserListPage() {
 										</button>
 									</Tooltip>
 									<Tooltip color="danger" content="Löschen">
-										<button className="text-lg text-danger active:opacity-50" onClick={ () => {
+										<button className="text-lg text-danger hover:opacity-70" onClick={ () => {
 											setCurrent(user)
 											onDeleteOpen()
 										} }>
