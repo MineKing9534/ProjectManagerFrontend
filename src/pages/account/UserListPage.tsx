@@ -113,7 +113,7 @@ export default function UserListPage() {
 								<TableCell><a href={ `mailto:${ user.email }` }>{ user.email }</a></TableCell>
 								<TableCell><Chip variant="flat" color={ user.admin ? "primary" : "success" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
 								<TableCell className="relative flex items-center gap-2">
-									<Tooltip content="Fähigkeiten">
+									<Tooltip content="Fähigkeiten" closeDelay={ 0 }>
 										<button className="text-lg text-default-400 hover:opacity-70" onClick={ () => {
 											setCurrent(user)
 											onDetailsOpen()
@@ -121,7 +121,7 @@ export default function UserListPage() {
 											<Eye height="20px"/>
 										</button>
 									</Tooltip>
-									<Tooltip color="danger" content="Löschen">
+									<Tooltip color="danger" content="Löschen" closeDelay={ 0 }>
 										<button className="text-lg text-danger hover:opacity-70" onClick={ () => {
 											setCurrent(user)
 											onDeleteOpen()

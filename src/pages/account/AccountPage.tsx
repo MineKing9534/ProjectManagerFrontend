@@ -84,7 +84,7 @@ export default function AccountPage() {
 								<Checkbox key={ skill.id } value={ skill.id } className="max-w-full" classNames={ { label: "flex justify-between w-full before:hidden" } }>
 									<span>{ skill.name }</span>
 									{ user.admin && <span className="relative flex items-center gap-2">
-										<Tooltip content="Bearbeiten">
+										<Tooltip content="Bearbeiten" closeDelay={ 0 }>
 											<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
 												setCurrent(skill.id)
 												setName(skill.name)
@@ -93,7 +93,7 @@ export default function AccountPage() {
 												<PencilLine height="20px"/>
 											</button>
 										</Tooltip>
-										<Tooltip color="danger" content="Löschen">
+										<Tooltip color="danger" content="Löschen" closeDelay={ 0 }>
 											<button className="text-lg text-danger hover:opacity-70" onClick={ () => del({ path: `/${ skill.id }` }) }>
 												<Trash2 height="20px"/>
 											</button>
@@ -127,7 +127,7 @@ export default function AccountPage() {
 						</Modal>
 					</CardBody>
 					<CardFooter className="p-2">
-						{ user.admin && <Tooltip content="Neue Fähigkeit erstellen">
+						{ user.admin && <Tooltip content="Neue Fähigkeit erstellen" closeDelay={ 0 }>
 							<Button size="sm" color="default" className="ml-auto hover:bg-success" isIconOnly onClick={ () => {
 								setCurrent("")
 								setName("")
