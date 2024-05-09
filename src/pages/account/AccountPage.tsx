@@ -3,8 +3,9 @@ import { useUser, useUserRequest } from "../../hooks/useUser.ts"
 import { useRest } from "../../hooks/useRest.ts"
 import { Skill } from "../../types/Skill.ts"
 import { PencilLine, Plus, Save, Trash2 } from "lucide-react"
-import { useMemo, useState } from "react"
+import { FormEvent, useMemo, useState } from "react"
 import Spinner from "../../components/Spinner.tsx"
+import ErrorModal from "../../components/ErrorModal.tsx"
 
 export default function AccountPage() {
 	const user = useUser()!
@@ -26,19 +27,24 @@ export default function AccountPage() {
 		onSuccess: () => get()
 	})
 
-	const { state: renameState, patch: patchUser } = useRest("/users/@me", {
-		onSuccess: () => get()
+	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
+	const { state: renameState, error, patch: patchUser } = useRest("/users/@me", {
+		onSuccess: () => get(),
+		onError: () => onErrorOpen()
 	})
 
-	function rename() {
+	function rename(event: FormEvent) {
+		event.preventDefault()
+
+		if(!firstNameValid || !lastName) return
 		patchUser({ data: { firstName, lastName } })
 	}
 
 	const [ firstName, setFirstName ] = useState(user.firstName)
-	const firstNameValid = useMemo(() => firstName.length >= 2, [ firstName ])
+	const firstNameValid = useMemo(() => /^[a-zA-Zäöüß]{2,}$/.test(firstName), [ firstName ])
 
 	const [ lastName, setLastName ] = useState(user.lastName)
-	const lastNameValid = useMemo(() => lastName.length >= 2, [ lastName ])
+	const lastNameValid = useMemo(() => /^[a-zA-Zäöüß]{2,}$/.test(lastName), [ lastName ])
 
 	return (
 		<Card className="h-full max-h-full select-none">
@@ -48,7 +54,7 @@ export default function AccountPage() {
 				<Card className="md:w-3/5 h-1/2 md:h-full">
 					<CardHeader className="text-xl font-bold">Informationen</CardHeader>
 					<CardBody className="pt-1">
-						<div className="flex gap-3 flex-col md:flex-row">
+						<form className="flex gap-3 flex-col md:flex-row" onSubmit={ rename }>
 							<Input
 								value={ firstName } onValueChange={ setFirstName } isDisabled={ renameState === "loading" }
 								isInvalid={ !firstNameValid } errorMessage={ firstNameValid || "Bitte geben Sie einen gültigen Namen ein" }
@@ -64,18 +70,22 @@ export default function AccountPage() {
 								label="Namename" placeholder="Mustermann"
 								startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 							/>
+							{ (firstName !== user.firstName || lastName !== user.lastName) && (firstNameValid && lastNameValid) &&
+								<Button
+									isDisabled={ renameState === "loading" } isLoading={ renameState === "loading" } spinner={ <Spinner/> } type="submit"
+									className="w-fit font-bold flex-shrink-0 h-[56px]" color="primary" isIconOnly
+								>
+									{ renameState !== "loading" && <Save width="18px" strokeWidth="2.5"/> }
+								</Button>
+							}
+						</form>
+						<div className="flex gap-3 flex-col md:flex-row">
 						</div>
-						{ (firstName !== user.firstName || lastName !== user.lastName) &&
-							<Button
-								isDisabled={ renameState === "loading" } isLoading={ renameState === "loading" } spinner={ <Spinner/> } onClick={ rename }
-								className="w-fit font-bold" color="primary" startContent={ renameState !== "loading" && <Save width="18px" strokeWidth="2.5"/> }
-							>Speichern</Button>
-						}
 
 
 					</CardBody>
 					<CardFooter className="p-2 flex-shrink-0">
-						Ihre ID: <b className="select-text">{ user?.id }</b>
+					Ihre ID: <b className="select-text">{ user?.id }</b>
 					</CardFooter>
 				</Card>
 
@@ -144,6 +154,8 @@ export default function AccountPage() {
 					</CardFooter>
 				</Card>
 			</CardBody>
+
+			<ErrorModal error={ error! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
 		</Card>
 	)
 }
