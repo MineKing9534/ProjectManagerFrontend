@@ -2,7 +2,7 @@ import { useRest } from "../../hooks/useRest.ts"
 import {
 	Button,
 	Card,
-	CardBody, CardFooter,
+	CardBody,
 	CardHeader,
 	Checkbox,
 	CheckboxGroup,
@@ -75,27 +75,17 @@ export default function UserListPage() {
 	}
 
 	useEffect(() => {
+		if(page > chunks.length && chunks.length) setPage(chunks.length)
 		load()
 	}, [ page, chunks ])
 
 	return (
-		<Card className="h-full max-h-full">
+		<Card className="h-full max-h-full select-none">
 			<CardHeader className="text-3xl font-bold justify-center">Nutzer Liste</CardHeader>
 			<Divider/>
 			<CardBody>
-				{ state === "loading" && <CircularProgress aria-label="Lade Nutzer" className="mt-auto"/> }
-				{ data && <Table
-					isHeaderSticky removeWrapper aria-label="Nutzer Liste"
-					bottomContent={ chunks.length > 1 &&
-						<div className="flex w-full justify-center">
-							<Pagination
-								aria-label="Seitenauswahl"
-								isCompact showControls
-								page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }
-							/>
-						</div>
-					}
-				>
+				{ state === "loading" && <CircularProgress aria-label="Lade Nutzer" className="m-auto"/> }
+				{ data && <Table isHeaderSticky removeWrapper aria-label="Nutzer Liste">
 					<TableHeader>
 						<TableColumn key="name">Name</TableColumn>
 						<TableColumn key="email">Email</TableColumn>
@@ -134,41 +124,47 @@ export default function UserListPage() {
 						) }
 					</TableBody>
 				</Table> }
-
-				<ErrorModal error={ (error || chunkError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
-
-				<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange }>
-					<ModalContent>
-						<ModalHeader className="py-3">{ current?.firstName } { current?.lastName }</ModalHeader>
-						<Divider/>
-						<ModalBody>
-							<CheckboxGroup isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({ data: { skills: values } }) }>
-								{ skills?.map(skill =>
-									<Checkbox key={ skill.id } value={ skill.id }>{ skill.name }</Checkbox>
-								) }
-							</CheckboxGroup>
-						</ModalBody>
-					</ModalContent>
-				</Modal>
-
-				<Modal isOpen={ isDeleteOpen } onOpenChange={ onDeleteOpenChange }>
-					<ModalContent>
-						<ModalHeader className="py-3">Konto Löschen</ModalHeader>
-						<Divider/>
-						<ModalBody className="block">
-							Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden!
-						</ModalBody>
-						<Divider/>
-						<ModalFooter className="py-2">
-							<Button size="sm" color="danger" variant="solid" onClick={ () => del() } isLoading={ deleteState === "loading" } spinner={ <Spinner/> }>Löschen</Button>
-						</ModalFooter>
-					</ModalContent>
-				</Modal>
 			</CardBody>
-			<CardFooter className="p-2">
-				<Download target="_blank" ref={ download }/>
-				<Button className="ml-auto" onClick={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) }>Exportieren</Button>
-			</CardFooter>
+
+
+			<ErrorModal error={ (error || chunkError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
+
+			<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange }>
+				<ModalContent>
+					<ModalHeader className="py-3">{ current?.firstName } { current?.lastName }</ModalHeader>
+					<Divider/>
+					<ModalBody>
+						<CheckboxGroup isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({ data: { skills: values } }) }>
+							{ skills?.map(skill =>
+								<Checkbox key={ skill.id } value={ skill.id }>{ skill.name }</Checkbox>
+							) }
+						</CheckboxGroup>
+					</ModalBody>
+				</ModalContent>
+			</Modal>
+
+			<Modal isOpen={ isDeleteOpen } onOpenChange={ onDeleteOpenChange }>
+				<ModalContent>
+					<ModalHeader className="py-3">Konto Löschen</ModalHeader>
+					<Divider/>
+					<ModalBody className="block">
+						Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden!
+					</ModalBody>
+					<Divider/>
+					<ModalFooter className="py-2">
+						<Button size="sm" color="danger" variant="solid" onClick={ () => del() } isLoading={ deleteState === "loading" } spinner={ <Spinner/> }>Löschen</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
+
+			{ chunks.length && <Pagination
+				aria-label="Seitenauswahl" className="m-0 !p-0 absolute bottom-2 left-2 left-1/2 transform -translate-x-1/2"
+				isCompact showControls
+				page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }
+			/> }
+
+			<Download target="_blank" ref={ download }/>
+			<Button className="absolute bottom-2 right-2" onClick={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) }>Exportieren</Button>
 		</Card>
 	)
 }
