@@ -45,14 +45,14 @@ export default function LoginPage() {
 				<form className="flex flex-col gap-2 p-2" onSubmit={ login }>
 					<Input
 						value={ email } onValueChange={ setEmail }
-						isInvalid={ !emailValid } errorMessage={ emailValid || "Bitte geben sie eine gültige E-Mail Adresse ein" }
+						isInvalid={ !emailValid } errorMessage={ emailValid || "Bitte geben Sie eine gültige E-Mail Adresse ein" }
 						type="email" autoComplete="email webauthn" isRequired
 						label="E-Mail" placeholder="name@example.com"
 						startContent={ <Mail height="15px" strokeWidth="3" className="text-default-500"/> }
 					/>
 					<Input
 						value={ password } onValueChange={ setPassword }
-						isInvalid={ !passwordValid } errorMessage={ passwordValid || "Bitte geben sie eine gültige E-Mail Adresse ein" }
+						isInvalid={ !passwordValid } errorMessage={ passwordValid || "Bitte geben Sie ein gültiges Passwort ein" }
 						type={ visible ? "text" : "password" } autoComplete="current-password webauthn" minLength={ 8 } isRequired
 						label="Passwort" placeholder="Passwort"
 						startContent={ <KeyRound height="15px" strokeWidth="3" className="text-default-500"/> }
@@ -71,7 +71,7 @@ export default function LoginPage() {
 					<ErrorModal error={ error! } isOpen={ isOpen } onOpenChange={ onOpenChange }/>
 					{ error &&
 						<div className="mt-5 text-danger font-bold w-full text-center cursor-pointer" onClick={ onOpen }>
-							<ErrorDescription error={ error }/>
+							Fehler: <ErrorDescription error={ error }/>
 						</div>
 					}
 				</form>

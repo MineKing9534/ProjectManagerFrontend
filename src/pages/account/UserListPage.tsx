@@ -131,7 +131,7 @@ export default function UserListPage() {
 					</TableBody>
 				</Table> }
 
-				{ !!(error || chunkError) && <ErrorModal error={ (error || chunkError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/> }
+				<ErrorModal error={ (error || chunkError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
 
 				<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange }>
 					<ModalContent>
