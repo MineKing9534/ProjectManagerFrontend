@@ -25,17 +25,20 @@ import {
 	useDisclosure
 } from "@nextui-org/react"
 import ErrorModal from "../../components/ErrorModal.tsx"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { chunk } from "../../utils/chunk.ts"
 import { User } from "../../types/User.ts"
 import Spinner from "../../components/Spinner.tsx"
 import { Eye, Trash2 } from "lucide-react"
 import { Skill } from "../../types/Skill.ts"
+import Download from "../../components/Download.tsx"
 
 const pageSize = 15
 
 export default function UserListPage() {
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
+
+	const download = useRef<(url: string) => void>(null)
 
 	const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onOpenChange: onDetailsOpenChange } = useDisclosure()
 	const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure()
@@ -162,7 +165,9 @@ export default function UserListPage() {
 					</ModalContent>
 				</Modal>
 			</CardBody>
-			<Button className="absolute bottom-3 right-3">Exportieren</Button>
+
+			<Download target="_blank" ref={ download }/>
+			<Button className="absolute bottom-3 right-3" onClick={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) }>Exportieren</Button>
 		</Card>
 	)
 }
