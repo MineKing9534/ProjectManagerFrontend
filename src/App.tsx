@@ -6,6 +6,7 @@ import UserListPage from "./pages/account/UserListPage.tsx"
 
 const LoginPage = lazy(() => import("./pages/LoginPage.tsx"))
 const JoinPage = lazy(() => import("./pages/join/InvitePage.tsx"))
+const VerificationPage = lazy(() => import("./pages/join/VerificationPage.tsx"))
 const AccountPage = lazy(() => import("./pages/account/AccountPage.tsx"))
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage.tsx"))
 
@@ -15,6 +16,7 @@ export default function App() {
 			<Route path="/" element={ <Layout/> }>
 				<Route path="/" element={ <LoginPage/> }/>
 				<Route path="/invite" element={ <JoinPage/> }/>
+				<Route path="/verify" element={ <VerificationPage/> }/>
 
 				<Route path="/@me" element={ <AccountLayout/> }>
 					<Route path="/@me" element={ <AccountPage/> }/>

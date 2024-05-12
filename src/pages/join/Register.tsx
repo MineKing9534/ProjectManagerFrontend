@@ -84,12 +84,13 @@ export default function Register({ token }: { token: string }) {
 						</div>
 					}
 
-					<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>
+					<Modal isOpen={ isOpen } onOpenChange={ onOpenChange } onClose={ () => navigate("/") }>
 						<ModalContent>
 							<ModalHeader className="py-3">Registrierung Abgeschlossen</ModalHeader>
 							<Divider/>
-							<ModalBody>
-
+							<ModalBody className="block">
+								Ihre Registrierung wurde verarbeitet. Wir haben eine E-Mail an <b>{ email }</b> gesendet, um sicher zu stellen, dass Sie Zugriff auf die angegebene e-Mail-Adresse haben.
+								Diese E-Mail enthält einen Link, mit dem Sie ihre Registrierung Abschließen können.
 							</ModalBody>
 						</ModalContent>
 					</Modal>
