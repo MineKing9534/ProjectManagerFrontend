@@ -101,7 +101,7 @@ export default function UserListPage() {
 							<TableRow key={ user.id }>
 								<TableCell>{ user.firstName } { user.lastName }</TableCell>
 								<TableCell><a href={ `mailto:${ user.email }` }>{ user.email }</a></TableCell>
-								<TableCell><Chip variant="flat" color={ user.admin ? "primary" : "success" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
+								<TableCell><Chip variant="flat" color={ user.admin ? "success" : "primary" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
 								<TableCell className="relative flex items-center gap-2">
 									<Tooltip content="Fähigkeiten" closeDelay={ 0 }>
 										<button className="text-lg text-default-400 hover:opacity-70" onClick={ () => {
