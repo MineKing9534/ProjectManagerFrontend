@@ -64,7 +64,7 @@ export default function LoginPage() {
 						label="Passwort" placeholder="Passwort"
 						startContent={ <KeyRound height="15px" strokeWidth="3" className="text-default-500"/> }
 						endContent={
-							<button className="focus:outline-none" type="button" onClick={ () => setVisible(v => !v) }>
+							<button tabIndex={ -1 } className="focus:outline-none" type="button" onClick={ () => setVisible(v => !v) }>
 								{ visible
 									? <EyeOff className="text-default-500"/>
 									: <Eye className="text-default-500"/>
