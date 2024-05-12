@@ -29,7 +29,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { chunk } from "../../utils/chunk.ts"
 import { User } from "../../types/User.ts"
 import Spinner from "../../components/Spinner.tsx"
-import { Eye, Trash2 } from "lucide-react"
+import { Eye, FolderInput, Trash2 } from "lucide-react"
 import { Skill } from "../../types/Skill.ts"
 import Download from "../../components/Download.tsx"
 
@@ -164,7 +164,7 @@ export default function UserListPage() {
 			/> }
 
 			<Download target="_blank" ref={ download }/>
-			<Button className="absolute bottom-2 right-2" onClick={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) }>Exportieren</Button>
+			<Button size="sm" className="absolute bottom-2 right-2 hover:bg-primary" onClick={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) } isIconOnly><FolderInput/></Button>
 		</Card>
 	)
 }
