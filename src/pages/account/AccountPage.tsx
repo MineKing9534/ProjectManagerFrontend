@@ -53,36 +53,45 @@ export default function AccountPage() {
 			<CardBody className="flex md:flex-row gap-5 [&>div]:flex-grow">
 				<Card className="md:w-3/5 h-1/2 md:h-full">
 					<CardHeader className="text-xl font-bold">Informationen</CardHeader>
-					<CardBody className="pt-1">
-						<form className="flex gap-3 flex-col md:flex-row" onSubmit={ rename }>
-							<Input
-								value={ firstName } onValueChange={ setFirstName } isDisabled={ renameState === "loading" }
-								isInvalid={ !firstNameValid } errorMessage={ firstNameValid || "Bitte geben Sie einen gültigen Namen ein" }
-								type="text" autoComplete="given-name"
-								label="Vorname" placeholder="Max"
-								startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
-							/>
+					<CardBody className="pt-1 flex flex-col gap-5">
+						<form onSubmit={ rename }>
+							<h2 className="font-bold text-md mb-2">Name</h2>
+							<div className="flex gap-3 flex-col md:flex-row">
+								<Input
+									value={ firstName } onValueChange={ setFirstName } isDisabled={ renameState === "loading" }
+									isInvalid={ !firstNameValid } errorMessage={ firstNameValid || "Bitte geben Sie einen gültigen Namen ein" }
+									type="text" autoComplete="given-name"
+									label="Vorname" placeholder="Max"
+									startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
+								/>
 
-							<Input
-								value={ lastName } onValueChange={ setLastName } isDisabled={ renameState === "loading" }
-								isInvalid={ !lastNameValid } errorMessage={ lastNameValid || "Bitte geben Sie einen gültigen Namen ein" }
-								type="text" autoComplete="family-name"
-								label="Namename" placeholder="Mustermann"
-								startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
-							/>
-							{ (firstName !== user.firstName || lastName !== user.lastName) && (firstNameValid && lastNameValid) &&
-								<Button
-									isDisabled={ renameState === "loading" } isLoading={ renameState === "loading" } spinner={ <Spinner/> } type="submit"
-									className="w-fit font-bold flex-shrink-0 h-[56px]" color="primary" isIconOnly
-								>
-									{ renameState !== "loading" && <Save width="18px" strokeWidth="2.5"/> }
-								</Button>
-							}
+								<Input
+									value={ lastName } onValueChange={ setLastName } isDisabled={ renameState === "loading" }
+									isInvalid={ !lastNameValid } errorMessage={ lastNameValid || "Bitte geben Sie einen gültigen Namen ein" }
+									type="text" autoComplete="family-name"
+									label="Namename" placeholder="Mustermann"
+									startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
+								/>
+								{ (firstName !== user.firstName || lastName !== user.lastName) && (firstNameValid && lastNameValid) &&
+									<Button
+										isDisabled={ renameState === "loading" } isLoading={ renameState === "loading" } spinner={ <Spinner/> } type="submit"
+										className="font-bold flex-shrink-0 h-[56px] w-[56px]" color="primary" isIconOnly
+									>
+										{ renameState !== "loading" && <Save width="25px"/> }
+									</Button>
+								}
+							</div>
 						</form>
-						<div className="flex gap-3 flex-col md:flex-row">
+
+						<div>
+							<h2 className="font-bold text-md mb-2">EMail-Einstellungen</h2>
+							<CheckboxGroup value={ user.emailTypes } onValueChange={ value => patchUser({ data: { emailTypes: value } }) } isDisabled={ renameState === "loading" }>
+								<Checkbox value="MEETING_CREATE">Ankündigungen von Veranstaltungen</Checkbox>
+								<Checkbox value="MEETING_DELETE">Absage von Veranstaltungen</Checkbox>
+								<Checkbox value="MEETING_UPDATE">Änderungen für Veranstaltungen</Checkbox>
+								<Checkbox value="INFO_UPDATE">Änderungen der Informationsdatei</Checkbox>
+							</CheckboxGroup>
 						</div>
-
-
 					</CardBody>
 					<CardFooter className="p-2 flex-shrink-0 flex gap-2">
 						Ihre ID: <b className="select-text">{ user?.id }</b>
