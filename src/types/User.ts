@@ -1,5 +1,6 @@
-export interface User {
-	id: string
+import { Identifiable } from "./Identifiable.ts"
+
+export interface User extends Identifiable {
 	admin: boolean
 	firstName: string
 	lastName: string

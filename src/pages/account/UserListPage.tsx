@@ -85,12 +85,12 @@ export default function UserListPage() {
 			<Divider/>
 			<CardBody>
 				{ state === "loading" && <CircularProgress aria-label="Lade Nutzer" className="m-auto"/> }
-				{ data && <Table isHeaderSticky removeWrapper aria-label="Nutzer Liste">
+				{ data && <Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single">
 					<TableHeader>
 						<TableColumn key="name">Name</TableColumn>
 						<TableColumn key="email">Email</TableColumn>
-						<TableColumn key="role" align="end" className="max-w-fit">Rolle</TableColumn>
-						<TableColumn key="actions" align="end" className="max-w-fit">Aktionen</TableColumn>
+						<TableColumn key="role" align="end" className="w-[150px]">Rolle</TableColumn>
+						<TableColumn key="actions" align="end" className="w-[150px]">Aktionen</TableColumn>
 					</TableHeader>
 
 					<TableBody
@@ -99,10 +99,10 @@ export default function UserListPage() {
 					>
 						{ user => (
 							<TableRow key={ user.id }>
-								<TableCell>{ user.firstName } { user.lastName }</TableCell>
+								<TableCell><span>{ user.firstName } { user.lastName }</span></TableCell>
 								<TableCell><a href={ `mailto:${ user.email }` }>{ user.email }</a></TableCell>
 								<TableCell><Chip variant="flat" color={ user.admin ? "success" : "primary" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
-								<TableCell className="relative flex items-center gap-2">
+								<TableCell className="relative flex items-center gap-2 h-[44px]">
 									<Tooltip content="Fähigkeiten" closeDelay={ 0 }>
 										<button className="text-lg text-default-400 hover:opacity-70" onClick={ () => {
 											setCurrent(user)
@@ -157,7 +157,7 @@ export default function UserListPage() {
 				</ModalContent>
 			</Modal>
 
-			{ chunks.length && <Pagination
+			{ chunks.length > 1 && <Pagination
 				aria-label="Seitenauswahl" className="m-0 !p-0 absolute bottom-2 left-2 md:left-1/2 md:transform md:-translate-x-1/2"
 				isCompact showControls
 				page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }

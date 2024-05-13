@@ -1,4 +1,5 @@
-import { Button, Card, CardBody, CardHeader, Divider, Input, Link, Modal, ModalBody, ModalContent, ModalHeader, Spacer, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardHeader, Divider, Input, Modal, ModalBody, ModalContent, ModalHeader, Spacer, useDisclosure } from "@nextui-org/react"
+import { Link } from "react-router-dom"
 import { useRest } from "../../hooks/useRest.ts"
 import { FormEvent, useMemo, useState } from "react"
 import { validateEmail } from "../../utils/validate.ts"
@@ -74,7 +75,7 @@ export default function Register({ token }: { token: string }) {
 
 					<span className="mt-3 flex gap-2">
 						Sie haben bereits ein Konto?
-						<Link className="cursor-pointer" onClick={ () => navigate("/", { state: `/invite?token=${ token }` }) }>Stattdessen anmelden</Link>
+						<Link to="/" state={ `/invite?token=${ token }` } className="text-primary font-bold">Stattdessen anmelden</Link>
 					</span>
 
 					<ErrorModal error={ error! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
