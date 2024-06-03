@@ -1,15 +1,9 @@
-import ReactDOMServer from 'react-dom/server'
-import { StaticRouter } from "react-router-dom/server"
+import { Request, Response } from "express"
+import { renderToString } from 'react-dom/server'
 import MetaTags from "./MetaTags.tsx"
-import Main from "./Main.tsx"
 
-export async function render(url: string,) {
-	const html = ReactDOMServer.renderToString(
-		<StaticRouter location={ url } basename={ import.meta.env._BASE }>
-			<Main/>
-		</StaticRouter>
-	)
-	const head = ReactDOMServer.renderToString(<MetaTags url={ url }/>)
+export function render(req: Request, res: Response, template: string) {
+	const meta = renderToString(<MetaTags url={ req.originalUrl }/>)
 
-	return { html, head }
+	res.status(200).header("content-type", "text/html").end(template.replace("<!-- META -->", meta))
 }
