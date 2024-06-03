@@ -55,6 +55,7 @@ export default function LoginPage() {
 						isInvalid={ !emailValid } errorMessage={ emailValid || "Bitte geben Sie eine gültige E-Mail Adresse ein" }
 						type="email" autoComplete="email webauthn" isRequired
 						label="E-Mail" placeholder="name@example.com"
+						classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 						startContent={ <Mail height="15px" strokeWidth="3" className="text-default-500"/> }
 					/>
 					<Input
@@ -62,6 +63,7 @@ export default function LoginPage() {
 						isInvalid={ !passwordValid } errorMessage={ passwordValid || "Bitte geben Sie ein gültiges Passwort ein" }
 						type={ visible ? "text" : "password" } autoComplete="current-password webauthn" minLength={ 8 } isRequired
 						label="Passwort" placeholder="Passwort"
+						classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 						startContent={ <KeyRound height="15px" strokeWidth="3" className="text-default-500"/> }
 						endContent={
 							<button tabIndex={ -1 } className="focus:outline-none" type="button" onClick={ () => setVisible(v => !v) }>

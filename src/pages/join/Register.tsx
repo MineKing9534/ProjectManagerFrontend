@@ -47,6 +47,7 @@ export default function Register({ token }: { token: string }) {
 							isInvalid={ !firstNameValid } errorMessage={ firstNameValid || "Bitte geben Sie einen gültigen Namen ein" }
 							type="text" autoComplete="given-name webauthn" isRequired
 							label="Vorname" placeholder="Max"
+							classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 							startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 						/>
 
@@ -55,6 +56,7 @@ export default function Register({ token }: { token: string }) {
 							isInvalid={ !lastNameValid } errorMessage={ lastNameValid || "Bitte geben Sie einen gültigen Namen ein" }
 							type="text" autoComplete="family-name webauthn" isRequired
 							label="Namename" placeholder="Mustermann"
+							classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 							startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 						/>
 					</div>
@@ -64,6 +66,7 @@ export default function Register({ token }: { token: string }) {
 						isInvalid={ !emailValid } errorMessage={ emailValid || "Bitte geben Sie eine gültige E-Mail Adresse ein" }
 						type="email" autoComplete="email webauthn" isRequired
 						label="E-Mail" placeholder="name@example.com"
+						classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 						startContent={ <Mail height="15px" strokeWidth="3" className="text-default-500"/> }
 					/>
 

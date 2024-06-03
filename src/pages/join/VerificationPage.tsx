@@ -51,6 +51,7 @@ export default function VerificationPage() {
 						isInvalid={ !password1Valid } errorMessage={ password1Valid || "Bitte geben Sie ein gültiges Passwort ein" }
 						type={ visible ? "text" : "password" } autoComplete="new-password" minLength={ 8 } isRequired
 						label="Password" placeholder="Passwort"
+						classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 						startContent={ <KeyRound height="15px" strokeWidth="3" className="text-default-500"/> }
 						endContent={
 							<button tabIndex={ -1 } className="focus:outline-none" type="button" onClick={ () => setVisible(v => !v) }>
@@ -66,6 +67,7 @@ export default function VerificationPage() {
 						isInvalid={ !password2Valid } errorMessage={ password2Valid || "Passwörter stimmen nicht überein" }
 						type={ visible ? "text" : "password" } minLength={ 8 } isRequired
 						label="Passwort Wiederholen" placeholder="Passwort"
+						classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 						startContent={ <KeyRound height="15px" strokeWidth="3" className="text-default-500"/> }
 						endContent={
 							<button tabIndex={ -1 } className="focus:outline-none" type="button" onClick={ () => setVisible(v => !v) }>
