@@ -12,6 +12,7 @@ import BackButton from "../../../../components/BackButton.tsx"
 export default function TeamPage() {
 	const user = useUser()!
 	const navigate = useNavigate()
+	const [ , copy ] = useCopyToClipboard()
 
 	const params = useParams()
 	const id = params.id
@@ -19,12 +20,11 @@ export default function TeamPage() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
 
-	const [ , copy ] = useCopyToClipboard()
-
 	const { state, data, error: teamError } = useRest<Team>(`/teams/${ id }`, {
 		auto: true,
 		onError: onErrorOpen
 	})
+
 	const { data: invite, error: inviteError, post } = useRest<{ token: string }>(`/teams/${ id }/invites`, {
 		onSuccess: data => {
 			onOpen()
@@ -35,7 +35,7 @@ export default function TeamPage() {
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center"><BackButton/> { data?.name }</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center"><BackButton/> Team { data?.name }</CardHeader>
 			<Divider/>
 			<CardBody>
 				{ state === "loading" && <CircularProgress aria-label="Lade" className="m-auto"/> }
@@ -48,13 +48,13 @@ export default function TeamPage() {
 					<Button size="sm" onPress={ () => navigate(`/@me/teams/${ id }/files`) } as={ Link } startContent={ <Files strokeWidth="2.5px" height="20px"/> }>Dateien</Button>
 				</div>
 				{ user.admin && <div className="flex gap-2">
-					<Button size="sm" onPress={ () => post() } startContent={ <UserPlus strokeWidth="2.5px" height="20px"/> }>Einladung Erstellen</Button>
+					<Button size="sm" color="primary" onPress={ () => post() } startContent={ <UserPlus strokeWidth="2.5px" height="20px"/> }>Einladung Erstellen</Button>
 					<Button size="sm" onPress={ () => navigate(`/@me/users?parent=teams/${ id }`) } as={ Link } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
 					<Button size="sm" onPress={ () => navigate(`/@me/teams/${ id }/settings`) } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
 				</div> }
 			</CardFooter>
 
-			<ErrorModal error={ (teamError || inviteError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () => navigate("/@me/teams") }/>
+			<ErrorModal error={ (teamError || inviteError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () =>  teamError && navigate("/@me/teams") }/>
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange } size="xl">
 				<ModalContent>
@@ -62,7 +62,7 @@ export default function TeamPage() {
 					<Divider/>
 					<ModalBody className="block leading-relaxed py-4">
 						<p className="pb-3">Neue Einladung erstellt: <Link showAnchorIcon href={ `${ import.meta.env._URL }/invite?token=${ invite?.token }` }>Einladungs-Link</Link></p>
-						<p className="pb-3">Geben Sie diesen Link an Personen weiter, die diesem Projekt betreten können sollen. Der Link kann ebenfalls dazu verwendet werden, ein neues Konto zu erstellen.</p>
+						<p className="pb-3">Geben Sie diesen Link an Personen weiter, die diesem Team betreten können sollen. Der Link kann ebenfalls dazu verwendet werden, ein neues Konto zu erstellen.</p>
 						<p className="text-foreground-500">Der Link wurde bereits automatisch in die Zwischenablage kopiert.</p>
 					</ModalBody>
 				</ModalContent>
