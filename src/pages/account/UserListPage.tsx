@@ -116,7 +116,7 @@ export default function UserListPage() {
 					isCompact showControls
 					page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }
 				/> }
-				<Button size="sm" className="hover:bg-primary" onPress={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) } isIconOnly><FolderInput/></Button>
+				<Button size="sm" className="hover:bg-primary" onPress={ () => download.current && download.current(`${ import.meta.env._API }/users/csv${ parent ? `?parent=${ parent }` : "" }`) } isIconOnly><FolderInput/></Button>
 			</CardFooter>
 
 			<ErrorModal error={ (error || chunkError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
