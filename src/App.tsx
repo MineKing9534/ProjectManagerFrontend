@@ -1,20 +1,25 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import Layout from "./layout/Layout.tsx"
-import AccountLayout from "./pages/account/AccountLayout.tsx"
-import TeamSettingsPage from "./pages/account/resource/teams/TeamSettingsPage.tsx"
-import ResourceFileList from "./pages/account/resource/ResourceFileList.tsx"
-import MeetingSettingsPage from "./pages/account/resource/meetings/MeetingSettingsPage.tsx"
-import MeetingPage from "./pages/account/resource/meetings/MeetingPage.tsx"
-import MeetingListPage from "./pages/account/resource/meetings/MeetingListPage.tsx"
 
 const LoginPage = lazy(() => import("./pages/LoginPage.tsx"))
 const JoinPage = lazy(() => import("./pages/join/InvitePage.tsx"))
 const VerificationPage = lazy(() => import("./pages/join/VerificationPage.tsx"))
+
+const AccountLayout = lazy(() => import("./pages/account/AccountLayout.tsx"))
 const AccountPage = lazy(() => import("./pages/account/AccountPage.tsx"))
 const UserListPage = lazy(() => import("./pages/account/UserListPage.tsx"))
+
+const ResourceFileList = lazy(() => import("./pages/account/resource/ResourceFileList.tsx"))
+
 const TeamListPage = lazy(() => import("./pages/account/resource/teams/TeamListPage.tsx"))
+const TeamSettingsPage = lazy(() => import("./pages/account/resource/teams/TeamSettingsPage.tsx"))
 const TeamPage = lazy(() => import("./pages/account/resource/teams/TeamPage.tsx"))
+
+const MeetingListPage = lazy(() => import("./pages/account/resource/meetings/MeetingListPage.tsx"))
+const MeetingSettingsPage = lazy(() => import("./pages/account/resource/meetings/MeetingSettingsPage.tsx"))
+const MeetingPage = lazy(() => import("./pages/account/resource/meetings/MeetingPage.tsx"))
+
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage.tsx"))
 
 export default function App() {
