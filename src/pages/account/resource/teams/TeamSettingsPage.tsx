@@ -7,6 +7,7 @@ import { useNavigate } from "react-router"
 import Spinner from "../../../../components/Spinner.tsx"
 import { PencilLine, Save } from "lucide-react"
 import { useState } from "react"
+import BackButton from "../../../../components/BackButton.tsx"
 
 export default function TeamSettingsPage() {
 	const navigate = useNavigate()
@@ -41,7 +42,7 @@ export default function TeamSettingsPage() {
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">{ data?.name } Bearbeiten</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center"><BackButton/> { data?.name } Bearbeiten</CardHeader>
 			<Divider/>
 			<CardBody>
 				{ !data && <CircularProgress aria-label="Lade" className="m-auto"/> }

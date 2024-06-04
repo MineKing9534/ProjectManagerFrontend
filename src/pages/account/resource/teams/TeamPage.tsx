@@ -7,6 +7,7 @@ import { useNavigate } from "react-router"
 import { useUser } from "../../../../hooks/useUser.ts"
 import { CalendarDays, Files, Settings, UserPlus, Users } from "lucide-react"
 import { useCopyToClipboard } from "usehooks-ts"
+import BackButton from "../../../../components/BackButton.tsx"
 
 export default function TeamPage() {
 	const user = useUser()!
@@ -34,7 +35,7 @@ export default function TeamPage() {
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">{ data?.name }</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center"><BackButton/> { data?.name }</CardHeader>
 			<Divider/>
 			<CardBody>
 				{ state === "loading" && <CircularProgress aria-label="Lade" className="m-auto"/> }

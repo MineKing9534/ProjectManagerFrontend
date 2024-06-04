@@ -6,6 +6,7 @@ import { useNavigate } from "react-router"
 import { useUser } from "../../../../hooks/useUser.ts"
 import { Files, Settings, Users } from "lucide-react"
 import { Meeting } from "../../../../types/Meeting.ts"
+import BackButton from "../../../../components/BackButton.tsx"
 
 export default function MeetingPage() {
 	const user = useUser()!
@@ -22,7 +23,7 @@ export default function MeetingPage() {
 	})
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">{ data?.name }</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center"><BackButton/> { data?.name }</CardHeader>
 			<Divider/>
 			<CardBody>
 				{ state === "loading" && <CircularProgress aria-label="Lade" className="m-auto"/> }
