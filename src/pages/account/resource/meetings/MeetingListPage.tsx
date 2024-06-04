@@ -105,7 +105,7 @@ export default function MeetingListPage() {
 						<ModalBody className="pt-5 pb-0">
 							<Input
 								value={ name } onValueChange={ setName } isDisabled={ createState === "loading" }
-								type="text" autoComplete="given-name" minLength={ 3 } isRequired
+								type="text" minLength={ 3 } isRequired
 								label="Name" placeholder="Treffen"
 								classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 								startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
@@ -113,8 +113,8 @@ export default function MeetingListPage() {
 
 							<Input
 								value={ location } onValueChange={ setLocation } isDisabled={ createState === "loading" }
-								type="text" autoComplete="given-name" minLength={ 3 } isRequired
-								label="Name" placeholder="Wie Üblich"
+								type="text" minLength={ 3 } isRequired
+								label="Ort" placeholder="Wie Üblich"
 								classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 								startContent={ <MapPin height="15px" strokeWidth="3" className="text-default-500"/> }
 							/>
