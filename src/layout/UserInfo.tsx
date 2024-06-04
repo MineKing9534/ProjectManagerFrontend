@@ -3,6 +3,7 @@ import { useToken } from "../hooks/useToken.ts";
 import { useLocation, useNavigate } from "react-router";
 import { User } from "../types/User.ts"
 import { Book, CalendarDays, LogOut, Users } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export default function UserInfo({ user }: { user: User }) {
 	const { pathname } = useLocation()
@@ -21,16 +22,16 @@ export default function UserInfo({ user }: { user: User }) {
 				</DropdownTrigger>
 				<DropdownMenu aria-label="Nutzer Optionen" variant="solid">
 					<DropdownSection showDivider>
-						<DropdownItem className="h-14 gap-2" textValue="Nutzer Info" onPress={ () => navigate("/@me") }>
+						<DropdownItem className="h-14 gap-2" textValue="Nutzer Info" as={ Link } to="@me">
 							<p className="font-semibold">Aktuell angemeldet als</p>
 							<p className="font-semibold text-primary">{ user.email }</p>
 						</DropdownItem>
 					</DropdownSection>
 
 					<DropdownSection showDivider>
-						{ (user.admin && <DropdownItem startContent={ <Users width="20px"/> } className={ pathname === "/@me/users" ? "[&>span]:font-bold" : "" } onPress={ () => navigate("/@me/users") }>Nutzerliste</DropdownItem>) as never }
-						<DropdownItem startContent={ <CalendarDays width="20px"/> } className={ pathname === "/@me/meetings" ? "[&>span]:font-bold" : "" } onPress={ () => navigate("/@me/meetings") }>Veranstaltungen</DropdownItem>
-						<DropdownItem startContent={ <Book width="20px"/> } className={ pathname === "/@me/teams" ? "[&>span]:font-bold" : "" } onPress={ () => navigate("/@me/teams") }>Teams</DropdownItem>
+						{ (user.admin && <DropdownItem startContent={ <Users width="20px"/> } className={ pathname === "/@me/users" ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/users">Nutzerliste</DropdownItem>) as never }
+						<DropdownItem startContent={ <CalendarDays width="20px"/> } className={ pathname === "/@me/meetings" ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/meetings">Veranstaltungen</DropdownItem>
+						<DropdownItem startContent={ <Book width="20px"/> } className={ pathname === "/@me/teams" ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/teams">Teams</DropdownItem>
 					</DropdownSection>
 
 					<DropdownItem startContent={ <LogOut width="20px"/> } color="danger" onPress={ () => {

@@ -1,7 +1,7 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, Divider, Link, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, Divider, Link as ExternalLink, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/react"
 import { useRest } from "../../../../hooks/useRest.ts"
 import { Team } from "../../../../types/Team.ts"
-import { useParams } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import { useNavigate } from "react-router"
 import { useUser } from "../../../../hooks/useUser.ts"
@@ -44,13 +44,13 @@ export default function TeamPage() {
 			<Divider/>
 			<CardFooter className="flex w-full justify-between py-2">
 				<div className="flex gap-2">
-					<Button size="sm" onPress={ () => navigate(`/@me/meetings?parent=${ id }`) } as={ Link } startContent={ <CalendarDays strokeWidth="2.5px" height="20px"/> }>Treffen</Button>
-					<Button size="sm" onPress={ () => navigate(`/@me/teams/${ id }/files`) } as={ Link } startContent={ <Files strokeWidth="2.5px" height="20px"/> }>Dateien</Button>
+					<Button size="sm" as={ Link } to={ `/@me/meetings?parent=${ id }` } startContent={ <CalendarDays strokeWidth="2.5px" height="20px"/> }>Treffen</Button>
+					<Button size="sm" as={ Link } to={ `/@me/teams/${ id }/files` } startContent={ <Files strokeWidth="2.5px" height="20px"/> }>Dateien</Button>
 				</div>
 				{ user.admin && <div className="flex gap-2">
 					<Button size="sm" color="primary" onPress={ () => post() } startContent={ <UserPlus strokeWidth="2.5px" height="20px"/> }>Einladung Erstellen</Button>
-					<Button size="sm" onPress={ () => navigate(`/@me/users?parent=teams/${ id }`) } as={ Link } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
-					<Button size="sm" onPress={ () => navigate(`/@me/teams/${ id }/settings`) } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
+					<Button size="sm" as={ Link } to={ `/@me/users?parent=teams/${ id }` } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
+					<Button size="sm" as={ Link } to={ `/@me/teams/${ id }/settings` } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
 				</div> }
 			</CardFooter>
 
@@ -61,7 +61,7 @@ export default function TeamPage() {
 					<ModalHeader className="py-2">Neue Einladung</ModalHeader>
 					<Divider/>
 					<ModalBody className="block leading-relaxed py-4">
-						<p className="pb-3">Neue Einladung erstellt: <Link showAnchorIcon href={ `${ import.meta.env._URL }/invite?token=${ invite?.token }` }>Einladungs-Link</Link></p>
+						<p className="pb-3">Neue Einladung erstellt: <ExternalLink showAnchorIcon href={ `${ import.meta.env._URL }/invite?token=${ invite?.token }` }>Einladungs-Link</ExternalLink></p>
 						<p className="pb-3">Geben Sie diesen Link an Personen weiter, die diesem Team betreten können sollen. Der Link kann ebenfalls dazu verwendet werden, ein neues Konto zu erstellen.</p>
 						<p className="text-foreground-500">Der Link wurde bereits automatisch in die Zwischenablage kopiert.</p>
 					</ModalBody>
