@@ -49,7 +49,7 @@ export default function TeamPage() {
 				</div>
 				{ user.admin && <div className="flex gap-2">
 					<Button size="sm" onPress={ () => post() } startContent={ <UserPlus strokeWidth="2.5px" height="20px"/> }>Einladung Erstellen</Button>
-					<Button size="sm" onPress={ () => navigate(`/@me/users?parent=${ id }`) } as={ Link } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
+					<Button size="sm" onPress={ () => navigate(`/@me/users?parent=teams/${ id }`) } as={ Link } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
 					<Button size="sm" onPress={ () => navigate(`/@me/teams/${ id }/settings`) } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
 				</div> }
 			</CardFooter>

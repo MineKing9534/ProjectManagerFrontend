@@ -1,8 +1,7 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Chip, DatePicker, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Select, Selection, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
-import { Link } from "react-router-dom"
-import { useMemo, useState } from "react"
+import { Link, useSearchParams } from "react-router-dom"
+import { useState } from "react"
 import { useRest } from "../../../../hooks/useRest.ts"
-import { chunk } from "../../../../utils/chunk.ts"
 import Spinner from "../../../../components/Spinner.tsx"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import { useUser } from "../../../../hooks/useUser.ts"
@@ -11,8 +10,8 @@ import { Meeting } from "../../../../types/Meeting.ts"
 import { Clock, File, MapPin, PencilLine, Plus } from "lucide-react"
 import { useDateFormatter } from "@react-aria/i18n"
 import { DateValue, getLocalTimeZone, now } from "@internationalized/date"
-
-const pageSize = 15
+import { PaginationResult } from "../../../../types/PaginationResult.ts"
+import BackButton from "../../../../components/BackButton.tsx"
 
 export default function MeetingListPage() {
 	const navigate = useNavigate()
@@ -20,6 +19,9 @@ export default function MeetingListPage() {
 
 	const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
+
+	const [ searchParams ] = useSearchParams()
+	const parent = searchParams.get("parent")
 
 	const { state: createState, error: createError, post } = useRest("/meetings", {
 		onSuccess: () => {
@@ -36,17 +38,15 @@ export default function MeetingListPage() {
 
 	const formatter = useDateFormatter({ dateStyle: "long", timeStyle: "short" })
 
-	const { state, data, error, get } = useRest<Meeting[]>(user.admin ? "/meetings" : "/users/@me/meetings", {
+	const [ page, setPage ] = useState(1)
+	const { state, data, error, get } = useRest<PaginationResult<Meeting>>(user.admin ? `/meetings?page=${ page }` : `/users/@me/meetings?page=${ page }`, {
 		auto: true,
 		onError: onErrorOpen
 	})
-	const chunks = useMemo(() => data ? chunk(data, pageSize) : [], [ data ])
-
-	const [ page, setPage ] = useState(1)
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">Treffen Liste</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/${ parent }` }/> } Treffen Liste</CardHeader>
 			<Divider/>
 			<CardBody>
 				<Table isHeaderSticky removeWrapper aria-label="Treffen Liste" selectionMode="single">
@@ -59,7 +59,7 @@ export default function MeetingListPage() {
 
 					<TableBody
 						isLoading={ state === "loading" } loadingContent={ <Spinner/> }
-						items={ chunks[page - 1] || [] } emptyContent="Keine Treffen"
+						items={ data?.data || [] } emptyContent="Keine Treffen"
 					>
 						{ meeting => (
 							<TableRow key={ meeting.id }>
@@ -75,10 +75,9 @@ export default function MeetingListPage() {
 
 			<CardFooter className="justify-between py-2 flex-shrink-0">
 				<span/>
-				{ chunks.length > 1 && <Pagination
-					aria-label="Seitenauswahl" className=""
-					isCompact showControls
-					page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }
+				{ (data?.total || 1) > 1 && <Pagination
+					aria-label="Seitenauswahl" isCompact showControls
+					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
 				/> }
 				<Button size="sm" className="hover:bg-primary" onPress={ () => {
 					setName("")

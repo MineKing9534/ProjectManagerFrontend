@@ -1,16 +1,15 @@
 import { useRest } from "../../hooks/useRest.ts"
 import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from "@nextui-org/react"
 import ErrorModal from "../../components/ErrorModal.tsx"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { chunk } from "../../utils/chunk.ts"
+import { useEffect, useRef, useState } from "react"
 import { User } from "../../types/User.ts"
 import Spinner from "../../components/Spinner.tsx"
 import { Eye, FolderInput, Trash2 } from "lucide-react"
 import { Skill } from "../../types/Skill.ts"
 import Download from "../../components/Download.tsx"
 import { useSearchParams } from "react-router-dom"
-
-const pageSize = 15
+import { PaginationResult } from "../../types/PaginationResult.ts"
+import BackButton from "../../components/BackButton.tsx"
 
 export default function UserListPage() {
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
@@ -24,7 +23,8 @@ export default function UserListPage() {
 	const [ searchParams, setSearchParams ] = useSearchParams()
 	const parent = searchParams.get("parent")
 
-	const { data, error, get } = useRest<string[]>(parent ? `/users?parent=${ parent }` : "/users", {
+	const [ page, setPage ] = useState(1)
+	const { state, data, error, get } = useRest<PaginationResult<User>>(parent ? `/${ parent }/members/users?page=${ page }` : `/users?page=${  page }`, {
 		auto: true,
 		onError: onErrorOpen
 	})
@@ -42,30 +42,13 @@ export default function UserListPage() {
 		}
 	})
 
-	const chunks = useMemo(() => data ? chunk(data, pageSize) : [], [ data ])
-	const [ users, setUsers ] = useState<User[]>([])
-
-	const [ page, setPage ] = useState(1)
-
-	const { state: chunkState, error: chunkError, post: resolve } = useRest<User[]>("/users/resolve", { onSuccess: setUsers })
-
-	function load() {
-		const chunk = chunks[page - 1]
-		if(chunk) resolve({ data: { ids: chunk } })
-	}
-
-	useEffect(() => {
-		if(page > chunks.length && chunks.length) setPage(chunks.length)
-		load()
-	}, [ page, chunks ])
-
 	useEffect(() => {
 		setPage(1)
 	}, [ parent ])
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">Nutzer Liste</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/${ parent }` }/> } Nutzer Liste</CardHeader>
 			<Divider/>
 			<CardBody>
 				<Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single">
@@ -77,8 +60,8 @@ export default function UserListPage() {
 					</TableHeader>
 
 					<TableBody
-						isLoading={ chunkState === "loading" } loadingContent={ <Spinner/> }
-						items={ users } emptyContent="Keine Nutzer"
+						isLoading={ state === "loading" } loadingContent={ <Spinner/> }
+						items={ data?.data || [] } emptyContent="Keine Nutzer"
 					>
 						{ user => (
 							<TableRow key={ user.id }>
@@ -111,15 +94,14 @@ export default function UserListPage() {
 
 			<CardFooter className="justify-between py-2 flex-shrink-0">
 				{ parent ? 	<Button color="primary" size="sm" className="hover:bg-primary" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> : <span/> }
-				{ chunks.length > 1 && <Pagination
-					aria-label="Seitenauswahl" className=""
-					isCompact showControls
-					page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }
+				{ (data?.total || 1) > 1 && <Pagination
+					aria-label="Seitenauswahl" isCompact showControls
+					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
 				/> }
 				<Button size="sm" className="hover:bg-primary" onPress={ () => download.current && download.current(`${ import.meta.env._API }/users/csv${ parent ? `?parent=${ parent }` : "" }`) } isIconOnly><FolderInput/></Button>
 			</CardFooter>
 
-			<ErrorModal error={ (error || chunkError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
+			<ErrorModal error={ error! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
 
 			<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange }>
 				<ModalContent>

@@ -1,16 +1,14 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
 import { Link } from "react-router-dom"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { useRest } from "../../../../hooks/useRest.ts"
-import { chunk } from "../../../../utils/chunk.ts"
 import Spinner from "../../../../components/Spinner.tsx"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import { useUser } from "../../../../hooks/useUser.ts"
 import { Team } from "../../../../types/Team.ts"
 import { useNavigate } from "react-router"
 import { PencilLine, Plus } from "lucide-react"
-
-const pageSize = 15
+import { PaginationResult } from "../../../../types/PaginationResult.ts"
 
 export default function TeamListPage() {
 	const navigate = useNavigate()
@@ -28,13 +26,11 @@ export default function TeamListPage() {
 	})
 	const [ name, setName ] = useState("")
 
-	const { state, data, error, get } = useRest<Team[]>(user.admin ? "/teams" : "/users/@me/teams", {
+	const [ page, setPage ] = useState(1)
+	const { state, data, error, get } = useRest<PaginationResult<Team>>(user.admin ? `/teams?page=${ page }` : `/users/@me/teams?page=${ page }`, {
 		auto: true,
 		onError: onErrorOpen
 	})
-	const chunks = useMemo(() => data ? chunk(data, pageSize) : [], [ data ])
-
-	const [ page, setPage ] = useState(1)
 
 	return (
 		<Card className="h-full max-h-full select-none">
@@ -48,7 +44,7 @@ export default function TeamListPage() {
 
 					<TableBody
 						isLoading={ state === "loading" } loadingContent={ <Spinner/> }
-						items={ chunks[page - 1] || [] } emptyContent="Keine Teams"
+						items={ data?.data || [] } emptyContent="Keine Teams"
 					>
 						{ team => (
 							<TableRow key={ team.id }>
@@ -61,10 +57,9 @@ export default function TeamListPage() {
 
 			<CardFooter className="justify-between py-2 flex-shrink-0">
 				<span/>
-				{ chunks.length > 1 && <Pagination
-					aria-label="Seitenauswahl" className=""
-					isCompact showControls
-					page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }
+				{ (data?.total || 1) > 1 && <Pagination
+					aria-label="Seitenauswahl" isCompact showControls
+					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
 				/> }
 				<Button size="sm" className="hover:bg-primary" onPress={ () => {
 					setName("")

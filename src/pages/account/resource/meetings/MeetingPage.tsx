@@ -35,7 +35,7 @@ export default function MeetingPage() {
 					<Button size="sm" onPress={ () => navigate(`/@me/meetings/${ id }/files`) } as={ Link } startContent={ <Files strokeWidth="2.5px" height="20px"/> }>Dateien</Button>
 				</div>
 				{ user.admin && <div className="flex gap-2">
-					<Button size="sm" onPress={ () => navigate(`/@me/users?parent=${ id }`) } as={ Link } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
+					<Button size="sm" onPress={ () => navigate(`/@me/users?parent=meetings/${ id }`) } as={ Link } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
 					<Button size="sm" onPress={ () => navigate(`/@me/meetings/${ id }/settings`) } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
 				</div> }
 			</CardFooter>
