@@ -10,6 +10,7 @@ import Download from "../../components/Download.tsx"
 import { useSearchParams } from "react-router-dom"
 import { PaginationResult } from "../../types/PaginationResult.ts"
 import BackButton from "../../components/BackButton.tsx"
+import { Resource } from "../../types/Identifiable.ts"
 
 export default function UserListPage() {
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
@@ -29,6 +30,8 @@ export default function UserListPage() {
 		onError: onErrorOpen
 	})
 
+	const { data: parentResource, get: getParent } = useRest<Resource>(`/${ parent }`)
+
 	const { data: skills } = useRest<Skill[]>("/skills", { auto: true })
 	const { state: deleteState, del } = useRest(`/users/${ current?.id }`, {
 		onSuccess: () => {
@@ -44,11 +47,12 @@ export default function UserListPage() {
 
 	useEffect(() => {
 		setPage(1)
+		getParent()
 	}, [ parent ])
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/${ parent }` }/> } Nutzer Liste</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/${ parent }` }/> } Nutzer Liste { parentResource && <>({ parentResource.name })</> }</CardHeader>
 			<Divider/>
 			<CardBody>
 				<Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single">
