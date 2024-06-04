@@ -1,29 +1,5 @@
 import { useRest } from "../../hooks/useRest.ts"
-import {
-	Button,
-	Card,
-	CardBody,
-	CardHeader,
-	Checkbox,
-	CheckboxGroup,
-	Chip,
-	CircularProgress,
-	Divider,
-	Modal,
-	ModalBody,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	Pagination,
-	Table,
-	TableBody,
-	TableCell,
-	TableColumn,
-	TableHeader,
-	TableRow,
-	Tooltip,
-	useDisclosure
-} from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from "@nextui-org/react"
 import ErrorModal from "../../components/ErrorModal.tsx"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { chunk } from "../../utils/chunk.ts"
@@ -32,6 +8,7 @@ import Spinner from "../../components/Spinner.tsx"
 import { Eye, FolderInput, Trash2 } from "lucide-react"
 import { Skill } from "../../types/Skill.ts"
 import Download from "../../components/Download.tsx"
+import { useSearchParams } from "react-router-dom"
 
 const pageSize = 15
 
@@ -44,7 +21,10 @@ export default function UserListPage() {
 	const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure()
 	const [ current, setCurrent ] = useState<User>()
 
-	const { state, data, error, get } = useRest<string[]>("/users", {
+	const [ searchParams, setSearchParams ] = useSearchParams()
+	const parent = searchParams.get("parent")
+
+	const { data, error, get } = useRest<string[]>(parent ? `/users?parent=${ parent }` : "/users", {
 		auto: true,
 		onError: onErrorOpen
 	})
@@ -79,13 +59,16 @@ export default function UserListPage() {
 		load()
 	}, [ page, chunks ])
 
+	useEffect(() => {
+		setPage(1)
+	}, [ parent ])
+
 	return (
 		<Card className="h-full max-h-full select-none">
 			<CardHeader className="text-3xl font-bold justify-center">Nutzer Liste</CardHeader>
 			<Divider/>
 			<CardBody>
-				{ state === "loading" && <CircularProgress aria-label="Lade Nutzer" className="m-auto"/> }
-				{ data && <Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single">
+				<Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single">
 					<TableHeader>
 						<TableColumn key="name">Name</TableColumn>
 						<TableColumn key="email">Email</TableColumn>
@@ -123,15 +106,24 @@ export default function UserListPage() {
 							</TableRow>
 						) }
 					</TableBody>
-				</Table> }
+				</Table>
 			</CardBody>
 
+			<CardFooter className="justify-between py-2 flex-shrink-0">
+				{ parent ? 	<Button color="primary" size="sm" className="hover:bg-primary" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> : <span/> }
+				{ chunks.length > 1 && <Pagination
+					aria-label="Seitenauswahl" className=""
+					isCompact showControls
+					page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }
+				/> }
+				<Button size="sm" className="hover:bg-primary" onPress={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) } isIconOnly><FolderInput/></Button>
+			</CardFooter>
 
 			<ErrorModal error={ (error || chunkError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
 
 			<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-3">{ current?.firstName } { current?.lastName }</ModalHeader>
+					<ModalHeader className="py-2">{ current?.firstName } { current?.lastName }</ModalHeader>
 					<Divider/>
 					<ModalBody className="max-h-[80vh] overflow-auto">
 						<CheckboxGroup isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({ data: { skills: values } }) }>
@@ -145,26 +137,19 @@ export default function UserListPage() {
 
 			<Modal isOpen={ isDeleteOpen } onOpenChange={ onDeleteOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-3">Konto Löschen</ModalHeader>
+					<ModalHeader className="py-2">Konto Löschen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
 						Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden!
 					</ModalBody>
 					<Divider/>
 					<ModalFooter className="py-2">
-						<Button size="sm" color="danger" variant="solid" onClick={ () => del() } isLoading={ deleteState === "loading" } spinner={ <Spinner/> }>Löschen</Button>
+						<Button size="sm" color="danger" variant="solid" onPress={ () => del() } isLoading={ deleteState === "loading" } spinner={ <Spinner/> }>Löschen</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
 
-			{ chunks.length > 1 && <Pagination
-				aria-label="Seitenauswahl" className="m-0 !p-0 absolute bottom-2 left-2 md:left-1/2 md:transform md:-translate-x-1/2"
-				isCompact showControls
-				page={ page } total={ chunks.length } onChange={ (page) => setPage(page) }
-			/> }
-
 			<Download target="_blank" ref={ download }/>
-			<Button size="sm" className="absolute bottom-2 right-2 hover:bg-primary" onClick={ () => download.current && download.current(`${ import.meta.env._API }/users/csv`) } isIconOnly><FolderInput/></Button>
 		</Card>
 	)
 }

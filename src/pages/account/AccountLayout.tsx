@@ -10,7 +10,7 @@ export default function AccountLayout() {
 	if(!user) return (
 		<Modal isOpen onClose={ () => navigate("/", { state: pathname }) }>
 			<ModalContent>
-				<ModalHeader className="py-3 text-danger">Fehler</ModalHeader>
+				<ModalHeader className="py-2 text-danger">Fehler</ModalHeader>
 				<Divider/>
 				<ModalBody className="py-5">
 					Sie sind nicht angemeldet! Melden Sie sich zunächst an, bevor Sie diese Seite verwenden können!

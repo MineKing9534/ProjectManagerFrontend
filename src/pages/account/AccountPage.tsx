@@ -142,6 +142,7 @@ export default function AccountPage() {
 											value={ name } onValueChange={ setName } isDisabled={ skillUpdateState === "loading" }
 											type="text" autoComplete="given-name" minLength={ 3 } isRequired={ !current }
 											label="Name" placeholder="Violine"
+											classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 											startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 										/>
 									</ModalBody>

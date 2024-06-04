@@ -90,7 +90,7 @@ export default function Register({ token }: { token: string }) {
 
 					<Modal isOpen={ isOpen } onOpenChange={ onOpenChange } onClose={ () => navigate("/") }>
 						<ModalContent>
-							<ModalHeader className="py-3">Registrierung Abgeschlossen</ModalHeader>
+							<ModalHeader className="py-2">Registrierung Abgeschlossen</ModalHeader>
 							<Divider/>
 							<ModalBody className="block">
 								Ihre Registrierung wurde verarbeitet. Wir haben eine E-Mail an <b>{ email }</b> gesendet, um sicher zu stellen, dass Sie Zugriff auf die angegebene e-Mail-Adresse haben.

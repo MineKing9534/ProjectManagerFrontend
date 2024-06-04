@@ -42,11 +42,13 @@ function Error() {
 }
 
 function Join({ token }: { token: string }) {
+	const navigate = useNavigate()
 	const { sub, type } = jwtDecode<{ sub: string, type: string }>(token)
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const { error, put } = useRest(`/${ type.toLowerCase() }s/${ sub }/members/users`, {
-		onError: onOpen
+		onError: onOpen,
+		onSuccess: () => navigate(`/@me/${ type.toLowerCase() }s/${ sub }`)
 	})
 
 	useEffect(() => {

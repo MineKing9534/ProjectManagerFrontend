@@ -41,7 +41,7 @@ export default function EventProvider({ route, children }: { route: string, chil
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange } onClose={ () => navigate("/") }>
 				<ModalContent>
-					<ModalHeader className="py-3">Verbindung getrennt</ModalHeader>
+					<ModalHeader className="py-2">Verbindung getrennt</ModalHeader>
 					<Divider/>
 
 					<ModalBody>

@@ -143,7 +143,7 @@ export function useRest<T>(route: string, {
 
 	useEffect(() => {
 		if(auto) execute("GET", {})
-	}, [ auto, token ])
+	}, [ auto, token, route ])
 
 	function reset() {
 		setState(auto ? "loading" : "idle")
