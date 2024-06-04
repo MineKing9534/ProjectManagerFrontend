@@ -96,13 +96,13 @@ export default function UserListPage() {
 				</Table>
 			</CardBody>
 
-			<CardFooter className="justify-between py-2 flex-shrink-0">
-				{ parent ? 	<Button color="primary" size="sm" className="hover:bg-primary" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> : <span/> }
-				{ (data?.total || 1) > 1 && <Pagination
-					aria-label="Seitenauswahl" isCompact showControls
+			<CardFooter className="py-2 flex-shrink-0 grid grid-cols-3">
+				{ parent ? <Button size="sm" className="w-fit" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> : <span/> }
+				{ (data?.total || 1) > 1 ? <Pagination
+					aria-label="Seitenauswahl" isCompact showControls className="mx-auto"
 					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
-				/> }
-				<Button size="sm" className="hover:bg-primary" onPress={ () => download.current && download.current(`${ import.meta.env._API }/users/csv${ parent ? `?parent=${ parent }` : "" }`) } isIconOnly><FolderInput/></Button>
+				/> : <span/> }
+				<Button size="sm" color="primary" className="w-fit ml-auto font-bold" onPress={ () => download.current && download.current(`${ import.meta.env._API }/users/csv${ parent ? `?parent=${ parent }` : "" }`) } startContent={ <FolderInput strokeWidth="2.5px" height="20px"/> }>Exportieren</Button>
 			</CardFooter>
 
 			<ErrorModal error={ error! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
