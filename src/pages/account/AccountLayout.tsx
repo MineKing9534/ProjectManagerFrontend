@@ -8,7 +8,7 @@ export default function AccountLayout() {
 
 	const { state, data } = useUserRequest()!
 
-	if(state === "loading") return <CircularProgress className="m-auto"/>
+	if(state === "loading") return <CircularProgress className="m-auto" aria-label="Lade Nutzer"/>
 	return (
 		<>
 			{ data ? <Outlet/> :
