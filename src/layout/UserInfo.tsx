@@ -22,7 +22,7 @@ export default function UserInfo({ user }: { user: User }) {
 				</DropdownTrigger>
 				<DropdownMenu aria-label="Nutzer Optionen" variant="solid">
 					<DropdownSection showDivider>
-						<DropdownItem className="h-14 gap-2" textValue="Nutzer Info" as={ Link } to="@me">
+						<DropdownItem className="h-14 gap-2" textValue="Nutzer Info" onClick={ () => navigate("@me") }>
 							<p className="font-semibold">Aktuell angemeldet als</p>
 							<p className="font-semibold text-primary">{ user.email }</p>
 						</DropdownItem>
