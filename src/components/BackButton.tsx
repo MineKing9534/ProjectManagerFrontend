@@ -1,13 +1,13 @@
-import { useLocation, useNavigate } from "react-router"
+import { useLocation } from "react-router"
 import { MoveLeft } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export default function BackButton({ location }: { location?: string | boolean }) {
-	const navigate = useNavigate()
 	const { pathname } = useLocation()
 
 	return (
-		<button className="hover:translate-x-2 transition absolute left-3 hover:bg-default-100 rounded-full p-2" onClick={ () => navigate(typeof location === "string" ? location : pathname.match(/(.*)\//)![1]) }>
+		<Link className="hover:translate-x-2 transition absolute left-3 hover:bg-default-100 rounded-full p-2" to={ typeof location === "string" ? location : pathname.match(/(.*)\//)![1] }>
 			<MoveLeft/>
-		</button>
+		</Link>
 	)
 }
