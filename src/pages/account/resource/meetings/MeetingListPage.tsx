@@ -76,7 +76,7 @@ export default function MeetingListPage() {
 					aria-label="Seitenauswahl" isCompact showControls
 					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
 				/> }
-				{ parentResource && <Button size="sm" color="primary" onPress={ () => {
+				{ (parentResource && user.admin) && <Button size="sm" color="primary" onPress={ () => {
 					setName("")
 					setTime(now(getLocalTimeZone()).add({ weeks: 1 }))
 					setLocation("")

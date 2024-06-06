@@ -154,13 +154,11 @@ export default function AccountPage() {
 						</Modal>
 					</CardBody>
 					<CardFooter className="p-2 flex-shrink-0 justify-end">
-						{ user.admin && <Tooltip content="Neue Fähigkeit erstellen" closeDelay={ 0 }>
-							<Button size="sm" color="primary" onClick={ () => {
-								setCurrent("")
-								setName("")
-								onOpen()
-							} } startContent={ <Plus height="20px" strokeWidth="2.5px"/> }>Erstellen</Button>
-						</Tooltip> }
+						{ user.admin && <Button size="sm" color="primary" onClick={ () => {
+							setCurrent("")
+							setName("")
+							onOpen()
+						} } startContent={ <Plus height="20px" strokeWidth="2.5px"/> }>Erstellen</Button> }
 					</CardFooter>
 				</Card>
 			</CardBody>
