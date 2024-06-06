@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, Divider, Link as ExternalLink, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/react"
 import { useRest } from "../../../../hooks/useRest.ts"
-import { useParams, Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import { useNavigate } from "react-router"
 import { useUser } from "../../../../hooks/useUser.ts"

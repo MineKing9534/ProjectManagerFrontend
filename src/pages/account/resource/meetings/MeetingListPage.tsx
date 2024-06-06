@@ -7,13 +7,15 @@ import ErrorModal from "../../../../components/ErrorModal.tsx"
 import { useUser } from "../../../../hooks/useUser.ts"
 import { useNavigate } from "react-router"
 import { Meeting } from "../../../../types/Meeting.ts"
-import { Clock, File, MapPin, PencilLine, Plus, Ticket } from "lucide-react"
+import { Book, Clock, File, MapPin, PencilLine, Plus, Ticket } from "lucide-react"
 import { useDateFormatter } from "@react-aria/i18n"
 import { DateValue, getLocalTimeZone, now } from "@internationalized/date"
 import { PaginationResult } from "../../../../types/PaginationResult.ts"
 import BackButton from "../../../../components/BackButton.tsx"
 import MeetingTypeBadge from "./MeetingTypeBadge.tsx"
 import { Resource } from "../../../../types/Identifiable.ts"
+import { Team } from "../../../../types/Team.ts"
+import { useMap } from "usehooks-ts"
 
 export default function MeetingListPage() {
 	const navigate = useNavigate()
@@ -29,6 +31,8 @@ export default function MeetingListPage() {
 		auto: true,
 		condition: () => !!parent
 	})
+
+	const getTeam = useTeamCache()
 
 	const { state: createState, error: createError, post } = useRest(`/teams/${ parent }/meetings`, {
 		onSuccess: () => {
@@ -53,7 +57,11 @@ export default function MeetingListPage() {
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/teams/${ parent }` }/> } Anstehende Treffen { parentResource && <>({ parentResource.name })</> }</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">
+				{ parent && <BackButton location={ `/@me/teams/${ parent }` }/> }
+				Anstehende Treffen
+				{ parentResource && <>({ parentResource.name })</> }
+			</CardHeader>
 			<Divider/>
 			<CardBody className="gap-4">
 				{ state === "loading" && <CircularProgress aria-label="Lade Treffen" className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"/> }
@@ -63,6 +71,7 @@ export default function MeetingListPage() {
 						<CardHeader className="font-bold text-lg gap-2 py-2"><Ticket/> { meeting.name } <MeetingTypeBadge type={ meeting.type } className="ml-auto"/></CardHeader>
 						<Divider/>
 						<CardBody className="gap-3">
+							<span className="flex gap-2 rounded-lg bg-default-200 p-1"><Book width="20px"/> { getTeam(meeting.parent) ? getTeam(meeting.parent)?.name : <i>Laden...</i> }</span>
 							<span className="flex gap-2 bg-default-200 rounded-lg p-1"><MapPin width="20px"/> { meeting.location }</span>
 							<span className="flex gap-2 bg-default-200 rounded-lg p-1"><Clock width="20px"/> { formatter.format(new Date(meeting.time)) }</span>
 						</CardBody>
@@ -142,4 +151,17 @@ export default function MeetingListPage() {
 			<ErrorModal error={ (error || createError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () => error && navigate("/@me") }/>
 		</Card>
 	)
+}
+
+function useTeamCache() {
+	const { get } = useRest<Team>("/teams", { delay: 1 })
+
+	const [ values, actions ] = useMap<string, Team | undefined>()
+
+	return (id: string) => {
+		if(values.has(id)) return values.get(id)
+
+		actions.set(id, undefined)
+		get({ path: `/${ id }`, onSuccess: data => actions.set(id, data) })
+	}
 }
