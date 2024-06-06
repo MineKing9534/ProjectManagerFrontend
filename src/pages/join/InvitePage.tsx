@@ -46,7 +46,7 @@ function Join({ token }: { token: string }) {
 	const { sub, type } = jwtDecode<{ sub: string, type: string }>(token)
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
-	const { error, put } = useRest(`/${ type.toLowerCase() }s/${ sub }/members/users`, {
+	const { error, put } = useRest(`/${ type.toLowerCase() }s/${ sub }/users`, {
 		onError: onOpen,
 		onSuccess: () => navigate(`/@me/${ type.toLowerCase() }s/${ sub }`)
 	})
