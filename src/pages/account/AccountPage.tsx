@@ -84,7 +84,7 @@ export default function AccountPage() {
 						</form>
 
 						<div>
-							<h2 className="font-bold text-md mb-2">EMail-Einstellungen</h2>
+							<h2 className="font-bold text-md mb-2">E-Mail Einstellungen</h2>
 							<CheckboxGroup value={ user.emailTypes } onValueChange={ value => patchUser({ data: { emailTypes: value } }) } isDisabled={ renameState === "loading" }>
 								<Checkbox value="MEETING_CREATE">Ankündigungen von Veranstaltungen</Checkbox>
 								<Checkbox value="MEETING_DELETE">Absage von Veranstaltungen</Checkbox>
@@ -153,13 +153,13 @@ export default function AccountPage() {
 							</ModalContent>
 						</Modal>
 					</CardBody>
-					<CardFooter className="p-2 flex-shrink-0">
+					<CardFooter className="p-2 flex-shrink-0 justify-end">
 						{ user.admin && <Tooltip content="Neue Fähigkeit erstellen" closeDelay={ 0 }>
-							<Button size="sm" color="default" className="ml-auto hover:bg-success" isIconOnly onClick={ () => {
+							<Button size="sm" color="primary" onClick={ () => {
 								setCurrent("")
 								setName("")
 								onOpen()
-							} }><Plus/></Button>
+							} } startContent={ <Plus height="20px" strokeWidth="2.5px"/> }>Erstellen</Button>
 						</Tooltip> }
 					</CardFooter>
 				</Card>
