@@ -61,10 +61,10 @@ export default function TeamListPage() {
 					aria-label="Seitenauswahl" isCompact showControls
 					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
 				/> }
-				<Button size="sm" className="hover:bg-primary" onPress={ () => {
+				<Button size="sm" color="primary" onPress={ () => {
 					setName("")
 					onOpen()
-				} } isIconOnly><Plus/></Button>
+				} } startContent={ <Plus height="20px" strokeWidth="2.5px"/> }>Erstellen</Button>
 			</CardFooter>
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>

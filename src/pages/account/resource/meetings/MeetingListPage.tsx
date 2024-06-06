@@ -22,12 +22,15 @@ export default function MeetingListPage() {
 	const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
 
-	const [ searchParams ] = useSearchParams()
+	const [ searchParams, setSearchParams ] = useSearchParams()
 	const parent = searchParams.get("parent")
 
-	const { data: parentResource } = useRest<Resource>(`/${ parent }`, { auto: true })
+	const { data: parentResource } = useRest<Resource>(`/teams/${ parent }`, {
+		auto: true,
+		condition: () => !!parent
+	})
 
-	const { state: createState, error: createError, post } = useRest("/meetings", {
+	const { state: createState, error: createError, post } = useRest(`/teams/${ parent }/meetings`, {
 		onSuccess: () => {
 			onClose()
 			get()
@@ -43,17 +46,18 @@ export default function MeetingListPage() {
 	const formatter = useDateFormatter({ dateStyle: "long", timeStyle: "short" })
 
 	const [ page, setPage ] = useState(1)
-	const { state, data, error, get } = useRest<PaginationResult<Meeting>>(user.admin ? `/meetings?page=${ page }&entriesPerPage=5` : `/users/@me/meetings?page=${ page }&entriesPerPage=5`, {
+	const { state, data, error, get } = useRest<PaginationResult<Meeting>>(`${ parent ? `/teams/${ parent }` : !user.admin ? "/users/@me" : "" }/meetings?page=${ page }&entriesPerPage=5`, {
 		auto: true,
 		onError: onErrorOpen
 	})
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/${ parent }` }/> } Anstehende Treffen { parentResource && <>({ parentResource.name })</> }</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/teams/${ parent }` }/> } Anstehende Treffen { parentResource && <>({ parentResource.name })</> }</CardHeader>
 			<Divider/>
 			<CardBody className="gap-4">
 				{ state === "loading" && <CircularProgress aria-label="Lade Treffen" className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"/> }
+				{ (data && !data.data.length) && <span className="text-foreground-400 mx-auto mt-20">Keine Treffen</span> }
 				{ data && data.data.map(meeting =>
 					<Card key={ meeting.id } className="bg-default-100 hover:scale-x-[1.01]" as={ Link } to={ `/@me/meetings/${ meeting.id }` }>
 						<CardHeader className="font-bold text-lg gap-2 py-2"><Ticket/> { meeting.name } <MeetingTypeBadge type={ meeting.type } className="ml-auto"/></CardHeader>
@@ -67,19 +71,19 @@ export default function MeetingListPage() {
 			</CardBody>
 
 			<CardFooter className="justify-between py-2 flex-shrink-0">
-				<span/>
+				{ parent ? <Button size="sm" className="w-fit" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> : <span/> }
 				{ (data?.total || 1) > 1 && <Pagination
 					aria-label="Seitenauswahl" isCompact showControls
 					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
 				/> }
-				<Button size="sm" className="hover:bg-primary" onPress={ () => {
+				{ parentResource && <Button size="sm" color="primary" onPress={ () => {
 					setName("")
 					setTime(now(getLocalTimeZone()).add({ weeks: 1 }))
 					setLocation("")
 					setType(new Set([ "MEETING" ]))
 
 					onOpen()
-				} } isIconOnly><Plus/></Button>
+				} } startContent={ <Plus height="20px" strokeWidth="2.5px"/> }>Erstellen</Button> }
 			</CardFooter>
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>

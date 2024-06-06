@@ -25,12 +25,14 @@ export default function UserListPage() {
 	const parent = searchParams.get("parent")
 
 	const [ page, setPage ] = useState(1)
-	const { state, data, error, get } = useRest<PaginationResult<User>>(parent ? `/${ parent }/members/users?page=${ page }` : `/users?page=${  page }`, {
+	const { state, data, error, get } = useRest<PaginationResult<User>>(parent ? `/${ parent }/users?page=${ page }` : `/users?page=${  page }`, {
 		auto: true,
 		onError: onErrorOpen
 	})
 
-	const { data: parentResource, get: getParent } = useRest<Resource>(`/${ parent }`)
+	const { data: parentResource, get: getParent } = useRest<Resource>(`/${ parent }`, {
+		condition: () => !!parent
+	})
 
 	const { data: skills } = useRest<Skill[]>("/skills", { auto: true })
 	const { state: deleteState, del } = useRest(`/users/${ current?.id }`, {
@@ -102,7 +104,7 @@ export default function UserListPage() {
 					aria-label="Seitenauswahl" isCompact showControls className="mx-auto"
 					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
 				/> : <span/> }
-				<Button size="sm" color="primary" className="w-fit ml-auto font-bold" onPress={ () => download.current && download.current(`${ import.meta.env._API }/users/csv${ parent ? `?parent=${ parent }` : "" }`) } startContent={ <FolderInput strokeWidth="2.5px" height="20px"/> }>Exportieren</Button>
+				{ !!data?.data.length && <Button size="sm" color="primary" className="w-fit ml-auto font-bold" onPress={ () => download.current && download.current(`${ import.meta.env._API }${ parent ? `/${ parent }` : "" }/users/csv`) } startContent={ <FolderInput strokeWidth="2.5px" height="20px"/> }>Exportieren</Button> }
 			</CardFooter>
 
 			<ErrorModal error={ error! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
