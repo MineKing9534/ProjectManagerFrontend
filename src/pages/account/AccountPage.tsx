@@ -2,10 +2,11 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup
 import { useUser, useUserRequest } from "../../hooks/useUser.ts"
 import { useRest } from "../../hooks/useRest.ts"
 import { Skill } from "../../types/Skill.ts"
-import { PencilLine, Plus, Save, Trash2 } from "lucide-react"
+import { Book, CalendarDays, PencilLine, Plus, Save, Trash2, Users } from "lucide-react"
 import { FormEvent, useMemo, useState } from "react"
 import Spinner from "../../components/Spinner.tsx"
 import ErrorModal from "../../components/ErrorModal.tsx"
+import { Link } from "react-router-dom"
 
 export default function AccountPage() {
 	const user = useUser()!
@@ -91,6 +92,15 @@ export default function AccountPage() {
 								<Checkbox value="MEETING_UPDATE">Änderungen für Veranstaltungen</Checkbox>
 								<Checkbox value="INFO_UPDATE">Änderungen der Informationsdatei</Checkbox>
 							</CheckboxGroup>
+						</div>
+
+						<div>
+							<h2 className="font-bold text-md mb-2">Schnellverknüpfungen</h2>
+							<div className="flex flex-col gap-2">
+								<Link to="/@me/meetings" className="flex gap-2 hover:font-bold"><CalendarDays width="20px"/> Veranstaltungen</Link>
+								<Link to="/@me/teams" className="flex gap-2 hover:font-bold"><Book width="20px"/> Teams</Link>
+								{ (user.admin && <Link to="/@me/users" className="flex gap-2 hover:font-bold"><Users width="20px"/> Nutzerliste</Link>) as never }
+							</div>
 						</div>
 					</CardBody>
 					<CardFooter className="p-2 flex-shrink-0 flex gap-2">
