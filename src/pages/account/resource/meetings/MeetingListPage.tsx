@@ -71,7 +71,7 @@ export default function MeetingListPage() {
 						<CardHeader className="font-bold text-lg gap-2 py-2"><Ticket/> { meeting.name } <MeetingTypeBadge type={ meeting.type } className="ml-auto"/></CardHeader>
 						<Divider/>
 						<CardBody className="gap-3">
-							<span className="flex gap-2 rounded-lg bg-default-200 p-1"><Book width="20px"/> { getTeam(meeting.parent) ? getTeam(meeting.parent)?.name : <i>Laden...</i> }</span>
+							{ !parent && <span className="flex gap-2 rounded-lg bg-default-200 p-1"><Book width="20px"/> { getTeam(meeting.parent) ? getTeam(meeting.parent)?.name : <i>Laden...</i> }</span> }
 							<span className="flex gap-2 bg-default-200 rounded-lg p-1"><MapPin width="20px"/> { meeting.location }</span>
 							<span className="flex gap-2 bg-default-200 rounded-lg p-1"><Clock width="20px"/> { formatter.format(new Date(meeting.time)) }</span>
 						</CardBody>
