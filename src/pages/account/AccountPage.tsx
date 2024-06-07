@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react"
 import { useUser, useUserRequest } from "../../hooks/useUser.ts"
 import { useRest } from "../../hooks/useRest.ts"
 import { Skill } from "../../types/Skill.ts"
@@ -96,10 +96,10 @@ export default function AccountPage() {
 
 						<div>
 							<h2 className="font-bold text-md mb-2">Schnellverknüpfungen</h2>
-							<div className="flex flex-col gap-2">
-								{ (user.admin && <Link to="/@me/users" className="flex gap-2 hover:font-bold"><Users width="20px"/> Nutzerliste</Link>) as never }
-								<Link to="/@me/meetings" className="flex gap-2 hover:font-bold"><CalendarDays width="20px"/> Veranstaltungen</Link>
-								<Link to="/@me/teams" className="flex gap-2 hover:font-bold"><Book width="20px"/> Teams</Link>
+							<div className="flex flex-col gap-1 w-fit">
+								{ (user.admin && <Link to="/@me/users" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><Users width="20px"/> Nutzerliste</Link>) as never }
+								<Link to="/@me/meetings" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><CalendarDays width="20px"/> Veranstaltungen</Link>
+								<Link to="/@me/teams" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><Book width="20px"/> Teams</Link>
 							</div>
 						</div>
 					</CardBody>
@@ -111,25 +111,22 @@ export default function AccountPage() {
 				<Card className="md:w-2/5 h-1/2 md:h-full">
 					<CardHeader className="text-xl font-bold">Fähigkeiten</CardHeader>
 					<CardBody className="pt-1">
-						<CheckboxGroup isDisabled={ skillState === "loading" } value={ user.skills } onValueChange={ values => put({ data: { skills: values } }) }>
+						<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ user.skills } onValueChange={ values => put({ data: { skills: values } }) }>
 							{ skills?.map(skill =>
-								<Checkbox key={ skill.id } value={ skill.id } className="max-w-full" classNames={ { label: "flex justify-between w-full before:hidden" } }>
+								<Checkbox key={ skill.id } value={ skill.id } className="max-w-full rounded-lg !p-0.5 hover:bg-default-100" classNames={ { label: "flex justify-between w-full before:hidden" } }>
 									<span>{ skill.name }</span>
 									{ user.admin && <span className="relative flex items-center gap-2">
-										<Tooltip content="Bearbeiten" closeDelay={ 0 }>
-											<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
-												setCurrent(skill.id)
-												setName(skill.name)
-												onOpen()
-											} }>
-												<PencilLine height="20px"/>
-											</button>
-										</Tooltip>
-										<Tooltip color="danger" content="Löschen" closeDelay={ 0 }>
-											<button className="text-lg text-danger hover:opacity-70" onClick={ () => del({ path: `/${ skill.id }` }) }>
-												<Trash2 height="20px"/>
-											</button>
-										</Tooltip>
+										<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
+											setCurrent(skill.id)
+											setName(skill.name)
+											onOpen()
+										} }>
+											<PencilLine height="20px"/>
+										</button>
+
+										<button className="text-lg text-danger hover:opacity-70" onClick={ () => del({ path: `/${ skill.id }` }) }>
+											<Trash2 height="20px"/>
+										</button>
 									</span> }
 								</Checkbox>
 							) }

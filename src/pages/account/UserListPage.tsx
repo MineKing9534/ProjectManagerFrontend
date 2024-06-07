@@ -1,10 +1,10 @@
 import { useRest } from "../../hooks/useRest.ts"
-import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Select, Selection, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
 import ErrorModal from "../../components/ErrorModal.tsx"
 import { useEffect, useRef, useState } from "react"
 import { User } from "../../types/User.ts"
 import Spinner from "../../components/Spinner.tsx"
-import { FolderInput, Pencil, Search, Trash2 } from "lucide-react"
+import { FolderInput, Pencil, Search, Trash2, UserMinus } from "lucide-react"
 import { Skill } from "../../types/Skill.ts"
 import Download from "../../components/Download.tsx"
 import { useSearchParams } from "react-router-dom"
@@ -19,35 +19,45 @@ export default function UserListPage() {
 
 	const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onOpenChange: onDetailsOpenChange } = useDisclosure()
 	const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure()
+	const { isOpen: isKickOpen, onOpen: onKickOpen, onOpenChange: onKickOpenChange, onClose: onKickClose } = useDisclosure()
+
 	const [ current, setCurrent ] = useState<User>()
 
 	const [ searchParams, setSearchParams ] = useSearchParams()
 	const parent = searchParams.get("parent")
 
-	const [ skillFilter, setSkillFilter ] = useState<Selection>(new Set([ ]))
+	const [ skillFilter, setSkillFilter ] = useState<string[]>([ "" ])
 
 	const [ page, setPage ] = useState(1)
-	const { state, data, error, get } = useRest<PaginationResult<User>>(`${ parent ? `/${ parent }/users` : `/users` }?page=${ page }${ [ ...skillFilter ].join(",") ? `&skills=${ [ ...skillFilter ].join(",") }` : "" }`, {
+	const { state, data, error, get } = useRest<PaginationResult<User>>(`${ parent ? `/${ parent }/users` : `/users` }?page=${ page }${ skillFilter.join(",") ? `&skills=${ skillFilter.join(",") }` : "" }`, {
 		auto: true,
 		onError: onErrorOpen
 	})
 
-	const { data: parentResource, get: getParent } = useRest<Resource>(`/${ parent }`, {
-		condition: () => !!parent
+	const { data: parentResource, error: parentError, get: getParent } = useRest<Resource>(`/${ parent }`, {
+		condition: () => !!parent,
+		onError: onErrorOpen
 	})
 
-	const { data: skills } = useRest<Skill[]>("/skills", { auto: true })
-	const { state: deleteState, del } = useRest(`/users/${ current?.id }`, {
+	const { state: kickState, error: kickError, del: kick } = useRest(`/${ parent }/users`, {
+		onSuccess: onKickClose,
+		onError: onErrorOpen
+	})
+
+	const { data: skills, error: skillError } = useRest<Skill[]>("/skills", { auto: true })
+	const { state: deleteState, error: userError, del } = useRest(`/users/${ current?.id }`, {
 		onSuccess: () => {
 			get()
 			onDeleteClose()
-		}
+		},
+		onError: onErrorOpen
 	})
-	const { state: skillState, put } = useRest<string[]>(`/users/${ current?.id }/skills`, {
+	const { state: skillState, error: userSkillError, put } = useRest<string[]>(`/users/${ current?.id }/skills`, {
 		onSuccess: data => {
 			current!.skills = data
 			get()
-		}
+		},
+		onError: onErrorOpen
 	})
 
 	useEffect(() => {
@@ -79,22 +89,26 @@ export default function UserListPage() {
 								<TableCell><Chip variant="flat" color={ user.admin ? "success" : "primary" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
 								<TableCell>
 									<span className="relative flex items-center gap-2">
-										<Tooltip content="Fähigkeiten bearbeiten" closeDelay={ 0 }>
-											<button className="text-lg text-default-400 hover:opacity-70" onClick={ () => {
-												setCurrent(user)
-												onDetailsOpen()
-											} }>
-												<Pencil height="20px"/>
-											</button>
-										</Tooltip>
-										<Tooltip color="danger" content="Löschen" closeDelay={ 0 }>
-											<button className="text-lg text-danger hover:opacity-70" onClick={ () => {
-												setCurrent(user)
-												onDeleteOpen()
-											} }>
-												<Trash2 height="20px"/>
-											</button>
-										</Tooltip>
+										<button className="text-lg text-default-400 hover:opacity-70" onClick={ () => {
+											setCurrent(user)
+											onDetailsOpen()
+										} }>
+											<Pencil height="20px"/>
+										</button>
+
+										{ parent && <button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
+											setCurrent(user)
+											onKickOpen()
+										} }>
+											<UserMinus height="20px" className="[&>line]:text-danger"/>
+										</button> }
+
+										<button className="text-lg text-danger hover:opacity-70" onClick={ () => {
+											setCurrent(user)
+											onDeleteOpen()
+										} }>
+											<Trash2 height="20px"/>
+										</button>
 									</span>
 								</TableCell>
 							</TableRow>
@@ -119,10 +133,16 @@ export default function UserListPage() {
 
 					{ skills && <Select
 						size="sm" className="w-[200px]"
-						selectedKeys={ skillFilter } onSelectionChange={ setSkillFilter } selectionMode="multiple"
+						selectionMode="multiple"
 						label="Nach Fähigkeiten Filtern"
 						startContent={ <Search height="15px" strokeWidth="3" className="text-default-500"/> }
-					>
+						selectedKeys={ skillFilter }
+						onSelectionChange={ s => {
+							const set = [ ...s ] as string[]
+
+							if(set.includes("") && !skillFilter.includes("") || !set.length) setSkillFilter([ "" ])
+							else setSkillFilter(set.filter(x => x))
+						} }>
 						{ [ ...skills!.map(skill => (
 							<SelectItem key={ skill.id }>{ skill.name }</SelectItem>
 						)), <SelectItem key="" textValue="Kein Filter"><i>Kein Filter</i></SelectItem> ] }
@@ -130,7 +150,7 @@ export default function UserListPage() {
 				</div>
 			</CardFooter>
 
-			<ErrorModal error={ error! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
+			<ErrorModal error={ (error || parentError || kickError || skillError || userError || userSkillError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
 
 			<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange }>
 				<ModalContent>
@@ -156,6 +176,20 @@ export default function UserListPage() {
 					<Divider/>
 					<ModalFooter className="py-2">
 						<Button size="sm" color="danger" variant="solid" onPress={ () => del() } isLoading={ deleteState === "loading" } spinner={ <Spinner/> }>Löschen</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
+
+			<Modal isOpen={ isKickOpen } onOpenChange={ onKickOpenChange }>
+				<ModalContent>
+					<ModalHeader className="py-2">Konto Entfernen</ModalHeader>
+					<Divider/>
+					<ModalBody className="block">
+						Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich von <b>{ parentResource?.name }</b> entfernt werden? Das Konto kann nur mit einer Einladung erneut beitreten!
+					</ModalBody>
+					<Divider/>
+					<ModalFooter className="py-2">
+						<Button size="sm" color="danger" variant="solid" onPress={ () => kick({ path: `/${ current?.id }` }) } isLoading={ kickState === "loading" } spinner={ <Spinner/> }>Entfernen</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>

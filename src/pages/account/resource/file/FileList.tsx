@@ -1,7 +1,7 @@
 import { Resource } from "../../../../types/Identifiable.ts"
 import { useRest } from "../../../../hooks/useRest.ts"
 import { PaginationResult } from "../../../../types/PaginationResult.ts"
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
 import Spinner from "../../../../components/Spinner.tsx"
 import { File, Files, FileUp, Folder, FolderPlus, PencilLine, Save, Trash2 } from "lucide-react"
 import { useUser } from "../../../../hooks/useUser.ts"
@@ -81,24 +81,21 @@ export default function FileList({ resource, className, full = false }: { resour
 								<TableCell className="whitespace-nowrap">{ formatter.format(new Date(file.time)) }</TableCell>
 								{ (full && user.admin) ? <TableCell>
 									<span className="relative flex items-center gap-2">
-										<Tooltip content="Umbennen" closeDelay={ 0 }>
-											<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
-												setTarget(file.name)
-												setName(file.name)
+										<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
+											setTarget(file.name)
+											setName(file.name)
 
-												onRenameOpen()
-											} }>
-												<PencilLine height="20px"/>
-											</button>
-										</Tooltip>
-										<Tooltip color="danger" content="Löschen" closeDelay={ 0 }>
-											<button className="text-lg text-danger hover:opacity-70" onClick={ () => {
-												setTarget(file.name)
-												onDeleteOpen()
-											} }>
-												<Trash2 height="20px"/>
-											</button>
-										</Tooltip>
+											onRenameOpen()
+										} }>
+											<PencilLine height="20px"/>
+										</button>
+
+										<button className="text-lg text-danger hover:opacity-70" onClick={ () => {
+											setTarget(file.name)
+											onDeleteOpen()
+										} }>
+											<Trash2 height="20px"/>
+										</button>
 									</span>
 								</TableCell> : <TableCell>{ ' ' }</TableCell> }
 							</TableRow>
