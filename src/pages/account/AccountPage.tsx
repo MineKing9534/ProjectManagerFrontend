@@ -113,7 +113,7 @@ export default function AccountPage() {
 					<CardBody className="pt-1">
 						<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ user.skills } onValueChange={ values => put({ data: { skills: values } }) }>
 							{ skills?.map(skill =>
-								<Checkbox key={ skill.id } value={ skill.id } className="max-w-full rounded-lg !p-0.5 hover:bg-default-100" classNames={ { label: "flex justify-between w-full before:hidden" } }>
+								<Checkbox key={ skill.id } value={ skill.id } className="max-w-full rounded-lg !p-1 hover:bg-default-100" classNames={ { label: "flex justify-between w-full before:hidden" } }>
 									<span>{ skill.name }</span>
 									{ user.admin && <span className="relative flex items-center gap-2">
 										<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {

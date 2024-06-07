@@ -157,9 +157,9 @@ export default function UserListPage() {
 					<ModalHeader className="py-2">{ current?.firstName } { current?.lastName }</ModalHeader>
 					<Divider/>
 					<ModalBody className="max-h-[80vh] overflow-auto">
-						<CheckboxGroup isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({ data: { skills: values } }) }>
+						<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({ data: { skills: values } }) }>
 							{ skills?.map(skill =>
-								<Checkbox key={ skill.id } value={ skill.id }>{ skill.name }</Checkbox>
+								<Checkbox key={ skill.id } className="max-w-full p-1 hover:bg-default-100 rounded-lg" value={ skill.id }>{ skill.name }</Checkbox>
 							) }
 						</CheckboxGroup>
 					</ModalBody>
