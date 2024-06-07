@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, Divider, Link as ExternalLink, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react"
 import { useRest } from "../../../../hooks/useRest.ts"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useSearchParams } from "react-router-dom"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import { useNavigate } from "react-router"
 import { useUser } from "../../../../hooks/useUser.ts"
@@ -20,6 +20,8 @@ export default function MeetingPage() {
 	const params = useParams()
 	const id = params.id
 
+	const [ searchParams ] = useSearchParams()
+
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const { isOpen: isLeaveOpen, onOpen: onLeaveOpen, onClose: onLeaveClose, onOpenChange: onLeaveOpenChange } = useDisclosure()
 	const { isOpen: isJoinOpen, onOpen: onJoinOpen, onClose: onJoinClose, onOpenChange: onJoinOpenChange } = useDisclosure()
@@ -38,10 +40,18 @@ export default function MeetingPage() {
 		onError: onErrorOpen
 	})
 
+	const { state: memberState, get: updateMemberState } = useRest(`/meetings/${ id }/users/@me`, {
+		auto: true,
+		onError: () => {
+			if(searchParams.has("join")) onJoinOpen()
+		}
+	})
 	const { state: leaveState, error: leaveError, put: join, del: leave } = useRest(`/meetings/${ id }/users/@me`, {
 		onSuccess: () => {
 			onLeaveClose()
 			onJoinClose()
+
+			updateMemberState()
 		},
 		onError: onErrorOpen
 	})
@@ -57,8 +67,8 @@ export default function MeetingPage() {
 			<Divider/>
 			<CardFooter className="flex flex-wrap gap-2 w-full py-2">
 				<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings/${ id }/files` } startContent={ <Files strokeWidth="2.5px" height="20px"/> }>Dateien</Button>
-				<Button size="sm" className="flex-grow sm:flex-grow-0" startContent={ <UserMinus strokeWidth="2.5px" height="20px" className="[&>line]:text-danger"/> } onPress={ onLeaveOpen }>Verlassen</Button>
-				<Button size="sm" className="flex-grow sm:flex-grow-0" startContent={ <UserPlus strokeWidth="2.5px" height="20px" className="[&>line]:text-success"/> } onPress={ onJoinOpen }>Beitreten</Button>
+				{ memberState === "success" && <Button size="sm" className="flex-grow sm:flex-grow-0" startContent={ <UserMinus strokeWidth="2.5px" height="20px" className="[&>line]:text-danger"/> } onPress={ onLeaveOpen }>Verlassen</Button> }
+				{ memberState === "error" && <Button size="sm" className="flex-grow sm:flex-grow-0" startContent={ <UserPlus strokeWidth="2.5px" height="20px" className="[&>line]:text-success"/> } onPress={ onJoinOpen }>Beitreten</Button> }
 
 				<span className="hidden sm:block sm:flex-grow"/>
 
