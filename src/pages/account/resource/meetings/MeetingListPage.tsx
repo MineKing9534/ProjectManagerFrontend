@@ -68,7 +68,7 @@ export default function MeetingListPage() {
 				{ (data && !data.data.length) && <span className="text-foreground-400 mx-auto mt-20">Keine Treffen</span> }
 				{ data && data.data.map(meeting =>
 					<Card key={ meeting.id } className="bg-default-100 hover:mx-[-5px] !transition-[margin]" as={ Link } to={ `/@me/meetings/${ meeting.id }` }>
-						<CardHeader className="font-bold text-lg gap-2 py-2"><Ticket/> { meeting.name } <MeetingTypeBadge type={ meeting.type } className="ml-auto"/></CardHeader>
+						<CardHeader className="font-bold text-lg gap-2 py-2"><Ticket/> { meeting.name } <MeetingTypeBadge type={ meeting.type } className="absolute right-3"/></CardHeader>
 						<Divider/>
 						<CardBody className="gap-3">
 							{ !parent && <span className="flex gap-2 rounded-lg bg-default-200 p-1"><Book width="20px"/> { getTeam(meeting.parent) ? getTeam(meeting.parent)?.name : <i>Laden...</i> }</span> }
@@ -79,20 +79,28 @@ export default function MeetingListPage() {
 				) }
 			</CardBody>
 
-			<CardFooter className="justify-between py-2 flex-shrink-0">
-				{ parent ? <Button size="sm" className="w-fit" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> : <span/> }
-				{ (data?.total || 1) > 1 && <Pagination
-					aria-label="Seitenauswahl" isCompact showControls
-					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
-				/> }
-				{ (parentResource && user.admin) && <Button size="sm" color="primary" onPress={ () => {
-					setName("")
-					setTime(now(getLocalTimeZone()).add({ weeks: 1 }))
-					setLocation("")
-					setType(new Set([ "MEETING" ]))
+			<CardFooter className="flex-col gap-2 flex-shrink-0">
+				{ (data?.total || 1) > 1 && <div className="w-full flex justify-center">
+					<Pagination
+						aria-label="Seitenauswahl" isCompact showControls
+						page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
+					/>
+				</div> }
 
-					onOpen()
-				} } startContent={ <Plus height="20px" strokeWidth="2.5px"/> }>Erstellen</Button> }
+				<div className="w-full flex gap-2 justify-between flex-wrap">
+					{ parent && <Button size="sm" className="flex-grow sm:flex-grow-0" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> }
+
+					<span className="hidden sm:block sm:flex-grow"/>
+
+					{ (parentResource && user.admin) && <Button size="sm" color="primary" className="flex-grow sm:flex-grow-0" onPress={ () => {
+						setName("")
+						setTime(now(getLocalTimeZone()).add({ weeks: 1 }))
+						setLocation("")
+						setType(new Set([ "MEETING" ]))
+
+						onOpen()
+					} } startContent={ <Plus height="20px" strokeWidth="2.5px"/> }>Erstellen</Button> }
+				</div>
 			</CardFooter>
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>
@@ -101,8 +109,9 @@ export default function MeetingListPage() {
 					<Divider/>
 					<form onSubmit={ event => {
 						event.preventDefault()
-						post({ data: {
-							name,
+						post({
+							data: {
+								name,
 							location,
 							type: [ ...type ][0],
 							time: time?.toDate(getLocalTimeZone()).toISOString()

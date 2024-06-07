@@ -97,9 +97,9 @@ export default function AccountPage() {
 						<div>
 							<h2 className="font-bold text-md mb-2">Schnellverknüpfungen</h2>
 							<div className="flex flex-col gap-2">
+								{ (user.admin && <Link to="/@me/users" className="flex gap-2 hover:font-bold"><Users width="20px"/> Nutzerliste</Link>) as never }
 								<Link to="/@me/meetings" className="flex gap-2 hover:font-bold"><CalendarDays width="20px"/> Veranstaltungen</Link>
 								<Link to="/@me/teams" className="flex gap-2 hover:font-bold"><Book width="20px"/> Teams</Link>
-								{ (user.admin && <Link to="/@me/users" className="flex gap-2 hover:font-bold"><Users width="20px"/> Nutzerliste</Link>) as never }
 							</div>
 						</div>
 					</CardBody>

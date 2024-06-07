@@ -44,15 +44,16 @@ export default function MeetingPage() {
 				{ data && <ResourceInfo resource={ data }/> }
 			</CardBody>
 			<Divider/>
-			<CardFooter className="flex w-full justify-between py-2">
-				<div className="flex gap-2">
-					<Button size="sm" as={ Link } to={ `/@me/meetings/${ id }/files` } startContent={ <Files strokeWidth="2.5px" height="20px"/> }>Dateien</Button>
-				</div>
-				{ user.admin && <div className="flex gap-2">
-					<Button size="sm" color="primary" onPress={ () => post() } startContent={ <UserPlus strokeWidth="2.5px" height="20px"/> }>Einladung Erstellen</Button>
-					<Button size="sm" as={ Link } to={ `/@me/users?parent=meetings/${ id }` } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
-					<Button size="sm" as={ Link } to={ `/@me/meetings/${ id }/settings` } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
-				</div> }
+			<CardFooter className="flex flex-wrap gap-2 w-full py-2">
+				<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings/${ id }/files` } startContent={ <Files strokeWidth="2.5px" height="20px"/> }>Dateien</Button>
+
+				<span className="hidden sm:block sm:flex-grow"/>
+
+				{ user.admin && <>
+					<Button size="sm" className="flex-grow sm:flex-grow-0" color="primary" onPress={ () => post() } startContent={ <UserPlus strokeWidth="2.5px" height="20px"/> }>Einladung Erstellen</Button>
+					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/users?parent=meetings/${ id }` } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
+					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings/${ id }/settings` } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
+				</> }
 			</CardFooter>
 
 			<ErrorModal error={ (meetingError || inviteError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () => meetingError && navigate("/@me/meetings") }/>

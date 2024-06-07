@@ -4,7 +4,7 @@ import ErrorModal from "../../components/ErrorModal.tsx"
 import { useEffect, useRef, useState } from "react"
 import { User } from "../../types/User.ts"
 import Spinner from "../../components/Spinner.tsx"
-import { Eye, FolderInput, Trash2 } from "lucide-react"
+import { FolderInput, Pencil, Trash2 } from "lucide-react"
 import { Skill } from "../../types/Skill.ts"
 import Download from "../../components/Download.tsx"
 import { useSearchParams } from "react-router-dom"
@@ -43,7 +43,8 @@ export default function UserListPage() {
 	})
 	const { state: skillState, put } = useRest<string[]>(`/users/${ current?.id }/skills`, {
 		onSuccess: data => {
-			if(current) current.skills = data
+			current!.skills = data
+			get()
 		}
 	})
 
@@ -57,7 +58,7 @@ export default function UserListPage() {
 			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/${ parent }` }/> } Nutzer Liste { parentResource && <>({ parentResource.name })</> }</CardHeader>
 			<Divider/>
 			<CardBody>
-				<Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single" className="h-full">
+				<Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single" className="h-full table-fixed">
 					<TableHeader>
 						<TableColumn key="name">Name</TableColumn>
 						<TableColumn key="email">Email</TableColumn>
@@ -71,26 +72,28 @@ export default function UserListPage() {
 					>
 						{ user => (
 							<TableRow key={ user.id }>
-								<TableCell><span>{ user.firstName } { user.lastName }</span></TableCell>
-								<TableCell><a href={ `mailto:${ user.email }` }>{ user.email }</a></TableCell>
+								<TableCell><span className="whitespace-nowrap">{ user.firstName } { user.lastName }</span></TableCell>
+								<TableCell><a className="whitespace-nowrap" href={ `mailto:${ user.email }` }>{ user.email }</a></TableCell>
 								<TableCell><Chip variant="flat" color={ user.admin ? "success" : "primary" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
-								<TableCell className="relative flex items-center gap-2 h-[44px]">
-									<Tooltip content="Fähigkeiten" closeDelay={ 0 }>
-										<button className="text-lg text-default-400 hover:opacity-70" onClick={ () => {
-											setCurrent(user)
-											onDetailsOpen()
-										} }>
-											<Eye height="20px"/>
-										</button>
-									</Tooltip>
-									<Tooltip color="danger" content="Löschen" closeDelay={ 0 }>
-										<button className="text-lg text-danger hover:opacity-70" onClick={ () => {
-											setCurrent(user)
-											onDeleteOpen()
-										} }>
-											<Trash2 height="20px"/>
-										</button>
-									</Tooltip>
+								<TableCell>
+									<span className="relative flex items-center gap-2">
+										<Tooltip content="Fähigkeiten bearbeiten" closeDelay={ 0 }>
+											<button className="text-lg text-default-400 hover:opacity-70" onClick={ () => {
+												setCurrent(user)
+												onDetailsOpen()
+											} }>
+												<Pencil height="20px"/>
+											</button>
+										</Tooltip>
+										<Tooltip color="danger" content="Löschen" closeDelay={ 0 }>
+											<button className="text-lg text-danger hover:opacity-70" onClick={ () => {
+												setCurrent(user)
+												onDeleteOpen()
+											} }>
+												<Trash2 height="20px"/>
+											</button>
+										</Tooltip>
+									</span>
 								</TableCell>
 							</TableRow>
 						) }
@@ -98,13 +101,21 @@ export default function UserListPage() {
 				</Table>
 			</CardBody>
 
-			<CardFooter className="py-2 flex-shrink-0 grid grid-cols-3">
-				{ parent ? <Button size="sm" className="w-fit" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> : <span/> }
-				{ (data?.total || 1) > 1 ? <Pagination
-					aria-label="Seitenauswahl" isCompact showControls className="mx-auto"
-					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
-				/> : <span/> }
-				{ !!data?.data.length && <Button size="sm" color="primary" className="w-fit ml-auto font-bold" onPress={ () => download.current && download.current(`${ import.meta.env._API }${ parent ? `/${ parent }` : "" }/users/csv`) } startContent={ <FolderInput strokeWidth="2.5px" height="20px"/> }>Exportieren</Button> }
+			<CardFooter className="flex-col gap-2 flex-shrink-0">
+				{ (data?.total || 1) > 1 && <div className="w-full flex justify-center">
+					<Pagination
+						aria-label="Seitenauswahl" isCompact showControls
+						page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
+					/>
+				</div> }
+
+				<div className="w-full flex gap-2 justify-between flex-wrap">
+					{ parent && <Button size="sm" className="flex-grow sm:flex-grow-0" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> }
+
+					<span className="hidden sm:block sm:flex-grow"/>
+
+					{ !!data?.data.length && <Button size="sm" color="primary" className="flex-grow sm:flex-grow-0 font-bold" onPress={ () => download.current && download.current(`${ import.meta.env._API }${ parent ? `/${ parent }` : "" }/users/csv`) } startContent={ <FolderInput strokeWidth="2.5px" height="20px"/> }>Exportieren</Button> }
+				</div>
 			</CardFooter>
 
 			<ErrorModal error={ error! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>

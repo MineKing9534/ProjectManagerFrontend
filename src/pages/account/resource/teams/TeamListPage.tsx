@@ -48,23 +48,27 @@ export default function TeamListPage() {
 					>
 						{ team => (
 							<TableRow key={ team.id }>
-								<TableCell><Link to={ `/@me/teams/${ team.id }` } className="block w-full h-full">{ team.name }</Link></TableCell>
+								<TableCell className="whitespace-nowrap"><Link to={ `/@me/teams/${ team.id }` } className="block w-full h-full">{ team.name }</Link></TableCell>
 							</TableRow>
 						) }
 					</TableBody>
 				</Table>
 			</CardBody>
 
-			<CardFooter className="justify-between py-2 flex-shrink-0">
-				<span/>
-				{ (data?.total || 1) > 1 && <Pagination
-					aria-label="Seitenauswahl" isCompact showControls
-					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
-				/> }
-				{ user.admin && <Button size="sm" color="primary" onPress={ () => {
-					setName("")
-					onOpen()
-				} } startContent={ <Plus height="20px" strokeWidth="2.5px"/> }>Erstellen</Button> }
+			<CardFooter className="flex-col gap-2 flex-shrink-0">
+				{ (data?.total || 1) > 1 && <div className="w-full flex justify-center">
+					<Pagination
+						aria-label="Seitenauswahl" isCompact showControls
+						page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
+					/>
+				</div> }
+
+				<div className="w-full flex gap-2 justify-end flex-wrap">
+					{ user.admin && <Button size="sm" color="primary" className="flex-grow sm:flex-grow-0" onPress={ () => {
+						setName("")
+						onOpen()
+					} } startContent={ <Plus height="20px" strokeWidth="2.5px"/> }>Erstellen</Button> }
+				</div>
 			</CardFooter>
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>

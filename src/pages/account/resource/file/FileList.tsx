@@ -77,8 +77,8 @@ export default function FileList({ resource, className, full = false }: { resour
 								<TableCell onClick={ () => {
 									if(file.type === "FILE") download.current!(`${ import.meta.env._API }/${ folder }/${ file.name }`)
 									else navigate(`/@me/${ folder }/${ file.name }`)
-								} } className="cursor-pointer flex gap-1">{ file.type === "FILE" ? <File className="h-[20px]"/> : <Folder className="h-[20px] text-primary"/> } <span>{ file.name }</span></TableCell>
-								<TableCell>{ formatter.format(new Date(file.time)) }</TableCell>
+								} }><span className="cursor-pointer flex gap-1 whitespace-nowrap">{ file.type === "FILE" ? <File className="h-[20px]"/> : <Folder className="h-[20px] text-primary"/> } { file.name }</span></TableCell>
+								<TableCell className="whitespace-nowrap">{ formatter.format(new Date(file.time)) }</TableCell>
 								{ (full && user.admin) ? <TableCell>
 									<span className="relative flex items-center gap-2">
 										<Tooltip content="Umbennen" closeDelay={ 0 }>
@@ -107,24 +107,26 @@ export default function FileList({ resource, className, full = false }: { resour
 				</Table>
 			</CardBody>
 
-			<CardFooter className="justify-between py-2 flex-shrink-0">
-				<span/>
-				{ (data?.total || 1) > 1 && <Pagination
-					aria-label="Seitenauswahl" isCompact showControls
-					page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
-				/> }
-				{ (user.admin && full) && <span className="flex gap-2 justify-end">
-					<Button size="sm" color="primary" onPress={ () => {
+			<CardFooter className="flex flex-wrap gap-2 w-full py-2">
+				{ (data?.total || 1) > 1 && <div className="w-full flex justify-center">
+					<Pagination
+						aria-label="Seitenauswahl" isCompact showControls
+						page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
+					/>
+				</div> }
+
+				{ (user.admin && full) && <div className="w-full flex gap-2 justify-between flex-wrap">
+					<Button size="sm" color="primary" className="flex-grow sm:flex-grow-0" onPress={ () => {
 						setName("")
 						setFile(undefined)
 						onFileOpen()
 					} } startContent={ <FileUp height="20px" strokeWidth="2.5px"/> }>Datei Hochladen</Button>
 
-					<Button size="sm" color="primary" onPress={ () => {
+					<Button size="sm" color="primary" className="flex-grow sm:flex-grow-0" onPress={ () => {
 						setName("")
 						onFolderOpen()
 					} } startContent={ <FolderPlus height="20px" strokeWidth="2.5px"/> }>Ordner Erstellen</Button>
-				</span> }
+				</div> }
 			</CardFooter>
 
 			<Modal isOpen={ isRenameOpen } onOpenChange={ onRenameOpenChange }>
