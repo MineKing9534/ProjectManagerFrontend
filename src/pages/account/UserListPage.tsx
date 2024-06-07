@@ -57,7 +57,7 @@ export default function UserListPage() {
 			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/${ parent }` }/> } Nutzer Liste { parentResource && <>({ parentResource.name })</> }</CardHeader>
 			<Divider/>
 			<CardBody>
-				<Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single">
+				<Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single" className="h-full">
 					<TableHeader>
 						<TableColumn key="name">Name</TableColumn>
 						<TableColumn key="email">Email</TableColumn>

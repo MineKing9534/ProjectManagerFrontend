@@ -37,7 +37,7 @@ export default function TeamListPage() {
 			<CardHeader className="text-3xl font-bold justify-center">Team Liste</CardHeader>
 			<Divider/>
 			<CardBody>
-				<Table isHeaderSticky removeWrapper aria-label="Team Liste" selectionMode="single">
+				<Table isHeaderSticky removeWrapper aria-label="Team Liste" selectionMode="single" className="h-full">
 					<TableHeader>
 						<TableColumn key="name">Name</TableColumn>
 					</TableHeader>

@@ -61,7 +61,7 @@ export default function FileList({ resource, className, full = false }: { resour
 			</CardHeader>
 			<Divider/>
 			<CardBody>
-				<Table isHeaderSticky removeWrapper aria-label="Dateien" selectionMode="single" classNames={ { th: `${ !full ? "bg-default-200" : "" }`, td: "group-aria-[selected=false]:group-data-[hover=true]:before:!bg-default-200 " } }>
+				<Table isHeaderSticky removeWrapper aria-label="Dateien" selectionMode="single" className="h-full" classNames={ { th: `${ !full ? "bg-default-200" : "" }`, td: "group-aria-[selected=false]:group-data-[hover=true]:before:!bg-default-200 " } }>
 					<TableHeader>
 						<TableColumn key="name">Name</TableColumn>
 						<TableColumn key="time" align="end" className="w-[180px]">Zeitstempel</TableColumn>
