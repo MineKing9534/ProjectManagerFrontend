@@ -52,7 +52,7 @@ export default function EventProvider({ route, children }: { route: string, chil
 					</ModalBody>
 
 					<Divider/>
-					<ModalFooter className="px-4 py-2">
+					<ModalFooter className="p-2">
 						<Button color="primary" size="sm" onPress={ () => {
 							update(x => x + 1)
 							onClose()

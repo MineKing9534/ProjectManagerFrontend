@@ -174,7 +174,7 @@ export default function UserListPage() {
 						Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden!
 					</ModalBody>
 					<Divider/>
-					<ModalFooter className="py-2">
+					<ModalFooter className="p-2">
 						<Button size="sm" color="danger" variant="solid" onPress={ () => del() } isLoading={ deleteState === "loading" } spinner={ <Spinner/> }>Löschen</Button>
 					</ModalFooter>
 				</ModalContent>
@@ -188,7 +188,7 @@ export default function UserListPage() {
 						Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich von <b>{ parentResource?.name }</b> entfernt werden? Das Konto kann nur mit einer Einladung erneut beitreten!
 					</ModalBody>
 					<Divider/>
-					<ModalFooter className="py-2">
+					<ModalFooter className="p-2">
 						<Button size="sm" color="danger" variant="solid" onPress={ () => kick({ path: `/${ current?.id }` }) } isLoading={ kickState === "loading" } spinner={ <Spinner/> }>Entfernen</Button>
 					</ModalFooter>
 				</ModalContent>
