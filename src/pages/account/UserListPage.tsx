@@ -1,10 +1,10 @@
 import { useRest } from "../../hooks/useRest.ts"
-import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Select, Selection, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from "@nextui-org/react"
 import ErrorModal from "../../components/ErrorModal.tsx"
 import { useEffect, useRef, useState } from "react"
 import { User } from "../../types/User.ts"
 import Spinner from "../../components/Spinner.tsx"
-import { FolderInput, Pencil, Trash2 } from "lucide-react"
+import { FolderInput, Pencil, Search, Trash2 } from "lucide-react"
 import { Skill } from "../../types/Skill.ts"
 import Download from "../../components/Download.tsx"
 import { useSearchParams } from "react-router-dom"
@@ -24,8 +24,10 @@ export default function UserListPage() {
 	const [ searchParams, setSearchParams ] = useSearchParams()
 	const parent = searchParams.get("parent")
 
+	const [ skillFilter, setSkillFilter ] = useState<Selection>(new Set([ ]))
+
 	const [ page, setPage ] = useState(1)
-	const { state, data, error, get } = useRest<PaginationResult<User>>(parent ? `/${ parent }/users?page=${ page }` : `/users?page=${  page }`, {
+	const { state, data, error, get } = useRest<PaginationResult<User>>(`${ parent ? `/${ parent }/users` : `/users` }?page=${ page }${ [ ...skillFilter ].join(",") ? `&skills=${ [ ...skillFilter ].join(",") }` : "" }`, {
 		auto: true,
 		onError: onErrorOpen
 	})
@@ -109,12 +111,22 @@ export default function UserListPage() {
 					/>
 				</div> }
 
-				<div className="w-full flex gap-2 justify-between flex-wrap">
+				<div className="w-full flex gap-2 justify-between flex-wrap items-end">
 					{ parent && <Button size="sm" className="flex-grow sm:flex-grow-0" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> }
+					{ !!data?.data.length && <Button size="sm" color="primary" className="flex-grow sm:flex-grow-0 font-bold" onPress={ () => download.current && download.current(`${ import.meta.env._API }${ parent ? `/${ parent }` : "" }/users/csv`) } startContent={ <FolderInput strokeWidth="2.5px" height="20px"/> }>Exportieren</Button> }
 
 					<span className="hidden sm:block sm:flex-grow"/>
 
-					{ !!data?.data.length && <Button size="sm" color="primary" className="flex-grow sm:flex-grow-0 font-bold" onPress={ () => download.current && download.current(`${ import.meta.env._API }${ parent ? `/${ parent }` : "" }/users/csv`) } startContent={ <FolderInput strokeWidth="2.5px" height="20px"/> }>Exportieren</Button> }
+					{ skills && <Select
+						size="sm" className="w-[200px]"
+						selectedKeys={ skillFilter } onSelectionChange={ setSkillFilter } selectionMode="multiple"
+						label="Nach Fähigkeiten Filtern"
+						startContent={ <Search height="15px" strokeWidth="3" className="text-default-500"/> }
+					>
+						{ [ ...skills!.map(skill => (
+							<SelectItem key={ skill.id }>{ skill.name }</SelectItem>
+						)), <SelectItem key="" textValue="Kein Filter"><i>Kein Filter</i></SelectItem> ] }
+					</Select> }
 				</div>
 			</CardFooter>
 

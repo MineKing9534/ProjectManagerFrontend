@@ -70,7 +70,7 @@ export default function TeamSettingsPage() {
 					>
 						{ [ ...teams.filter(t => t.id !== data.id).map(team => (
 							<SelectItem key={ team.id }>{ team.name }</SelectItem>
-						)), <SelectItem key="" textValue="Keine Teams"><i>Kein Team</i></SelectItem> ] }
+						)), <SelectItem key="" textValue="Kein Team"><i>Kein Team</i></SelectItem> ] }
 					</Select> }
 				</> }
 			</CardBody>
