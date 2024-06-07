@@ -67,7 +67,7 @@ export default function MeetingListPage() {
 				{ state === "loading" && <CircularProgress aria-label="Lade Treffen" className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"/> }
 				{ (data && !data.data.length) && <span className="text-foreground-400 mx-auto mt-20">Keine Treffen</span> }
 				{ data && data.data.map(meeting =>
-					<Card key={ meeting.id } className="bg-default-100 hover:scale-x-[1.01]" as={ Link } to={ `/@me/meetings/${ meeting.id }` }>
+					<Card key={ meeting.id } className="bg-default-100 hover:mx-[-5px] !transition-[margin]" as={ Link } to={ `/@me/meetings/${ meeting.id }` }>
 						<CardHeader className="font-bold text-lg gap-2 py-2"><Ticket/> { meeting.name } <MeetingTypeBadge type={ meeting.type } className="ml-auto"/></CardHeader>
 						<Divider/>
 						<CardBody className="gap-3">
