@@ -81,7 +81,7 @@ export default function MeetingSettingsPage() {
 					/>
 
 					<Select
-						selectedKeys={ type } onSelectionChange={ setType } isDisabled={ editState === "loading" }
+						selectedKeys={ type } onSelectionChange={ s => [ ...s ].length && setType(s) } isDisabled={ editState === "loading" }
 						isRequired label="Typ"
 						startContent={ <File height="15px" strokeWidth="3" className="text-default-500"/> }
 					>

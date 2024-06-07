@@ -141,7 +141,7 @@ export default function MeetingListPage() {
 							/>
 
 							<Select
-								selectedKeys={ type } onSelectionChange={ setType } isDisabled={ createState === "loading" }
+								selectedKeys={ type } onSelectionChange={ s => [ ...s ].length && setType(s) } isDisabled={ createState === "loading" }
 								isRequired label="Typ"
 								startContent={ <File height="15px" strokeWidth="3" className="text-default-500"/> }
 							>
