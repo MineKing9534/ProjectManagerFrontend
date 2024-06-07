@@ -13,7 +13,7 @@ export default function AccountLayout() {
 	return (
 		<>
 			{ data ? <Outlet/> :
-				<Modal isOpen onClose={ () => navigate("/", { state: pathname }) }>
+				<Modal isOpen onClose={ () => navigate("/", { state: pathname }) } size="3xl">
 					<ModalContent>
 						<ModalHeader className="py-2 text-danger">Fehler</ModalHeader>
 						<Divider/>
