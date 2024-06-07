@@ -112,7 +112,7 @@ export default function FileList({ resource, className, full = false }: { resour
 					/>
 				</div> }
 
-				{ (user.admin && full) && <div className="w-full flex gap-2 justify-between flex-wrap">
+				{ (user.admin && full) && <div className="w-full flex gap-2 justify-end flex-wrap">
 					<Button size="sm" color="primary" className="flex-grow sm:flex-grow-0" onPress={ () => {
 						setName("")
 						setFile(undefined)
