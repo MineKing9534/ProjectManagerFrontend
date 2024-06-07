@@ -61,8 +61,8 @@ export default function UserListPage() {
 					<TableHeader>
 						<TableColumn key="name">Name</TableColumn>
 						<TableColumn key="email">Email</TableColumn>
-						<TableColumn key="role" align="end" className="w-[150px]">Rolle</TableColumn>
-						<TableColumn key="actions" align="end" className="w-[150px]">Aktionen</TableColumn>
+						<TableColumn key="role" align="end" className="w-[120px]">Rolle</TableColumn>
+						<TableColumn key="actions" align="end" className="w-[100px]">Aktionen</TableColumn>
 					</TableHeader>
 
 					<TableBody

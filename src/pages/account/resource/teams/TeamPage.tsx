@@ -1,13 +1,14 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, Divider, Link as ExternalLink, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/react"
 import { useRest } from "../../../../hooks/useRest.ts"
 import { Team } from "../../../../types/Team.ts"
-import { useParams, Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import { useNavigate } from "react-router"
 import { useUser } from "../../../../hooks/useUser.ts"
 import { CalendarDays, Files, Settings, UserPlus, Users } from "lucide-react"
 import { useCopyToClipboard } from "usehooks-ts"
 import BackButton from "../../../../components/BackButton.tsx"
+import ResourceInfo from "../file/ResourceInfo.tsx"
 
 export default function TeamPage() {
 	const user = useUser()!
@@ -39,7 +40,7 @@ export default function TeamPage() {
 			<Divider/>
 			<CardBody>
 				{ state === "loading" && <CircularProgress aria-label="Lade" className="m-auto"/> }
-				{ data && data.name }
+				{ data && <ResourceInfo resource={ data }/> }
 			</CardBody>
 			<Divider/>
 			<CardFooter className="flex w-full justify-between py-2">

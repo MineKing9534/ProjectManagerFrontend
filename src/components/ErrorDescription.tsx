@@ -9,9 +9,9 @@ export default function ErrorDescription({ error }: { error: ErrorResponse }) {
 
 					case "INVALID_REQUEST": return <>Ungültige Anfrage</>
 
-					case "MISSING_TOKEN": return <>Fehlende Anmeldeinformationen</>
+					case "MISSING_TOKEN": return <>Sie sind nicht angemeldet. Melden Sie sich zunächst an, bevor Sie diese Seite verwenden können!</>
 					case "INVALID_TOKEN": return <>Ungültige Anmeldeinformationen</>
-					case "TOKEN_EXPIRED": return <>Anmeldeinformationen abgelaufen</>
+					case "TOKEN_EXPIRED": return <>Anmeldeinformationen abgelaufen. Melden Sie sich erneut an, um eine neue Sitzung zu starten!</>
 					case "MISSING_ACCESS": return <>Kein Zugriff auf diese Funktion</>
 
 					case "WRONG_PASSWORD": return <>Falsches Passwort</>
@@ -24,6 +24,9 @@ export default function ErrorDescription({ error }: { error: ErrorResponse }) {
 					case "TEAM_ALREADY_EXISTS": return <>Team existiert bereits</>
 					case "MEETING_NOT_FOUND": return <>Treffen nicht gefunden</>
 					case "MEETING_ALREADY_EXISTS": return <>Treffen existiert bereits</>
+
+					case "FILE_NOT_FOUND": return <>Datei nicht gefunden</>
+					case "INVALID_FILE_TYPE": return <>Ungültige Anfrage für Dateityp</>
 
 					case "ALREADY_PARTICIPATING": return <>Sie nehmen bereits teil!</>
 					case "PARTICIPANT_NOT_FOUND": return <>Teilnehmern nicht gefunden</>

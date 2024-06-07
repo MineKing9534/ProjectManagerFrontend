@@ -21,6 +21,7 @@ export interface RestRoute<T> {
 	put: (data?: Request<T>) => void
 	patch: (data?: Request<T>) => void
 	del: (data?: Request<T>) => void
+	head: (data?: Request<T>) => void
 
 	reset: () => void
 	cancel: () => void
@@ -98,7 +99,7 @@ export function useRest<T>(route: string, {
 			fetch(`${ import.meta.env._API }${ route }${ request.path || "" }`, {
 				signal: signal,
 				method: method,
-				body: request.data && JSON.stringify(request.data),
+				body: request.data && (request.data instanceof FormData ? request.data : JSON.stringify(request.data)),
 				headers: {
 					Authorization: authorization || token || ""
 				}
@@ -169,6 +170,7 @@ export function useRest<T>(route: string, {
 		put: (request: Request<T> = {}) => execute("PUT", request),
 		patch: (request: Request<T> = {}) => execute("PATCH", request),
 		del: (request: Request<T> = {}) => execute("DELETE", request),
+		head: (request: Request<T> = {}) => execute("HEAD", request),
 
 		reset: reset,
 		cancel: () => abort.current?.abort("Cancel"),

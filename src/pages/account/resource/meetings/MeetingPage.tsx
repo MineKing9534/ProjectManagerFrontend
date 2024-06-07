@@ -9,6 +9,7 @@ import { Meeting } from "../../../../types/Meeting.ts"
 import BackButton from "../../../../components/BackButton.tsx"
 import { useCopyToClipboard } from "usehooks-ts"
 import MeetingTypeBadge from "./MeetingTypeBadge.tsx"
+import ResourceInfo from "../file/ResourceInfo.tsx"
 
 export default function MeetingPage() {
 	const user = useUser()!
@@ -40,7 +41,7 @@ export default function MeetingPage() {
 			<Divider/>
 			<CardBody>
 				{ state === "loading" && <CircularProgress aria-label="Lade" className="m-auto"/> }
-				{ data && data.name }
+				{ data && <ResourceInfo resource={ data }/> }
 			</CardBody>
 			<Divider/>
 			<CardFooter className="flex w-full justify-between py-2">
