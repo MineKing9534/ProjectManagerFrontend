@@ -21,6 +21,7 @@ export default function TeamPage() {
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const { isOpen: isLeaveOpen, onOpen: onLeaveOpen, onClose: onLeaveClose, onOpenChange: onLeaveOpenChange } = useDisclosure()
+	const { isOpen: isJoinOpen, onOpen: onJoinOpen, onClose: onJoinClose, onOpenChange: onJoinOpenChange } = useDisclosure()
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
 
 	const { state, data, error: teamError } = useRest<Team>(`/teams/${ id }`, {
@@ -36,10 +37,14 @@ export default function TeamPage() {
 		onError: onErrorOpen
 	})
 
-	const { state: leaveState, error: leaveError, del: leave } = useRest(`/teams/${ id }/users/@me`, {
-		onSuccess: onLeaveClose,
+	const { state: leaveState, error: leaveError, put: join, del: leave } = useRest(`/teams/${ id }/users/@me`, {
+		onSuccess: () => {
+			onLeaveClose()
+			onJoinClose()
+		},
 		onError: onErrorOpen
 	})
+
 
 	return (
 		<Card className="h-full max-h-full select-none">
@@ -54,6 +59,7 @@ export default function TeamPage() {
 				<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings?parent=${ id }` } startContent={ <CalendarDays strokeWidth="2.5px" height="20px"/> }>Treffen</Button>
 				<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/teams/${ id }/files` } startContent={ <Files strokeWidth="2.5px" height="20px"/> }>Dateien</Button>
 				<Button size="sm" className="flex-grow sm:flex-grow-0" startContent={ <UserMinus strokeWidth="2.5px" height="20px" className="[&>line]:text-danger"/> } onPress={ onLeaveOpen }>Verlassen</Button>
+				<Button size="sm" className="flex-grow sm:flex-grow-0" startContent={ <UserPlus strokeWidth="2.5px" height="20px" className="[&>line]:text-success"/> } onPress={ onJoinOpen }>Beitreten</Button>
 
 				<span className="hidden sm:block sm:flex-grow"/>
 
@@ -88,6 +94,20 @@ export default function TeamPage() {
 					<Divider/>
 					<ModalFooter className="p-2">
 						<Button size="sm" color="danger" variant="solid" onPress={ () => leave() } isLoading={ leaveState === "loading" } spinner={ <Spinner/> }>Entfernen</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
+
+			<Modal isOpen={ isJoinOpen } onOpenChange={ onJoinOpenChange }>
+				<ModalContent>
+					<ModalHeader className="py-2">Team Beitreten</ModalHeader>
+					<Divider/>
+					<ModalBody className="block">
+						Möchten Sie dem Team wirklich beitreten? Sie signalisieren dadurch, dass Sie Interesse haben, bei diesem Team mitzuwirken.
+					</ModalBody>
+					<Divider/>
+					<ModalFooter className="p-2">
+						<Button size="sm" color="primary" variant="solid" onPress={ () => join() } isLoading={ leaveState === "loading" } spinner={ <Spinner/> }>Beitreten</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
