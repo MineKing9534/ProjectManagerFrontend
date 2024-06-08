@@ -20,7 +20,7 @@ export default function FileList({ resource, className, full = false }: { resour
 
 	const { pathname } = useLocation()
 
-	const currentPath = full ? pathname.split("/").slice(5).join("/") : ""
+	const currentPath = full ? decodeURI(pathname).split("/").slice(5).join("/") : ""
 	const folder = `${ resource.resourceType.toLowerCase() }s/${ resource.id }/files${ currentPath ? `/${ currentPath }` : "" }`
 
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
