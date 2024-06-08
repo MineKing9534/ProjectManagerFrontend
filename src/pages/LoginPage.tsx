@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router"
 import { validateEmail, validatePassword } from "../utils/validate.ts"
 import ErrorDescription from "../components/ErrorDescription.tsx"
 import { useUser } from "../hooks/useUser.ts"
+import { Link } from "react-router-dom"
 
 export default function LoginPage() {
 	const user = useUser()
@@ -18,7 +19,7 @@ export default function LoginPage() {
 	const navigate = useNavigate()
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
-	const { state, error, post } = useRest<{ token: string }>("/login", {
+	const { state, error, post } = useRest<{ token: string }>("/auth/login", {
 		onSuccess: data => {
 			setToken(data.token)
 			navigate(location.state ? location.state : "/@me")
@@ -76,6 +77,11 @@ export default function LoginPage() {
 					/>
 					<Spacer/>
 					<Button variant="solid" color="primary" disabled={ !emailValid || !passwordValid } className="font-bold w-full" spinner={ <Spinner/> } isLoading={ state === "loading" } type="submit">Anmelden</Button>
+
+					<span className="mt-3 flex gap-2">
+						Passwort Vergessen?
+						<Link to="/reset-password" className="text-primary font-bold">Neues Passwort Erstellen</Link>
+					</span>
 
 					<ErrorModal error={ error! } isOpen={ isOpen } onOpenChange={ onOpenChange }/>
 					{ error &&

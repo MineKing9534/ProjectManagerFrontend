@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router"
+import { useSearchParams } from "react-router-dom"
 import { Button, Card, CardBody, CardHeader, Divider, Input, Spacer, useDisclosure } from "@nextui-org/react"
 import { useRest } from "../../hooks/useRest.ts"
 import { FormEvent, useEffect, useMemo, useState } from "react"
@@ -7,18 +8,23 @@ import { Eye, EyeOff, KeyRound } from "lucide-react"
 import Spinner from "../../components/Spinner.tsx"
 import ErrorModal from "../../components/ErrorModal.tsx"
 import ErrorDescription from "../../components/ErrorDescription.tsx"
-import { useSearchParams } from "react-router-dom"
+import { useToken } from "../../hooks/useToken.ts"
 
-export default function VerificationPage() {
+export default function ChangePasswordPage() {
 	const navigate = useNavigate()
+
+	const { setToken } = useToken()
 
 	const [ searchParams ] = useSearchParams()
 	const token = searchParams.get("token")
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
-	const { state, error, post } = useRest("/auth/verify", {
+	const { state, error, post } = useRest("/auth/change-password", {
 		authorization: token || undefined,
-		onSuccess: () => navigate("/")
+		onSuccess: () => {
+			setToken("")
+			navigate("/")
+		}
 	})
 
 	const [ password1, setPassword1 ] = useState("")
@@ -29,7 +35,7 @@ export default function VerificationPage() {
 
 	const [ visible, setVisible ] = useState(false)
 
-	function register(event: FormEvent) {
+	function update(event: FormEvent) {
 		event.preventDefault()
 
 		if(!password1Valid || !password2Valid) return
@@ -42,10 +48,10 @@ export default function VerificationPage() {
 
 	return (
 		<Card className="w-full md:w-2/3 mx-auto select-none">
-			<CardHeader className="text-3xl font-bold justify-center">Passwort Festlegen</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">Neues Passwort Festlegen</CardHeader>
 			<Divider/>
 			<CardBody>
-				<form className="flex flex-col gap-2 p-2" onSubmit={ register }>
+				<form className="flex flex-col gap-2 p-2" onSubmit={ update }>
 					<Input
 						value={ password1 } onValueChange={ setPassword1 }
 						isInvalid={ !password1Valid } errorMessage={ password1Valid || "Bitte geben Sie ein gültiges Passwort ein" }
@@ -79,7 +85,7 @@ export default function VerificationPage() {
 						}
 					/>
 					<Spacer/>
-					<Button variant="solid" color="primary" disabled={ !password1Valid || !password2Valid } className="font-bold w-full" spinner={ <Spinner/> } isLoading={ state === "loading" } type="submit">Abschließen</Button>
+					<Button variant="solid" color="primary" disabled={ !password1Valid || !password2Valid } className="font-bold w-full" spinner={ <Spinner/> } isLoading={ state === "loading" } type="submit">Passwort Ändern</Button>
 
 					<ErrorModal error={ error! } isOpen={ isOpen } onOpenChange={ onOpenChange }/>
 					{ error &&

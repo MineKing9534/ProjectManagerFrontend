@@ -7,10 +7,13 @@ import { FormEvent, useMemo, useState } from "react"
 import Spinner from "../../components/Spinner.tsx"
 import ErrorModal from "../../components/ErrorModal.tsx"
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router"
 
 export default function AccountPage() {
 	const user = useUser()!
 	const { get } = useUserRequest()!
+
+	const navigate = useNavigate()
 
 	const { data: skills, get: updateSkills } = useRest<Skill[]>("/skills", { auto: true })
 	const { state: skillUpdateState, post, del, patch } = useRest<Skill[]>("/skills", {
@@ -32,6 +35,11 @@ export default function AccountPage() {
 	const { state: renameState, error, patch: patchUser } = useRest("/users/@me", {
 		onSuccess: () => get(),
 		onError: () => onErrorOpen()
+	})
+
+	const { state: passwordState, error: passwordError, post: resetPassword } = useRest<{ token: string }>("/users/@me/reset-password", {
+		onError: onErrorOpen,
+		onSuccess: data => navigate(`/password?token=${ data.token }`)
 	})
 
 	function rename(event: FormEvent) {
@@ -83,6 +91,13 @@ export default function AccountPage() {
 								}
 							</div>
 						</form>
+
+						<div>
+							<h2 className="font-bold text-md mb-2">Zugangsdaten</h2>
+							<div className="flex gap-2 md:flex-col">
+								<Button className="w-fit" color="primary" onClick={ () => resetPassword() } spinner={ <Spinner/> } isLoading={ passwordState === "loading" }>Passwort Ändern</Button>
+							</div>
+						</div>
 
 						<div>
 							<h2 className="font-bold text-md mb-2">E-Mail Einstellungen</h2>
@@ -170,7 +185,7 @@ export default function AccountPage() {
 				</Card>
 			</CardBody>
 
-			<ErrorModal error={ error! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
+			<ErrorModal error={ (error || passwordError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
 		</Card>
 	)
 }

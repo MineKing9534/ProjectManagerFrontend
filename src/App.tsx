@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import Layout from "./layout/Layout.tsx"
+import ResetPasswordPage from "./pages/credentials/ResetPasswordPage.tsx"
+import ChangePasswordPage from "./pages/credentials/ChangePasswordPage.tsx"
 
 const LoginPage = lazy(() => import("./pages/LoginPage.tsx"))
 const JoinPage = lazy(() => import("./pages/join/InvitePage.tsx"))
@@ -27,8 +29,12 @@ export default function App() {
 		<Routes>
 			<Route path="/" element={ <Layout/> }>
 				<Route path="/" element={ <LoginPage/> }/>
+
 				<Route path="/invite" element={ <JoinPage/> }/>
 				<Route path="/verify" element={ <VerificationPage/> }/>
+
+				<Route path="reset-password" element={ <ResetPasswordPage/> }/>
+				<Route path="password" element={ <ChangePasswordPage/> }/>
 
 				<Route path="/@me" element={ <AccountLayout/> }>
 					<Route path="/@me" element={ <AccountPage/> }/>
