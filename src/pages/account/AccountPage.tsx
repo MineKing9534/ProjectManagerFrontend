@@ -50,10 +50,10 @@ export default function AccountPage() {
 	}
 
 	const [ firstName, setFirstName ] = useState(user.firstName)
-	const firstNameValid = useMemo(() => /^[a-zA-Zäöüß]{2,}$/.test(firstName), [ firstName ])
+	const firstNameValid = useMemo(() => /^[a-zA-ZÄäÖöÜüß-]{2,}$/.test(firstName), [ firstName ])
 
 	const [ lastName, setLastName ] = useState(user.lastName)
-	const lastNameValid = useMemo(() => /^[a-zA-Zäöüß]{2,}$/.test(lastName), [ lastName ])
+	const lastNameValid = useMemo(() => /^[a-zA-ZÄäÖöÜüß-]{2,}$/.test(lastName), [ lastName ])
 
 	return (
 		<Card className="h-full max-h-full select-none">

@@ -75,7 +75,7 @@ export default function UserList({ parent }: { parent?: Resource }) {
 					>
 						{ user => (
 							<TableRow key={ user.id }>
-								<TableCell><span className="whitespace-nowrap">{ user.firstName } { user.lastName }</span></TableCell>
+								<TableCell><span className="whitespace-nowrap">{ user.lastName }, { user.firstName }</span></TableCell>
 								<TableCell><a className="whitespace-nowrap" href={ `mailto:${ user.email }` }>{ user.email }</a></TableCell>
 								<TableCell><Chip variant="flat" color={ user.admin ? "success" : "primary" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
 								<TableCell>
@@ -145,7 +145,7 @@ export default function UserList({ parent }: { parent?: Resource }) {
 
 			<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">{ current?.firstName } { current?.lastName }</ModalHeader>
+					<ModalHeader className="py-2">{ current?.lastName }, { current?.firstName } ({ current?.id })</ModalHeader>
 					<Divider/>
 					<ModalBody className="max-h-[80vh] overflow-auto">
 						<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({ data: { skills: values } }) }>

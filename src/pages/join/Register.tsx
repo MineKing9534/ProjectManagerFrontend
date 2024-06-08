@@ -23,10 +23,10 @@ export default function Register({ token }: { token: string }) {
 	const emailValid = useMemo(() => validateEmail(email), [ email ])
 
 	const [ firstName, setFirstName ] = useState("")
-	const firstNameValid = useMemo(() => /^[a-zA-Zäöüß]{2,}$/.test(firstName), [ firstName ])
+	const firstNameValid = useMemo(() => /^[a-zA-ZÄäÖöÜüß-]{2,}$/.test(firstName), [ firstName ])
 
 	const [ lastName, setLastName ] = useState("")
-	const lastNameValid = useMemo(() => /^[a-zA-Zäöüß]{2,}$/.test(lastName), [ lastName ])
+	const lastNameValid = useMemo(() => /^[a-zA-ZÄäÖöÜüß-]{2,}$/.test(lastName), [ lastName ])
 
 	function register(event: FormEvent) {
 		event.preventDefault()
