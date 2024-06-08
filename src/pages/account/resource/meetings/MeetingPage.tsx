@@ -58,7 +58,11 @@ export default function MeetingPage() {
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center"><BackButton location={ searchParams.has("parent") && `/@me/${ searchParams.get("parent") }/meetings` }/> Treffen { data?.name } <MeetingTypeBadge type={ data?.type || "MEETING" } className="absolute right-3"/></CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">
+				<BackButton location={ searchParams.has("parent") && `/@me/${ searchParams.get("parent") }/meetings` }/>
+				Veranstaltung { data?.name }
+				<MeetingTypeBadge type={ data?.type || "MEETING" } className="absolute right-3"/>
+			</CardHeader>
 			<Divider/>
 			<CardBody>
 				{ state === "loading" && <CircularProgress aria-label="Lade" className="m-auto"/> }
@@ -87,7 +91,7 @@ export default function MeetingPage() {
 					<Divider/>
 					<ModalBody className="block leading-relaxed py-4">
 						<p className="pb-3">Neue Einladung erstellt: <ExternalLink showAnchorIcon href={ `${ import.meta.env._URL }/invite?token=${ invite?.token }` }>Einladungs-Link</ExternalLink></p>
-						<p className="pb-3">Geben Sie diesen Link an Personen weiter, die diesem Treffen betreten können sollen. Der Link kann ebenfalls dazu verwendet werden, ein neues Konto zu erstellen.</p>
+						<p className="pb-3">Geben Sie diesen Link an Personen weiter, die dieser Veranstaltung betreten können sollen. Der Link kann ebenfalls dazu verwendet werden, ein neues Konto zu erstellen.</p>
 						<p className="text-foreground-500">Der Link wurde bereits automatisch in die Zwischenablage kopiert.</p>
 					</ModalBody>
 				</ModalContent>
@@ -95,10 +99,10 @@ export default function MeetingPage() {
 
 			<Modal isOpen={ isLeaveOpen } onOpenChange={ onLeaveOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Treffen Verlassen</ModalHeader>
+					<ModalHeader className="py-2">Veranstaltung Verlassen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
-						Soll das Treffen wirklich verlassen werden? Dadruch wird signalisiert, dass du kein Interesse (oder keine Zeit) für dieses Treffen hast.
+						Soll die Veranstaltung wirklich verlassen werden? Dadruch wird signalisiert, dass du kein Interesse (oder keine Zeit) für dieses Treffen hast.
 					</ModalBody>
 					<Divider/>
 					<ModalFooter className="p-2">
@@ -109,10 +113,10 @@ export default function MeetingPage() {
 
 			<Modal isOpen={ isJoinOpen } onOpenChange={ onJoinOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Treffen Beitreten</ModalHeader>
+					<ModalHeader className="py-2">Veranstaltung Beitreten</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
-						Möchten Sie dem Treffen wirklich beitreten? Sie signalisieren dadurch, dass Sie Interesse haben und voraussichtlich anwesend sein werden.
+						Möchten Sie der Veranstaltung wirklich beitreten? Sie signalisieren dadurch, dass Sie Interesse haben und voraussichtlich anwesend sein werden.
 					</ModalBody>
 					<Divider/>
 					<ModalFooter className="p-2">

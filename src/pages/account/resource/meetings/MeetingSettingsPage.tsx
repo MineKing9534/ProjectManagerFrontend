@@ -61,7 +61,7 @@ export default function MeetingSettingsPage() {
 					<Input
 						value={ name } onValueChange={ setName } isDisabled={ editState === "loading" }
 						type="text" minLength={ 3 } isRequired
-						label="Name" placeholder="Treffen"
+						label="Name" placeholder="Probe"
 						classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 						startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 					/>
@@ -106,7 +106,7 @@ export default function MeetingSettingsPage() {
 					<ModalHeader className="py-2">{ data?.name } Löschen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
-						Soll das Treffen <b>{ data?.name }</b> wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden!
+						Soll die Veranstaltung <b>{ data?.name }</b> wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden!
 					</ModalBody>
 					<ModalFooter className="p-2">
 						<Button size="sm" color="danger" isLoading={ editState === "loading" } className="font-bold" spinner={ <Spinner/> } startContent={ <Trash2 strokeWidth="2.5px" height="20px"/> } onPress={ () => del() }>Löschen</Button>

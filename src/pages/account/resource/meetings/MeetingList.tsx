@@ -51,13 +51,13 @@ export default function MeetingList({ parent }: { parent?: Resource }) {
 		<Card className="h-full max-h-full select-none">
 			<CardHeader className="text-3xl font-bold justify-center">
 				<BackButton/>
-				Anstehende Treffen
+				Anstehende Veranstaltung
 				{ parent && <> ({ parent.name })</> }
 			</CardHeader>
 			<Divider/>
 			<CardBody className="gap-4">
-				{ state === "loading" && <CircularProgress aria-label="Lade Treffen" className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"/> }
-				{ (data && !data.data.length) && <span className="text-foreground-400 mx-auto mt-20">Keine Treffen</span> }
+				{ state === "loading" && <CircularProgress aria-label="Lade Veranstaltungen" className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"/> }
+				{ (data && !data.data.length) && <span className="text-foreground-400 mx-auto mt-20">Keine Veranstaltungen</span> }
 				{ data && data.data.map(meeting =>
 					<Card key={ meeting.id } className="bg-default-100 hover:mx-[-5px] !transition-[margin]" as={ Link } to={ `/@me/meetings/${ meeting.id }${ parent ? `?parent=${ parent.resourceType.toLowerCase() }s/${ parent.id }` : "" }` }>
 						<CardHeader className="font-bold text-lg gap-2 py-2"><Ticket/> { meeting.name } <MeetingTypeBadge type={ meeting.type } className="absolute right-3"/></CardHeader>
@@ -97,7 +97,7 @@ export default function MeetingList({ parent }: { parent?: Resource }) {
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Treffen Erstellen</ModalHeader>
+					<ModalHeader className="py-2">Veranstaltung Erstellen</ModalHeader>
 					<Divider/>
 					<form onSubmit={ event => {
 						event.preventDefault()
@@ -114,7 +114,7 @@ export default function MeetingList({ parent }: { parent?: Resource }) {
 							<Input
 								value={ name } onValueChange={ setName } isDisabled={ createState === "loading" }
 								type="text" minLength={ 3 } isRequired
-								label="Name" placeholder="Treffen"
+								label="Name" placeholder="Veranstaltung"
 								classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 								startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 							/>

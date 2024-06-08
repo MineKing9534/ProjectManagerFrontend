@@ -22,8 +22,8 @@ export default function ErrorDescription({ error }: { error: ErrorResponse }) {
 					case "USER_ALREADY_EXISTS": return <>Nutzer existiert bereits</>
 					case "TEAM_NOT_FOUND": return <>Team nicht gefunden</>
 					case "TEAM_ALREADY_EXISTS": return <>Team existiert bereits</>
-					case "MEETING_NOT_FOUND": return <>Treffen nicht gefunden</>
-					case "MEETING_ALREADY_EXISTS": return <>Treffen existiert bereits</>
+					case "MEETING_NOT_FOUND": return <>Veranstaltung nicht gefunden</>
+					case "MEETING_ALREADY_EXISTS": return <>Veranstaltung existiert bereits</>
 
 					case "FILE_NOT_FOUND": return <>Datei nicht gefunden</>
 					case "INVALID_FILE_TYPE": return <>Ungültige Anfrage für Dateityp</>
