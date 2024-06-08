@@ -7,7 +7,7 @@ import BackButton from "../../../../components/BackButton.tsx"
 import { Clock, File, MapPin, PencilLine, Save, Trash2 } from "lucide-react"
 import Spinner from "../../../../components/Spinner.tsx"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
-import { DateValue, getLocalTimeZone, now, fromDate } from "@internationalized/date"
+import { DateValue, fromDate, getLocalTimeZone, now } from "@internationalized/date"
 import { Meeting } from "../../../../types/Meeting.ts"
 
 export default function MeetingSettingsPage() {
@@ -94,7 +94,9 @@ export default function MeetingSettingsPage() {
 			<Divider/>
 			<CardFooter className="flex w-full justify-between py-2">
 				<Button size="sm" color="danger" isLoading={ editState === "loading" } className="font-bold" spinner={ <Spinner/> } startContent={ <Trash2 strokeWidth="2.5px" height="20px"/> } onPress={ onOpen }>Löschen</Button>
-				{ ((name !== data?.name && name.length >= 3) || (location !== data?.location && location.length >= 3) || time?.toDate(getLocalTimeZone()).toISOString() !== data?.time || [ ...type ][0] !== data?.type) && <Button size="sm" color="primary" isLoading={ editState === "loading" } className="font-bold" spinner={ <Spinner/> } startContent={ <Save strokeWidth="2.5px" height="20px"/> } onPress={ update }>Speichern</Button> }
+				{ ((name !== data?.name && name.length >= 3) || (location !== data?.location && location.length >= 3) || time?.toDate(getLocalTimeZone()).toISOString() !== data?.time || [ ...type ][0] !== data?.type) &&
+					<Button size="sm" color="primary" isLoading={ editState === "loading" } className="font-bold" spinner={ <Spinner/> } startContent={ <Save strokeWidth="2.5px" height="20px"/> } onPress={ update }>Speichern</Button>
+				}
 			</CardFooter>
 
 			<ErrorModal error={ (error || editError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () => error && navigate("/@me/teams") }/>

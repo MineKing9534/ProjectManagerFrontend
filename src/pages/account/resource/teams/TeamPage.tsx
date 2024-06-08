@@ -80,7 +80,7 @@ export default function TeamPage() {
 				</> }
 			</CardFooter>
 
-			<ErrorModal error={ (teamError || inviteError || leaveError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () =>  teamError && navigate("/@me/teams") }/>
+			<ErrorModal error={ (teamError || inviteError || leaveError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () => teamError && navigate("/@me/teams") }/>
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange } size="xl">
 				<ModalContent>

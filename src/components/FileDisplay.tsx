@@ -30,7 +30,7 @@ export default function FileDisplay({ resource, file, className, contentClassNam
 				document.querySelectorAll<HTMLLinkElement>("link[rel=stylesheet]").forEach(link => {
 					const style = document.createElement("link")
 
-					style.rel  = link.rel
+					style.rel = link.rel
 					style.href = link.href
 
 					content.head.appendChild(style)

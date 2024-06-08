@@ -65,7 +65,7 @@ export default function FileList({ resource, className, full = false }: { resour
 					<TableHeader>
 						<TableColumn key="name">Name</TableColumn>
 						<TableColumn key="time" align="end" className="w-[180px]">Zeitstempel</TableColumn>
-						{ (full && user.admin) ? <TableColumn key="actions" align="end" className="w-[100px]">Aktionen</TableColumn> : <TableColumn>{' '}</TableColumn> }
+						{ (full && user.admin) ? <TableColumn key="actions" align="end" className="w-[100px]">Aktionen</TableColumn> : <TableColumn>{ ' ' }</TableColumn> }
 					</TableHeader>
 
 					<TableBody

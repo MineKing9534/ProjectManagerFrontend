@@ -112,10 +112,11 @@ export default function MeetingListPage() {
 						post({
 							data: {
 								name,
-							location,
-							type: [ ...type ][0],
-							time: time?.toDate(getLocalTimeZone()).toISOString()
-						} })
+								location,
+								type: [ ...type ][0],
+								time: time?.toDate(getLocalTimeZone()).toISOString()
+							}
+						})
 					} }>
 						<ModalBody className="pt-5 pb-0">
 							<Input
