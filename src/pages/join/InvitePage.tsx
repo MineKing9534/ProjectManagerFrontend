@@ -46,8 +46,11 @@ function Join({ token }: { token: string }) {
 	const { sub, type } = jwtDecode<{ sub: string, type: string }>(token)
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
-	const { error, put } = useRest(`/${ type.toLowerCase() }s/${ sub }/users`, {
-		onError: onOpen,
+	const { error, put } = useRest(`/${ type.toLowerCase() }s/${ sub }/users/@me`, {
+		onError: error => {
+			if(error.type === "ALREADY_PARTICIPATING") navigate(`/@me/${ type.toLowerCase() }s/${ sub }`)
+			else onOpen()
+		},
 		onSuccess: () => navigate(`/@me/${ type.toLowerCase() }s/${ sub }`)
 	})
 
