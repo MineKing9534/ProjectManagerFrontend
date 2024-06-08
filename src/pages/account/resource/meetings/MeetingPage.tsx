@@ -58,7 +58,7 @@ export default function MeetingPage() {
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center"><BackButton/> Treffen { data?.name } <MeetingTypeBadge type={ data?.type || "MEETING" } className="absolute right-3"/></CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center"><BackButton location={ searchParams.has("parent") && `/@me/${ searchParams.get("parent") }/meetings` }/> Treffen { data?.name } <MeetingTypeBadge type={ data?.type || "MEETING" } className="absolute right-3"/></CardHeader>
 			<Divider/>
 			<CardBody>
 				{ state === "loading" && <CircularProgress aria-label="Lade" className="m-auto"/> }
@@ -74,7 +74,7 @@ export default function MeetingPage() {
 
 				{ user.admin && <>
 					<Button size="sm" className="flex-grow sm:flex-grow-0" color="primary" onPress={ () => post() } startContent={ <UserPlus strokeWidth="2.5px" height="20px"/> }>Einladung Erstellen</Button>
-					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/users?parent=meetings/${ id }` } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
+					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings/${ id }/users` } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
 					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings/${ id }/settings` } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
 				</> }
 			</CardFooter>

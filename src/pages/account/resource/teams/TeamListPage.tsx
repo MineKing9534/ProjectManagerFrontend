@@ -9,6 +9,7 @@ import { Team } from "../../../../types/Team.ts"
 import { useNavigate } from "react-router"
 import { PencilLine, Plus } from "lucide-react"
 import { PaginationResult } from "../../../../types/PaginationResult.ts"
+import BackButton from "../../../../components/BackButton.tsx"
 
 export default function TeamListPage() {
 	const navigate = useNavigate()
@@ -34,7 +35,7 @@ export default function TeamListPage() {
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">Team Liste</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center"><BackButton/> Team Liste</CardHeader>
 			<Divider/>
 			<CardBody>
 				<Table isHeaderSticky removeWrapper aria-label="Team Liste" selectionMode="single" className="h-full">

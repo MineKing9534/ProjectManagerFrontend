@@ -1,18 +1,18 @@
-import { useRest } from "../../hooks/useRest.ts"
+import { Resource } from "../../../../types/Identifiable.ts"
 import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
-import ErrorModal from "../../components/ErrorModal.tsx"
-import { useEffect, useRef, useState } from "react"
-import { User } from "../../types/User.ts"
-import Spinner from "../../components/Spinner.tsx"
+import { useRef, useState } from "react"
+import { User } from "../../../../types/User.ts"
+import { useRest } from "../../../../hooks/useRest.ts"
+import { PaginationResult } from "../../../../types/PaginationResult.ts"
+import { Skill } from "../../../../types/Skill.ts"
+import BackButton from "../../../../components/BackButton.tsx"
+import Spinner from "../../../../components/Spinner.tsx"
 import { FolderInput, Pencil, Search, Trash2, UserMinus } from "lucide-react"
-import { Skill } from "../../types/Skill.ts"
-import Download from "../../components/Download.tsx"
-import { useSearchParams } from "react-router-dom"
-import { PaginationResult } from "../../types/PaginationResult.ts"
-import BackButton from "../../components/BackButton.tsx"
-import { Resource } from "../../types/Identifiable.ts"
+import ErrorModal from "../../../../components/ErrorModal.tsx"
+import Download from "../../../../components/Download.tsx"
+import { Link } from "react-router-dom"
 
-export default function UserListPage() {
+export default function UserList({ parent }: { parent?: Resource }) {
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
 
 	const download = useRef<(url: string) => void>(null)
@@ -23,23 +23,15 @@ export default function UserListPage() {
 
 	const [ current, setCurrent ] = useState<User>()
 
-	const [ searchParams, setSearchParams ] = useSearchParams()
-	const parent = searchParams.get("parent")
-
 	const [ skillFilter, setSkillFilter ] = useState<string[]>([ "" ])
 
 	const [ page, setPage ] = useState(1)
-	const { state, data, error, get } = useRest<PaginationResult<User>>(`${ parent ? `/${ parent }/users` : `/users` }?page=${ page }${ skillFilter.join(",") ? `&skills=${ skillFilter.join(",") }` : "" }`, {
+	const { state, data, error, get } = useRest<PaginationResult<User>>(`${ parent ? `/${ parent.resourceType.toLowerCase() }s/${ parent.id }/users` : `/users` }?page=${ page }${ skillFilter.join(",") ? `&skills=${ skillFilter.join(",") }` : "" }`, {
 		auto: true,
 		onError: onErrorOpen
 	})
 
-	const { data: parentResource, error: parentError, get: getParent } = useRest<Resource>(`/${ parent }`, {
-		condition: () => !!parent,
-		onError: onErrorOpen
-	})
-
-	const { state: kickState, error: kickError, del: kick } = useRest(`/${ parent }/users`, {
+	const { state: kickState, error: kickError, del: kick } = useRest(`/${ parent?.resourceType.toLowerCase() }s/${ parent?.id }/users`, {
 		onSuccess: onKickClose,
 		onError: onErrorOpen
 	})
@@ -60,14 +52,13 @@ export default function UserListPage() {
 		onError: onErrorOpen
 	})
 
-	useEffect(() => {
-		setPage(1)
-		getParent()
-	}, [ parent ])
-
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center">{ parent && <BackButton location={ `/@me/${ parent }` }/> } Nutzer Liste { parentResource && <>({ parentResource.name })</> }</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">
+				<BackButton/>
+				Nutzer Liste
+				{ parent && <> ({ parent.name })</> }
+			</CardHeader>
 			<Divider/>
 			<CardBody>
 				<Table isHeaderSticky removeWrapper aria-label="Nutzer Liste" selectionMode="single" className="h-full table-fixed">
@@ -89,7 +80,7 @@ export default function UserListPage() {
 								<TableCell><Chip variant="flat" color={ user.admin ? "success" : "primary" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
 								<TableCell>
 									<span className="relative flex items-center gap-2">
-										<button className="text-lg text-default-400 hover:opacity-70" onClick={ () => {
+										<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
 											setCurrent(user)
 											onDetailsOpen()
 										} }>
@@ -126,7 +117,7 @@ export default function UserListPage() {
 				</div> }
 
 				<div className="w-full flex gap-2 justify-between flex-wrap items-end">
-					{ parent && <Button size="sm" className="flex-grow sm:flex-grow-0" onPress={ () => setSearchParams([]) }>Alle Anzeigen</Button> }
+					{ parent && <Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to="/@me/users">Alle Anzeigen</Button> }
 					{ !!data?.data.length && <Button size="sm" color="primary" className="flex-grow sm:flex-grow-0 font-bold" onPress={ () => download.current && download.current(`${ import.meta.env._API }${ parent ? `/${ parent }` : "" }/users/csv`) } startContent={ <FolderInput strokeWidth="2.5px" height="20px"/> }>Exportieren</Button> }
 
 					<span className="hidden sm:block sm:flex-grow"/>
@@ -150,7 +141,7 @@ export default function UserListPage() {
 				</div>
 			</CardFooter>
 
-			<ErrorModal error={ (error || parentError || kickError || skillError || userError || userSkillError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
+			<ErrorModal error={ (error || kickError || skillError || userError || userSkillError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
 
 			<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange }>
 				<ModalContent>
@@ -185,7 +176,7 @@ export default function UserListPage() {
 					<ModalHeader className="py-2">Konto Entfernen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
-						Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich von <b>{ parentResource?.name }</b> entfernt werden? Das Konto kann nur mit einer Einladung erneut beitreten!
+						Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich von <b>{ parent?.name }</b> entfernt werden? Das Konto kann nur mit einer Einladung erneut beitreten!
 					</ModalBody>
 					<Divider/>
 					<ModalFooter className="p-2">

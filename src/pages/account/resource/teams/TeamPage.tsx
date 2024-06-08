@@ -66,7 +66,7 @@ export default function TeamPage() {
 			</CardBody>
 			<Divider/>
 			<CardFooter className="flex flex-wrap gap-2 w-full py-2">
-				<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings?parent=${ id }` } startContent={ <CalendarDays strokeWidth="2.5px" height="20px"/> }>Treffen</Button>
+				<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/teams/${ id }/meetings` } startContent={ <CalendarDays strokeWidth="2.5px" height="20px"/> }>Treffen</Button>
 				<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/teams/${ id }/files` } startContent={ <Files strokeWidth="2.5px" height="20px"/> }>Dateien</Button>
 				{ memberState === "success" && <Button size="sm" className="flex-grow sm:flex-grow-0" startContent={ <UserMinus strokeWidth="2.5px" height="20px" className="[&>line]:text-danger"/> } onPress={ onLeaveOpen }>Verlassen</Button> }
 				{ memberState === "error" && <Button size="sm" className="flex-grow sm:flex-grow-0" startContent={ <UserPlus strokeWidth="2.5px" height="20px" className="[&>line]:text-success"/> } onPress={ onJoinOpen }>Beitreten</Button> }
@@ -75,7 +75,7 @@ export default function TeamPage() {
 
 				{ user.admin && <>
 					<Button size="sm" className="flex-grow sm:flex-grow-0" color="primary" onPress={ () => post() } startContent={ <UserPlus strokeWidth="2.5px" height="20px"/> }>Einladung Erstellen</Button>
-					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/users?parent=teams/${ id }` } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
+					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/teams/${ id }/users` } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
 					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/teams/${ id }/settings` } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
 				</> }
 			</CardFooter>
