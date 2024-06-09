@@ -1,7 +1,7 @@
 import { useUserRequest } from "../../hooks/useUser.ts"
 import { Outlet, useLocation, useNavigate } from "react-router"
-import { CircularProgress, Divider, Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react"
-import ErrorDescription from "../../components/ErrorDescription.tsx"
+import { CircularProgress } from "@nextui-org/react"
+import ErrorModal from "../../components/ErrorModal.tsx"
 
 export default function AccountLayout() {
 	const { pathname } = useLocation()
@@ -13,15 +13,7 @@ export default function AccountLayout() {
 	return (
 		<>
 			{ data ? <Outlet/> :
-				<Modal isOpen onClose={ () => navigate("/", { state: pathname }) } size="3xl">
-					<ModalContent>
-						<ModalHeader className="py-3 font-bold text-xl text-danger">Fehler</ModalHeader>
-						<Divider/>
-						<ModalBody className="py-5">
-							<ErrorDescription error={ error! }/>
-						</ModalBody>
-					</ModalContent>
-				</Modal>
+				<ErrorModal error={ error! } isOpen onOpenChange={ () => {} } onClose={ () => navigate("/", { state: pathname }) }/>
 			}
 		</>
 	)

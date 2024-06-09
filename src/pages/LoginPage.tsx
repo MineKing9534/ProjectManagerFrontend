@@ -80,7 +80,7 @@ export default function LoginPage() {
 
 					<span className="mt-3 flex gap-2">
 						Passwort Vergessen?
-						<Link to="/reset-password" className="text-primary font-bold">Neues Passwort Erstellen</Link>
+						<Link to="/reset-password" className="text-primary font-bold">Passwort zurücksetzten</Link>
 					</span>
 
 					<ErrorModal error={ error! } isOpen={ isOpen } onOpenChange={ onOpenChange }/>
