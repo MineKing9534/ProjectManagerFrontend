@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, Selection, SelectItem, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, CircularProgress, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, Selection, SelectItem, Spacer, useDisclosure } from "@nextui-org/react"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import { useParams } from "react-router-dom"
 import { useRest } from "../../../../hooks/useRest.ts"
@@ -18,16 +18,14 @@ export default function TeamSettingsPage() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
 
-	const { data: teams } = useRest<Team[]>("/teams", {
-		auto: true
-	})
+	const { data: teams } = useRest<Team[]>("/teams", { auto: true })
 
 	const { data, error, get } = useRest<Team>(`/teams/${ id }`, {
 		auto: true,
 		onError: onErrorOpen,
 		onSuccess: data => {
 			setName(data.name)
-			setParent(new Set([ data.parent ]))
+			setParent(new Set([ data.parent.split(":")[1] || "" ]))
 		}
 	})
 
@@ -77,17 +75,25 @@ export default function TeamSettingsPage() {
 			<Divider/>
 			<CardFooter className="flex w-full justify-between py-2">
 				<Button size="sm" color="danger" isLoading={ editState === "loading" } className="font-bold" spinner={ <Spinner/> } startContent={ <Trash2 strokeWidth="2.5px" height="20px"/> } onPress={ onOpen }>Löschen</Button>
-				{ ((name !== data?.name && name.length >= 3) || [ ...parent ][0] !== data?.parent) && <Button size="sm" color="primary" isLoading={ editState === "loading" } className="font-bold" spinner={ <Spinner/> } startContent={ <Save strokeWidth="2.5px" height="20px"/> } onPress={ update }>Speichern</Button> }
+				{ ((name !== data?.name && name.length >= 3) || [ ...parent ][0] !== data?.parent?.substring("TEAM:".length)) && <Button size="sm" color="primary" isLoading={ editState === "loading" } className="font-bold" spinner={ <Spinner/> } startContent={ <Save strokeWidth="2.5px" height="20px"/> } onPress={ update }>Speichern</Button> }
 			</CardFooter>
 
 			<ErrorModal error={ (error || editError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () => error && navigate("/@me/teams") }/>
 
-			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>
+			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange } size="xl">
 				<ModalContent>
-					<ModalHeader className="py-2">{ data?.name } Löschen</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">{ data?.name } Löschen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
 						Soll das Team <b>{ data?.name }</b> wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden!
+
+						<Spacer className="h-5"/>
+
+						<div color="warning" className="text-warning bg-warning/20 p-4 rounded-large text-justify">
+							<h3 className="font-bold text-lg mb-1">Hinweis</h3>
+							Durch das löschen des Teams werden auch alle anderen zugehörigen Teams und Projekte gelöscht.
+							Wenn dieses Verhalten nicht erwünscht ist, sollte die Verbindung von Teams und Projekten, die erhalten bleiben sollen, zunächst aufgelöst werden.
+						</div>
 					</ModalBody>
 					<ModalFooter className="p-2">
 						<Button size="sm" color="danger" isLoading={ editState === "loading" } className="font-bold" spinner={ <Spinner/> } startContent={ <Trash2 strokeWidth="2.5px" height="20px"/> } onPress={ () => del() }>Löschen</Button>

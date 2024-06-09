@@ -15,7 +15,7 @@ export default function AccountLayout() {
 			{ data ? <Outlet/> :
 				<Modal isOpen onClose={ () => navigate("/", { state: pathname }) } size="3xl">
 					<ModalContent>
-						<ModalHeader className="py-2 text-danger">Fehler</ModalHeader>
+						<ModalHeader className="py-3 font-bold text-xl text-danger">Fehler</ModalHeader>
 						<Divider/>
 						<ModalBody className="py-5">
 							<ErrorDescription error={ error! }/>

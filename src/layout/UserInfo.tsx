@@ -2,7 +2,7 @@ import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownSection, Dropdown
 import { useToken } from "../hooks/useToken.ts";
 import { useLocation, useNavigate } from "react-router";
 import { User } from "../types/User.ts"
-import { Book, CalendarDays, LogOut, Users } from "lucide-react"
+import { BookUser, Box, CalendarDays, LogOut, Users } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export default function UserInfo({ user }: { user: User }) {
@@ -31,7 +31,8 @@ export default function UserInfo({ user }: { user: User }) {
 					<DropdownSection showDivider>
 						{ (user.admin && <DropdownItem startContent={ <Users width="20px"/> } className={ pathname.startsWith("/@me/users") ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/users">Nutzerliste</DropdownItem>) as never }
 						<DropdownItem startContent={ <CalendarDays width="20px"/> } className={ pathname.startsWith("/@me/meetings") ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/meetings">Veranstaltungen</DropdownItem>
-						<DropdownItem startContent={ <Book width="20px"/> } className={ pathname.startsWith("/@me/teams") ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/teams">Teams</DropdownItem>
+						<DropdownItem startContent={ <Box width="20px"/> } className={ pathname.startsWith("/@me/projects") ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/projects">Projekte</DropdownItem>
+						<DropdownItem startContent={ <BookUser width="20px"/> } className={ pathname.startsWith("/@me/teams") ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/teams">Teams</DropdownItem>
 					</DropdownSection>
 
 					<DropdownItem startContent={ <LogOut width="20px"/> } color="danger" onPress={ () => {

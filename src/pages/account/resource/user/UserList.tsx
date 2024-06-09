@@ -145,7 +145,7 @@ export default function UserList({ parent }: { parent?: Resource }) {
 
 			<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">{ current?.lastName }, { current?.firstName } ({ current?.id })</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">{ current?.lastName }, { current?.firstName } ({ current?.id })</ModalHeader>
 					<Divider/>
 					<ModalBody className="max-h-[80vh] overflow-auto">
 						<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({ data: { skills: values } }) }>
@@ -159,7 +159,7 @@ export default function UserList({ parent }: { parent?: Resource }) {
 
 			<Modal isOpen={ isDeleteOpen } onOpenChange={ onDeleteOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Konto Löschen</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Konto Löschen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
 						Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden!
@@ -173,7 +173,7 @@ export default function UserList({ parent }: { parent?: Resource }) {
 
 			<Modal isOpen={ isKickOpen } onOpenChange={ onKickOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Konto Entfernen</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Konto Entfernen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
 						Soll das Konto <b>{ current?.firstName } { current?.lastName }</b> ({ current?.email }) wirklich von <b>{ parent?.name }</b> entfernt werden? Das Konto kann nur mit einer Einladung erneut beitreten!

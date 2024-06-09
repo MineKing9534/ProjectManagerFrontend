@@ -4,7 +4,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import { useNavigate } from "react-router"
 import { useUser } from "../../../../hooks/useUser.ts"
-import { Files, Settings, UserMinus, UserPlus, Users } from "lucide-react"
+import { CalendarDays, Files, Settings, UserMinus, UserPlus, Users } from "lucide-react"
 import { Meeting } from "../../../../types/Meeting.ts"
 import BackButton from "../../../../components/BackButton.tsx"
 import { useCopyToClipboard } from "usehooks-ts"
@@ -59,8 +59,8 @@ export default function MeetingPage() {
 	return (
 		<Card className="h-full max-h-full select-none">
 			<CardHeader className="text-3xl font-bold justify-center">
-				<BackButton location={ searchParams.has("parent") && `/@me/${ searchParams.get("parent") }/meetings` }/>
-				Veranstaltung { data?.name }
+				<BackButton location={ searchParams.has("parent") && `/@me/${ data?.parent.split(":")[0].toLowerCase() }s/${ data?.parent.split(":")[1] }/meetings` }/>
+				{ data && <><CalendarDays strokeWidth="2.5px" className="mr-2"/> { data.name }</> }
 				<MeetingTypeBadge type={ data?.type || "MEETING" } className="absolute right-3"/>
 			</CardHeader>
 			<Divider/>
@@ -79,15 +79,15 @@ export default function MeetingPage() {
 				{ user.admin && <>
 					<Button size="sm" className="flex-grow sm:flex-grow-0" color="primary" onPress={ () => post() } startContent={ <UserPlus strokeWidth="2.5px" height="20px"/> }>Einladung Erstellen</Button>
 					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings/${ id }/users` } startContent={ <Users strokeWidth="2.5px" height="20px"/> }>Teilnehmer</Button>
-					<Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings/${ id }/settings` } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button>
+					{ !data?.parent.includes(data?.id) && <Button size="sm" className="flex-grow sm:flex-grow-0" as={ Link } to={ `/@me/meetings/${ id }/settings` } startContent={ <Settings strokeWidth="2.5px" height="20px"/> }>Einstellungen</Button> }
 				</> }
 			</CardFooter>
 
-			<ErrorModal error={ (meetingError || inviteError || leaveError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () => meetingError && navigate("/@me/meetings") }/>
+			<ErrorModal error={ (meetingError || inviteError || leaveError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange } onClose={ () => meetingError && navigate(`/@me${ searchParams.has("parent") ? `${ data?.parent.split(":")[0].toLowerCase() }s/${ data?.parent.split(":")[1] }` : "" }/meetings`) }/>
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange } size="xl">
 				<ModalContent>
-					<ModalHeader className="py-2">Neue Einladung</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Neue Einladung</ModalHeader>
 					<Divider/>
 					<ModalBody className="block leading-relaxed py-4">
 						<p className="pb-3">Neue Einladung erstellt: <ExternalLink showAnchorIcon href={ `${ import.meta.env._URL }/invite?token=${ invite?.token }` }>Einladungs-Link</ExternalLink></p>
@@ -99,7 +99,7 @@ export default function MeetingPage() {
 
 			<Modal isOpen={ isLeaveOpen } onOpenChange={ onLeaveOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Veranstaltung Verlassen</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Veranstaltung Verlassen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
 						Soll die Veranstaltung wirklich verlassen werden? Dadruch wird signalisiert, dass du kein Interesse (oder keine Zeit) für dieses Treffen hast.
@@ -113,7 +113,7 @@ export default function MeetingPage() {
 
 			<Modal isOpen={ isJoinOpen } onOpenChange={ onJoinOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Veranstaltung Beitreten</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Veranstaltung Beitreten</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
 						Möchten Sie der Veranstaltung wirklich beitreten? Sie signalisieren dadurch, dass Sie Interesse haben und voraussichtlich anwesend sein werden.

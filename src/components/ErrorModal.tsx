@@ -16,7 +16,7 @@ export default function ErrorModal({ error, isOpen, onOpenChange, onClose }: { e
 			} else if(onClose) onClose()
 		} }>
 			<ModalContent>
-				<ModalHeader className="py-2 text-danger">Fehler</ModalHeader>
+				<ModalHeader className="py-3 font-bold text-xl text-danger">Fehler</ModalHeader>
 				<Divider/>
 				<ModalBody className="pb-5">
 					<span className="flex gap-2">

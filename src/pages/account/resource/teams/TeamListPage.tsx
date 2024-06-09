@@ -15,20 +15,17 @@ export default function TeamListPage() {
 	const navigate = useNavigate()
 	const user = useUser()!
 
-	const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
 
-	const { state: createState, error: createError, post } = useRest("/teams", {
-		onSuccess: () => {
-			onClose()
-			get()
-		},
+	const { state: createState, error: createError, post } = useRest<Team>("/teams", {
+		onSuccess: data => navigate(`/@me/teams/${ data.id }`),
 		onError: onErrorOpen
 	})
 	const [ name, setName ] = useState("")
 
 	const [ page, setPage ] = useState(1)
-	const { state, data, error, get } = useRest<PaginationResult<Team>>(user.admin ? `/teams?page=${ page }` : `/users/@me/teams?page=${ page }`, {
+	const { state, data, error } = useRest<PaginationResult<Team>>(user.admin ? `/teams?page=${ page }` : `/users/@me/teams?page=${ page }`, {
 		auto: true,
 		onError: onErrorOpen
 	})
@@ -74,7 +71,7 @@ export default function TeamListPage() {
 
 			<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Team Erstellen</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Team Erstellen</ModalHeader>
 					<Divider/>
 					<form onSubmit={ event => {
 						event.preventDefault()

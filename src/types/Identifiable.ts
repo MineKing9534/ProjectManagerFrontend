@@ -9,4 +9,4 @@ export interface Resource {
 	parent: string
 }
 
-export type ResourceType = "TEAM" | "MEETING"
+export type ResourceType = "TEAM" | "MEETING" | "PROJECT"

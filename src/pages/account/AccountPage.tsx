@@ -2,7 +2,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup
 import { useUser, useUserRequest } from "../../hooks/useUser.ts"
 import { useRest } from "../../hooks/useRest.ts"
 import { Skill } from "../../types/Skill.ts"
-import { Book, CalendarDays, PencilLine, Plus, Save, Trash2, Users } from "lucide-react"
+import { BookUser, Box, CalendarDays, PencilLine, Plus, Save, Trash2, Users } from "lucide-react"
 import { FormEvent, useMemo, useState } from "react"
 import Spinner from "../../components/Spinner.tsx"
 import ErrorModal from "../../components/ErrorModal.tsx"
@@ -112,9 +112,10 @@ export default function AccountPage() {
 						<div>
 							<h2 className="font-bold text-md mb-2">Schnellverknüpfungen</h2>
 							<div className="flex flex-col gap-1 w-fit">
-								{ (user.admin && <Link to="/@me/users" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><Users width="20px"/> Nutzerliste</Link>) as never }
-								<Link to="/@me/meetings" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><CalendarDays width="20px"/> Veranstaltungen</Link>
-								<Link to="/@me/teams" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><Book width="20px"/> Teams</Link>
+								{ (user.admin && <Link to="/@me/users" className="flex gap-2 py-1 px-2 pr-5 rounded-lg hover:bg-default-100"><Users width="20px"/> Nutzerliste</Link>) as never }
+								<Link to="/@me/meetings" className="flex gap-2 py-1 px-2 pr-5 rounded-lg hover:bg-default-100"><CalendarDays width="20px"/> Veranstaltungen</Link>
+								<Link to="/@me/projects" className="flex gap-2 py-1 px-2 pr-5 rounded-lg hover:bg-default-100"><Box width="20px"/> Projekte</Link>
+								<Link to="/@me/teams" className="flex gap-2 py-1 px-2 pr-5 rounded-lg hover:bg-default-100"><BookUser width="20px"/> Teams</Link>
 							</div>
 						</div>
 					</CardBody>
@@ -148,7 +149,7 @@ export default function AccountPage() {
 						</CheckboxGroup>
 						<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>
 							<ModalContent>
-								<ModalHeader className="py-2">Fähigkeit { current ? "Bearbeiten" : "Erstellen" }</ModalHeader>
+								<ModalHeader className="py-3 font-bold text-xl">Fähigkeit { current ? "Bearbeiten" : "Erstellen" }</ModalHeader>
 								<Divider/>
 								<form onSubmit={ event => {
 									event.preventDefault()

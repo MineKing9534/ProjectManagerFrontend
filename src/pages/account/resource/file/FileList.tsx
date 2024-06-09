@@ -128,7 +128,7 @@ export default function FileList({ resource, className, full = false }: { resour
 
 			<Modal isOpen={ isRenameOpen } onOpenChange={ onRenameOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Umbenennen</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Umbenennen</ModalHeader>
 					<Divider/>
 					<ModalBody>
 						<Input
@@ -149,7 +149,7 @@ export default function FileList({ resource, className, full = false }: { resour
 
 			<Modal isOpen={ isDeleteOpen } onOpenChange={ onDeleteOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Löschen</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Löschen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
 						Soll die Datei / der Ordner <b>{ target }</b> wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden!
@@ -164,7 +164,7 @@ export default function FileList({ resource, className, full = false }: { resour
 
 			<Modal isOpen={ isFolderOpen } onOpenChange={ onFolderOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Ordner Erstellen</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Ordner Erstellen</ModalHeader>
 					<Divider/>
 					<ModalBody>
 						<Input
@@ -185,7 +185,7 @@ export default function FileList({ resource, className, full = false }: { resour
 
 			<Modal isOpen={ isFileOpen } onOpenChange={ onFileOpenChange }>
 				<ModalContent>
-					<ModalHeader className="py-2">Datei Hochladen</ModalHeader>
+					<ModalHeader className="py-3 font-bold text-xl">Datei Hochladen</ModalHeader>
 					<Divider/>
 					<ModalBody>
 						{ !file && <Dropzone disabled={ editState === "loading" } multiple={ false } onDrop={ files => {

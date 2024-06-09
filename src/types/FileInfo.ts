@@ -1,5 +1,5 @@
 export interface FileInfo {
-	id: number
+	id: string
 	name: string
 	time: string
 	type: FileType

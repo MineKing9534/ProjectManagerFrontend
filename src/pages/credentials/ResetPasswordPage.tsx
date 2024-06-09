@@ -49,7 +49,7 @@ export default function ResetPasswordPage() {
 
 					<Modal isOpen={ isOpen } onOpenChange={ onOpenChange } onClose={ () => navigate("/") }>
 						<ModalContent>
-							<ModalHeader className="py-2">E-Mail verschickt</ModalHeader>
+							<ModalHeader className="py-3 font-bold text-xl">E-Mail verschickt</ModalHeader>
 							<Divider/>
 							<ModalBody className="block">
 								Es wurde eine E-Mail an <b>{ email }</b> gesendet. Diese enthält einen link, mit dem Sie ein neues Passwort festlegen können.
