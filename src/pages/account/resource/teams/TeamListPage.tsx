@@ -57,13 +57,12 @@ export default function TeamListPage() {
 			</CardBody>
 
 			<CardFooter className="flex-col gap-2 flex-shrink-0">
-				{ (data?.totalPages || 1) > 1 && <div className="w-full flex justify-between">
-					<span/>
+				{ (data?.totalPages || 1) > 1 && <div className="w-full flex justify-center">
 					<Pagination
 						aria-label="Seitenauswahl" isCompact showControls
 						page={ page } total={ data?.totalPages || 1 } onChange={ (page) => setPage(page) }
 					/>
-					<span className="text-default-500 font-bold">Insgesamt { data?.totalEntries } Einträge</span>
+					<span className="text-default-500 font-bold hidden md:block absolute right-3">Insgesamt { data?.totalEntries } Einträge</span>
 				</div> }
 
 				<div className="w-full flex gap-2 justify-end flex-wrap">

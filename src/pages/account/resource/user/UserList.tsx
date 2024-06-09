@@ -7,7 +7,7 @@ import { PaginationResult } from "../../../../types/PaginationResult.ts"
 import { Skill } from "../../../../types/Skill.ts"
 import BackButton from "../../../../components/BackButton.tsx"
 import Spinner from "../../../../components/Spinner.tsx"
-import { FolderInput, Pencil, Search, Trash2, UserMinus } from "lucide-react"
+import { Eye, FolderInput, Search, Trash2, UserMinus } from "lucide-react"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import Download from "../../../../components/Download.tsx"
 import { Link } from "react-router-dom"
@@ -84,7 +84,7 @@ export default function UserList({ parent }: { parent?: Resource }) {
 											setCurrent(user)
 											onDetailsOpen()
 										} }>
-											<Pencil height="20px"/>
+											<Eye height="20px"/>
 										</button>
 
 										{ parent && <button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
@@ -109,13 +109,12 @@ export default function UserList({ parent }: { parent?: Resource }) {
 			</CardBody>
 
 			<CardFooter className="flex-col gap-2 flex-shrink-0">
-				{ (data?.totalPages || 1) > 1 && <div className="w-full flex justify-between">
-					<span/>
+				{ (data?.totalPages || 1) > 1 && <div className="w-full flex justify-center">
 					<Pagination
 						aria-label="Seitenauswahl" isCompact showControls
 						page={ page } total={ data?.totalPages || 1 } onChange={ (page) => setPage(page) }
 					/>
-					<span className="text-default-500 font-bold">Insgesamt { data?.totalEntries } Einträge</span>
+					<span className="text-default-500 font-bold hidden md:block absolute right-3">Insgesamt { data?.totalEntries } Einträge</span>
 				</div> }
 
 				<div className="w-full flex gap-2 justify-between flex-wrap items-end">

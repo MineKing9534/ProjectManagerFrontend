@@ -29,10 +29,10 @@ export default function UserInfo({ user }: { user: User }) {
 					</DropdownSection>
 
 					<DropdownSection showDivider>
-						{ (user.admin && <DropdownItem startContent={ <Users width="20px"/> } className={ pathname.startsWith("/@me/users") ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/users">Nutzerliste</DropdownItem>) as never }
-						<DropdownItem startContent={ <CalendarDays width="20px"/> } className={ pathname.startsWith("/@me/meetings") ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/meetings">Veranstaltungen</DropdownItem>
-						<DropdownItem startContent={ <Box width="20px"/> } className={ pathname.startsWith("/@me/projects") ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/projects">Projekte</DropdownItem>
-						<DropdownItem startContent={ <BookUser width="20px"/> } className={ pathname.startsWith("/@me/teams") ? "[&>span]:font-bold" : "" } as={ Link } to="/@me/teams">Teams</DropdownItem>
+						{ (user.admin && <DropdownItem startContent={ <Users width="20px"/> } className={ pathname.startsWith("/@me/users") ? "[&>span]:font-bold [&>span]:ml-2" : "" } as={ Link } to="/@me/users">Nutzerliste</DropdownItem>) as never }
+						<DropdownItem startContent={ <CalendarDays width="20px"/> } className={ pathname.startsWith("/@me/meetings") ? "[&>span]:font-bold [&>span]:ml-2" : "" } as={ Link } to="/@me/meetings">Veranstaltungen</DropdownItem>
+						<DropdownItem startContent={ <Box width="20px"/> } className={ pathname.startsWith("/@me/projects") ? "[&>span]:font-bold [&>span]:ml-2" : "" } as={ Link } to="/@me/projects">Projekte</DropdownItem>
+						<DropdownItem startContent={ <BookUser width="20px"/> } className={ pathname.startsWith("/@me/teams") ? "[&>span]:font-bold [&>span]:ml-2" : "" } as={ Link } to="/@me/teams">Teams</DropdownItem>
 					</DropdownSection>
 
 					<DropdownItem startContent={ <LogOut width="20px"/> } color="danger" onPress={ () => {

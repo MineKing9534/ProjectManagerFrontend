@@ -135,10 +135,11 @@ export default function AccountPage() {
 								</div>
 							</div>
 						</div>
+
+						<span className="p-2 flex-shrink-0 mt-auto">
+							Ihre ID: <b className="select-text">{ user?.id }</b>
+						</span>
 					</CardBody>
-					<CardFooter className="p-2 flex-shrink-0 flex gap-2">
-						Ihre ID: <b className="select-text">{ user?.id }</b>
-					</CardFooter>
 				</Card>
 
 				<Card className="md:w-2/5 h-1/2 md:h-full">

@@ -78,9 +78,9 @@ export default function LoginPage() {
 					<Spacer/>
 					<Button variant="solid" color="primary" disabled={ !emailValid || !passwordValid } className="font-bold w-full" spinner={ <Spinner/> } isLoading={ state === "loading" } type="submit">Anmelden</Button>
 
-					<span className="mt-3 flex gap-2">
+					<span className="mt-3">
 						Passwort Vergessen?
-						<Link to="/reset-password" className="text-primary font-bold">Passwort zurücksetzten</Link>
+						<Link to="/reset-password" className="text-primary font-bold ml-2">Passwort zurücksetzten</Link>
 					</span>
 
 					<ErrorModal error={ error! } isOpen={ isOpen } onOpenChange={ onOpenChange }/>
