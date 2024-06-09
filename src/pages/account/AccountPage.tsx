@@ -46,7 +46,7 @@ export default function AccountPage() {
 		event.preventDefault()
 
 		if(!firstNameValid || !lastName) return
-		patchUser({ data: { firstName, lastName } })
+		patchUser({ data: { firstName, lastName, info } })
 	}
 
 	const [ firstName, setFirstName ] = useState(user.firstName)
@@ -55,16 +55,18 @@ export default function AccountPage() {
 	const [ lastName, setLastName ] = useState(user.lastName)
 	const lastNameValid = useMemo(() => /^[a-zA-ZÄäÖöÜüß-]{2,}$/.test(lastName), [ lastName ])
 
+	const [ info, setInfo ] = useState(user.info)
+
 	return (
 		<Card className="h-full max-h-full select-none">
 			<CardHeader className="text-3xl font-bold justify-center">Nutzer Informationen</CardHeader>
 			<Divider/>
 			<CardBody className="flex md:flex-row gap-5 [&>div]:flex-grow">
 				<Card className="md:w-3/5 h-1/2 md:h-full">
-					<CardHeader className="text-xl font-bold">Informationen</CardHeader>
+					<CardHeader className="text-xl font-bold">Einstellungen</CardHeader>
 					<CardBody className="pt-1 flex flex-col gap-5">
-						<form onSubmit={ rename }>
-							<h2 className="font-bold text-md mb-2">Name</h2>
+						<form onSubmit={ rename } className="flex gap-3 flex-col">
+							<h2 className="font-bold text-md">Informationen</h2>
 							<div className="flex gap-3 flex-col md:flex-row">
 								<Input
 									value={ firstName } onValueChange={ setFirstName } isDisabled={ renameState === "loading" }
@@ -82,10 +84,18 @@ export default function AccountPage() {
 									startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 								/>
 							</div>
-							{ (firstName !== user.firstName || lastName !== user.lastName) && (firstNameValid && lastNameValid) &&
+
+							<Input
+								value={ info } onValueChange={ setInfo } isDisabled={ renameState === "loading" }
+								type="text" autoComplete="family-name"
+								label="Zusätzliche informationen" placeholder="Zusätzliche wichtige Informationen zu ihrer Person"
+								startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
+							/>
+
+							{ (firstName !== user.firstName || lastName !== user.lastName || info !== user.info) && (firstNameValid && lastNameValid) &&
 								<Button
 									isDisabled={ renameState === "loading" } isLoading={ renameState === "loading" } spinner={ <Spinner/> } type="submit"
-									className="font-bold" color="primary" startContent={ <Save width="25px"/> } size="sm"
+									className="font-bold md:w-fit" color="primary" startContent={ <Save width="25px"/> } size="sm"
 								>
 									Speichern
 								</Button>
