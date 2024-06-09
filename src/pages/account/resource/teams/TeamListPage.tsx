@@ -32,7 +32,10 @@ export default function TeamListPage() {
 
 	return (
 		<Card className="h-full max-h-full select-none">
-			<CardHeader className="text-3xl font-bold justify-center"><BackButton/> Team Liste</CardHeader>
+			<CardHeader className="text-3xl font-bold justify-center">
+				<BackButton/>
+				Teams
+			</CardHeader>
 			<Divider/>
 			<CardBody>
 				<Table isHeaderSticky removeWrapper aria-label="Team Liste" selectionMode="single" className="h-full">
@@ -54,11 +57,13 @@ export default function TeamListPage() {
 			</CardBody>
 
 			<CardFooter className="flex-col gap-2 flex-shrink-0">
-				{ (data?.total || 1) > 1 && <div className="w-full flex justify-center">
+				{ (data?.totalPages || 1) > 1 && <div className="w-full flex justify-between">
+					<span/>
 					<Pagination
 						aria-label="Seitenauswahl" isCompact showControls
-						page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
+						page={ page } total={ data?.totalPages || 1 } onChange={ (page) => setPage(page) }
 					/>
+					<span className="text-default-500 font-bold">Insgesamt { data?.totalEntries } Einträge</span>
 				</div> }
 
 				<div className="w-full flex gap-2 justify-end flex-wrap">

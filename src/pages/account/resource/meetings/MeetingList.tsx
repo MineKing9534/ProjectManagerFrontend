@@ -48,7 +48,7 @@ export default function MeetingList({ parent }: { parent?: Resource }) {
 			<CardHeader className="text-3xl font-bold justify-center">
 				<BackButton/>
 				Anstehende Veranstaltungen
-				{ parent && <> ({ parent.name })</> }
+				{ parent && <span className="text-default-500 ml-2">{ parent.name }</span> }
 			</CardHeader>
 			<Divider/>
 			<CardBody className="gap-4">
@@ -72,11 +72,13 @@ export default function MeetingList({ parent }: { parent?: Resource }) {
 			</CardBody>
 
 			<CardFooter className="flex-col gap-2 flex-shrink-0">
-				{ (data?.total || 1) > 1 && <div className="w-full flex justify-center">
+				{ (data?.totalPages || 1) > 1 && <div className="w-full flex justify-between">
+					<span/>
 					<Pagination
 						aria-label="Seitenauswahl" isCompact showControls
-						page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
+						page={ page } total={ data?.totalPages || 1 } onChange={ (page) => setPage(page) }
 					/>
+					<span className="text-default-500 font-bold">Insgesamt { data?.totalEntries } Einträge</span>
 				</div> }
 
 				<div className="w-full flex gap-2 justify-between flex-wrap">
