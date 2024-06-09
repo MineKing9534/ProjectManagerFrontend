@@ -13,7 +13,7 @@ export default function Layout() {
 	return (
 		<div className="w-screen h-screen gap-4 h-md:gap-10 flex flex-col items-start justify-center">
 			<Navigation user={ request.data }/>
-			<div className="w-[95vw] lg:w-[75vw] mx-auto flex-grow flex gap-5 justify-start flex-col overflow-auto p-5">
+			<div className="w-[95vw] xl:w-[83vw] xxl:w-[75vw] mx-auto flex-grow flex gap-5 justify-start flex-col overflow-auto p-5">
 				<Suspense fallback={ <CircularProgress className="m-auto" aria-label="Lade Seite"/> }>
 					{ request.state === "idle" ? <CircularProgress className="m-auto" aria-label="Lade Nutzer"/> :
 						<UserContext.Provider value={ request.data }>

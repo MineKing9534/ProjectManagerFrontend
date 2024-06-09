@@ -58,7 +58,7 @@ export default function ProjectPage() {
 	return (
 		<Card className="h-full max-h-full select-none">
 			<CardHeader className="text-3xl font-bold justify-center">
-				<BackButton location={ searchParams.has("parent") && `/@me/projects/${ data?.parent.split(":")[0].toLowerCase() }s/${ data?.parent.split(":")[1] }/projects` }/>
+				<BackButton location={ searchParams.has("parent") && `/@me/${ data?.parent.split(":")[0].toLowerCase() }s/${ data?.parent.split(":")[1] }/projects` }/>
 				{ data && <><Box strokeWidth="2.5px" className="mr-2"/> { data.name }</> }
 			</CardHeader>
 			<Divider/>

@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, useDisclosure } from "@nextui-org/react"
 import { useUser, useUserRequest } from "../../hooks/useUser.ts"
 import { useRest } from "../../hooks/useRest.ts"
 import { Skill } from "../../types/Skill.ts"
@@ -95,27 +95,31 @@ export default function AccountPage() {
 						<div>
 							<h2 className="font-bold text-md mb-2">Zugangsdaten</h2>
 							<div className="flex gap-2 md:flex-col">
-								<Button className="w-fit" color="primary" onClick={ () => resetPassword() } spinner={ <Spinner/> } isLoading={ passwordState === "loading" }>Passwort Ändern</Button>
+								<Button className="w-fit hover:bg-warning !duration-400" color="primary" onClick={ () => resetPassword() } spinner={ <Spinner/> } isLoading={ passwordState === "loading" }>Passwort Ändern</Button>
 							</div>
 						</div>
 
-						<div>
-							<h2 className="font-bold text-md mb-2">E-Mail Einstellungen</h2>
-							<CheckboxGroup value={ user.emailTypes } onValueChange={ value => patchUser({ data: { emailTypes: value } }) } isDisabled={ renameState === "loading" }>
-								<Checkbox value="MEETING_CREATE">Ankündigungen von Veranstaltungen</Checkbox>
-								<Checkbox value="MEETING_DELETE">Absage von Veranstaltungen</Checkbox>
-								<Checkbox value="MEETING_UPDATE">Änderungen für Veranstaltungen</Checkbox>
-								<Checkbox value="INFO_UPDATE">Änderungen der Informationsdatei</Checkbox>
-							</CheckboxGroup>
-						</div>
+						<div className="flex gap-4 flex-col xl:flex-row xl:gap-20 w-full">
+							<div className="xl:w-1/2">
+								<h2 className="font-bold text-md mb-2 flex-grow">E-Mail Einstellungen</h2>
+								<CheckboxGroup value={ user.emailTypes } onValueChange={ value => patchUser({ data: { emailTypes: value } }) } isDisabled={ renameState === "loading" }>
+									<Checkbox value="INFO_UPDATE">Änderungen der Informationsdatei</Checkbox>
+									<Checkbox value="MEETING_CREATE">Ankündigungen von Veranstaltungen</Checkbox>
+									<Checkbox value="MEETING_DELETE">Absage von Veranstaltungen</Checkbox>
+									<Checkbox value="MEETING_UPDATE">Änderungen für Veranstaltungen</Checkbox>
+									<Checkbox value="PROJECT_ADD">Neues Projekt Verfügbar</Checkbox>
+									<Checkbox value="PROJECT_DELETE">Absage van Projekten</Checkbox>
+								</CheckboxGroup>
+							</div>
 
-						<div>
-							<h2 className="font-bold text-md mb-2">Schnellverknüpfungen</h2>
-							<div className="flex flex-col gap-1 w-fit">
-								{ (user.admin && <Link to="/@me/users" className="flex gap-2 py-1 px-2 pr-5 rounded-lg hover:bg-default-100"><Users width="20px"/> Nutzerliste</Link>) as never }
-								<Link to="/@me/meetings" className="flex gap-2 py-1 px-2 pr-5 rounded-lg hover:bg-default-100"><CalendarDays width="20px"/> Veranstaltungen</Link>
-								<Link to="/@me/projects" className="flex gap-2 py-1 px-2 pr-5 rounded-lg hover:bg-default-100"><Box width="20px"/> Projekte</Link>
-								<Link to="/@me/teams" className="flex gap-2 py-1 px-2 pr-5 rounded-lg hover:bg-default-100"><BookUser width="20px"/> Teams</Link>
+							<div className="xl:w-1/2">
+								<h2 className="font-bold text-md mb-2 flex-grow">Schnellverknüpfungen</h2>
+								<div className="flex flex-col gap-1 w-full">
+									{ (user.admin && <Link to="/@me/users" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><Users width="20px"/> Nutzerliste</Link>) as never }
+									<Link to="/@me/meetings" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><CalendarDays width="20px"/> Veranstaltungen</Link>
+									<Link to="/@me/projects" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><Box width="20px"/> Projekte</Link>
+									<Link to="/@me/teams" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><BookUser width="20px"/> Teams</Link>
+								</div>
 							</div>
 						</div>
 					</CardBody>
@@ -127,26 +131,28 @@ export default function AccountPage() {
 				<Card className="md:w-2/5 h-1/2 md:h-full">
 					<CardHeader className="text-xl font-bold">Fähigkeiten</CardHeader>
 					<CardBody className="pt-1">
-						<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ user.skills } onValueChange={ values => put({ data: { skills: values } }) }>
-							{ skills?.map(skill =>
-								<Checkbox key={ skill.id } value={ skill.id } className="max-w-full rounded-lg !p-1 hover:bg-default-100" classNames={ { label: "flex justify-between w-full before:hidden" } }>
-									<span>{ skill.name }</span>
-									{ user.admin && <span className="relative flex items-center gap-2">
-										<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
-											setCurrent(skill.id)
-											setName(skill.name)
-											onOpen()
-										} }>
-											<PencilLine height="20px"/>
-										</button>
+						<ScrollShadow className="p-2 pr-0">
+							<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ user.skills } onValueChange={ values => put({ data: { skills: values } }) }>
+								{ skills?.map(skill =>
+									<Checkbox key={ skill.id } value={ skill.id } className="max-w-full rounded-lg !p-1 hover:bg-default-100" classNames={ { label: "flex justify-between w-full before:hidden" } }>
+										<span>{ skill.name }</span>
+										{ user.admin && <span className="relative flex items-center gap-2">
+											<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
+												setCurrent(skill.id)
+												setName(skill.name)
+												onOpen()
+											} }>
+												<PencilLine height="20px"/>
+											</button>
 
-										<button className="text-lg text-danger hover:opacity-70" onClick={ () => del({ path: `/${ skill.id }` }) }>
-											<Trash2 height="20px"/>
-										</button>
-									</span> }
-								</Checkbox>
-							) }
-						</CheckboxGroup>
+											<button className="text-lg text-danger hover:opacity-70" onClick={ () => del({ path: `/${ skill.id }` }) }>
+												<Trash2 height="20px"/>
+											</button>
+										</span> }
+									</Checkbox>
+								) }
+							</CheckboxGroup>
+						</ScrollShadow>
 						<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>
 							<ModalContent>
 								<ModalHeader className="py-3 font-bold text-xl">Fähigkeit { current ? "Bearbeiten" : "Erstellen" }</ModalHeader>

@@ -55,7 +55,6 @@ export default function TeamPage() {
 		onError: onErrorOpen
 	})
 
-
 	return (
 		<Card className="h-full max-h-full select-none">
 			<CardHeader className="text-3xl font-bold justify-center">

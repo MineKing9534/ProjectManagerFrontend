@@ -56,7 +56,11 @@ export default function MeetingList({ parent }: { parent?: Resource }) {
 				{ (data && !data.data.length) && <span className="text-foreground-400 mx-auto mt-20">Keine Veranstaltungen</span> }
 				{ data && data.data.map(meeting =>
 					<Card key={ meeting.id } className="bg-default-100 hover:mx-[-5px] !transition-[margin]" as={ Link } to={ `/@me/meetings/${ meeting.id }${ parent ? "?parent" : "" }` }>
-						<CardHeader className="font-bold text-lg gap-2 py-2"><Ticket/> { meeting.name } <MeetingTypeBadge type={ meeting.type } className="absolute right-3"/></CardHeader>
+						<CardHeader className="font-bold text-lg gap-2 py-2">
+							{ meeting.parent.includes(meeting.id) ? <Box/> : <Ticket/> }
+							{ meeting.name }
+							<MeetingTypeBadge type={ meeting.type } className="absolute right-3"/>
+						</CardHeader>
 						<Divider/>
 						<CardBody className="gap-3">
 							{ (!parent && !meeting.parent.includes(meeting.id)) && <span className="flex gap-2 rounded-lg bg-default-200 p-1"><Box width="20px"/> { getResource(meeting.parent) ? getResource(meeting.parent)?.name : <i>Laden...</i> }</span> }
