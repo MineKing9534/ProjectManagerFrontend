@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Divider, Input, Link as ExternalLink, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, useDisclosure } from "@nextui-org/react"
 import { useUser, useUserRequest } from "../../hooks/useUser.ts"
 import { useRest } from "../../hooks/useRest.ts"
 import { Skill } from "../../types/Skill.ts"
@@ -123,7 +123,10 @@ export default function AccountPage() {
 							</div>
 
 							<div className="xl:w-1/2">
-								<h2 className="font-bold text-md mb-2 flex-grow">Schnellverknüpfungen</h2>
+								<h2 className="font-bold text-md mb-2 flex-grow flex justify-between">
+									Schnellverknüpfungen
+									<ExternalLink className="text-default-500" showAnchorIcon isExternal href="https://github.com/MineKing9534/ProjectManagerFrontend/blob/master/ResourceTypes.md">Erklärung</ExternalLink>
+								</h2>
 								<div className="flex flex-col gap-1 w-full">
 									{ (user.admin && <Link to="/@me/users" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><Users width="20px"/> Nutzerliste</Link>) as never }
 									<Link to="/@me/meetings" className="flex gap-2 py-1 px-2 rounded-lg hover:bg-default-100"><CalendarDays width="20px"/> Veranstaltungen</Link>
