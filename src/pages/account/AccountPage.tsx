@@ -81,15 +81,15 @@ export default function AccountPage() {
 									label="Namename" placeholder="Mustermann"
 									startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 								/>
-								{ (firstName !== user.firstName || lastName !== user.lastName) && (firstNameValid && lastNameValid) &&
-									<Button
-										isDisabled={ renameState === "loading" } isLoading={ renameState === "loading" } spinner={ <Spinner/> } type="submit"
-										className="font-bold flex-shrink-0 h-[56px] w-[56px]" color="primary" isIconOnly
-									>
-										{ renameState !== "loading" && <Save width="25px"/> }
-									</Button>
-								}
 							</div>
+							{ (firstName !== user.firstName || lastName !== user.lastName) && (firstNameValid && lastNameValid) &&
+								<Button
+									isDisabled={ renameState === "loading" } isLoading={ renameState === "loading" } spinner={ <Spinner/> } type="submit"
+									className="font-bold" color="primary" startContent={ <Save width="25px"/> } size="sm"
+								>
+									Speichern
+								</Button>
+							}
 						</form>
 
 						<div>
