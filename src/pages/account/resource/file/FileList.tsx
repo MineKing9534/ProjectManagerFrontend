@@ -105,10 +105,10 @@ export default function FileList({ resource, className, full = false }: { resour
 			</CardBody>
 
 			<CardFooter className="flex flex-wrap gap-2 w-full py-2">
-				{ (data?.total || 1) > 1 && <div className="w-full flex justify-center">
+				{ (data?.totalPages || 1) > 1 && <div className="w-full flex justify-center">
 					<Pagination
 						aria-label="Seitenauswahl" isCompact showControls
-						page={ page } total={ data?.total || 1 } onChange={ (page) => setPage(page) }
+						page={ page } total={ data?.totalPages || 1 } onChange={ (page) => setPage(page) }
 					/>
 				</div> }
 
@@ -211,6 +211,7 @@ export default function FileList({ resource, className, full = false }: { resour
 							label="Name" placeholder="Information"
 							classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 							startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
+							description={ !currentPath && "Verwende den Namen 'Information' um die Datei auf der Startseite anzuzeigen" }
 						/> }
 					</ModalBody>
 					<ModalFooter>
