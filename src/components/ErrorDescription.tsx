@@ -20,6 +20,8 @@ export default function ErrorDescription({ error }: { error: ErrorResponse }) {
 					case "SKILL_ALREADY_EXISTS": return <>Fähigkeit existiert bereits</>
 					case "USER_NOT_FOUND": return <>Nutzer nicht gefunden</>
 					case "USER_ALREADY_EXISTS": return <>Nutzer existiert bereits</>
+					case "INPUT_NOT_FOUND": return <>Eingabefeld nicht gefunden</>
+					case "INPUT_ALREADY_EXISTS": return <>Eingabefeld existiert bereits</>
 					case "TEAM_NOT_FOUND": return <>Team nicht gefunden</>
 					case "TEAM_ALREADY_EXISTS": return <>Team existiert bereits</>
 					case "MEETING_NOT_FOUND": return <>Veranstaltung nicht gefunden</>

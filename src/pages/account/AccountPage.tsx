@@ -8,6 +8,7 @@ import Spinner from "../../components/Spinner.tsx"
 import ErrorModal from "../../components/ErrorModal.tsx"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router"
+import CustomInputList from "./input/CustomInputList.tsx";
 
 export default function AccountPage() {
 	const user = useUser()!
@@ -46,7 +47,7 @@ export default function AccountPage() {
 		event.preventDefault()
 
 		if(!firstNameValid || !lastName) return
-		patchUser({ data: { firstName, lastName, info } })
+		patchUser({ data: { firstName, lastName } })
 	}
 
 	const [ firstName, setFirstName ] = useState(user.firstName)
@@ -54,8 +55,6 @@ export default function AccountPage() {
 
 	const [ lastName, setLastName ] = useState(user.lastName)
 	const lastNameValid = useMemo(() => /^[a-zA-ZÄäÖöÜüß-]{2,}$/.test(lastName), [ lastName ])
-
-	const [ info, setInfo ] = useState(user.info)
 
 	return (
 		<Card className="h-full max-h-full select-none">
@@ -85,14 +84,7 @@ export default function AccountPage() {
 								/>
 							</div>
 
-							<Input
-								value={ info } onValueChange={ setInfo } isDisabled={ renameState === "loading" }
-								type="text" autoComplete="family-name"
-								label="Zusätzliche informationen" placeholder="Zusätzliche wichtige Informationen zu ihrer Person"
-								startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
-							/>
-
-							{ (firstName !== user.firstName || lastName !== user.lastName || info !== user.info) && (firstNameValid && lastNameValid) &&
+							{ (firstName !== user.firstName || lastName !== user.lastName) && (firstNameValid && lastNameValid) &&
 								<Button
 									isDisabled={ renameState === "loading" } isLoading={ renameState === "loading" } spinner={ <Spinner/> } type="submit"
 									className="font-bold md:w-fit" color="primary" startContent={ <Save width="25px"/> } size="sm"
@@ -101,6 +93,8 @@ export default function AccountPage() {
 								</Button>
 							}
 						</form>
+
+						<CustomInputList user={ user } edit={ user.admin }/>
 
 						<div>
 							<h2 className="font-bold text-md mb-2">Zugangsdaten</h2>

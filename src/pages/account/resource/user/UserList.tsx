@@ -1,5 +1,5 @@
 import { Resource } from "../../../../types/Identifiable.ts"
-import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, ScrollShadow, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, ScrollShadow, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
 import { useRef, useState } from "react"
 import { User } from "../../../../types/User.ts"
 import { useRest } from "../../../../hooks/useRest.ts"
@@ -11,6 +11,7 @@ import { Eye, FolderInput, Search, Trash2, UserMinus } from "lucide-react"
 import ErrorModal from "../../../../components/ErrorModal.tsx"
 import Download from "../../../../components/Download.tsx"
 import { Link } from "react-router-dom"
+import CustomInputList from "../../input/CustomInputList.tsx";
 
 export default function UserList({ parent }: { parent?: Resource }) {
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
@@ -148,16 +149,19 @@ export default function UserList({ parent }: { parent?: Resource }) {
 				<ModalContent>
 					<ModalHeader className="py-3 font-bold text-xl">{ current?.lastName }, { current?.firstName } ({ current?.id })</ModalHeader>
 					<Divider/>
-					<ModalBody className="max-h-[80vh] overflow-auto flex flex-col gap-4">
-						{ current?.info && <Textarea minRows={ 0 } readOnly label="Zusätzliche Informationen" value={ current.info }/> }
+					<ModalBody className="max-h-[80vh] overflow-auto flex flex-col gap-4 pb-4">
+						<CustomInputList user={ current! } readonly/>
 
-						<ScrollShadow className="p-2 pr-0">
-							<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({ data: { skills: values } }) }>
-								{ skills?.map(skill =>
-									<Checkbox key={ skill.id } className="max-w-full p-1 hover:bg-default-100 rounded-lg" value={ skill.id }>{ skill.name }</Checkbox>
-								) }
-							</CheckboxGroup>
-						</ScrollShadow>
+						{ current!.skills.length > 0 && <>
+							<h2 className="font-bold text-md">Fähigkeiten</h2>
+							<ScrollShadow className="p-2 pr-0 pb-0">
+								<CheckboxGroup classNames={ {wrapper: "gap-4"} } isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({data: {skills: values}}) }>
+									{ skills?.map(skill =>
+										<Checkbox key={ skill.id } className="max-w-full p-1 hover:bg-default-100 rounded-lg" value={ skill.id }>{ skill.name }</Checkbox>
+									) }
+								</CheckboxGroup>
+							</ScrollShadow>
+						</> }
 					</ModalBody>
 				</ModalContent>
 			</Modal>
