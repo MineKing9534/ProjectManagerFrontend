@@ -101,7 +101,7 @@ export default function ProjectPage() {
 					<ModalHeader className="py-3 font-bold text-xl">Veranstaltung Verlassen</ModalHeader>
 					<Divider/>
 					<ModalBody className="block">
-						Soll die Veranstaltung wirklich verlassen werden? Dadruch wird signalisiert, dass du kein Interesse (oder keine Zeit) für dieses Treffen hast.
+						Soll die Veranstaltung wirklich verlassen werden? Dadurch wird signalisiert, dass du kein Interesse (oder keine Zeit) für dieses Treffen hast.
 					</ModalBody>
 					<Divider/>
 					<ModalFooter className="p-2">
