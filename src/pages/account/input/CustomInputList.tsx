@@ -54,7 +54,7 @@ export default function CustomInputList({ user, edit = false, readonly = false }
 
 				<div className="flex gap-3 flex-col md:flex-row flex-wrap">
 					{ data.map(input => <div key={ input.id } className="relative min-w-[30%] flex-grow">
-						<CustomInput input={ input } loading={ updateState === "loading" } readonly={ readonly } value={ values.get(input.id) } setValue={ value => value ? actions.set(input.id, value) : actions.remove(input.id) }/>
+						<CustomInput input={ input } loading={ updateState === "loading" } readonly={ readonly } value={ values.get(input.id) } setValue={ value => (value || "") != (userInputs.get(input.id) || "") ? actions.set(input.id, value) : actions.remove(input.id) }/>
 						{ edit && <button type="button" className="absolute -top-2 -right-2 bg-default-200 rounded-full p-1 hover:bg-default-300" onClick={ () => del({ path: `/${ input.id }` }) }><Trash2 height="15px" width="15px" className="text-danger"/></button> }
 					</div> ) }
 				</div>
