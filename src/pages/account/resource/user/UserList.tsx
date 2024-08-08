@@ -80,7 +80,7 @@ export default function UserList({ parent }: { parent?: Resource }) {
 								<TableCell><a className="whitespace-nowrap" href={ `mailto:${ user.email }` }>{ user.email }</a></TableCell>
 								<TableCell><Chip variant="flat" color={ user.admin ? "success" : "primary" }>{ user.admin ? "Admin" : "Nutzer" }</Chip></TableCell>
 								<TableCell>
-									<span className="relative flex items-center gap-2">
+									<span className="relative flex justify-end items-center gap-2">
 										<button className="text-lg text-default-500 hover:opacity-70" onClick={ () => {
 											setCurrent(user)
 											onDetailsOpen()
