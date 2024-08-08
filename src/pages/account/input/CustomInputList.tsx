@@ -59,14 +59,16 @@ export default function CustomInputList({ user, edit = false, readonly = false }
 					</div> ) }
 				</div>
 
-				{ edit && <CreateInput update={ get }/> }
+				<div className="flex gap-2">
+					{ edit && <CreateInput update={ get }/> }
 
-				{ !compareMaps(userInputs, values) && <Button
-					isDisabled={ updateState === "loading" } isLoading={ updateState === "loading" } spinner={ <Spinner/> } type="submit"
-					className="font-bold md:w-fit" color="primary" startContent={ <Save width="25px"/> } size="sm"
-				>
-					Speichern
-				</Button> }
+					{ !compareMaps(userInputs, values) && <Button
+						isDisabled={ updateState === "loading" } isLoading={ updateState === "loading" } spinner={ <Spinner/> } type="submit"
+						className="font-bold flex-grow md:flex-grow-0" color="primary" startContent={ <Save width="25px"/> } size="sm"
+					>
+						Speichern
+					</Button> }
+				</div>
 			</form> }
 
 			<ErrorModal error={ (error || updateError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
