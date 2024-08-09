@@ -84,7 +84,7 @@ export default function TeamListPage() {
 						<ModalBody className="pt-5 pb-0">
 							<Input
 								value={ name } onValueChange={ setName } isDisabled={ createState === "loading" }
-								type="text" autoComplete="given-name" minLength={ 3 } isRequired
+								type="text" minLength={ 3 } isRequired
 								label="Name" placeholder="Team"
 								classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 								startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
