@@ -1,5 +1,5 @@
 import { Resource } from "../../../../types/Identifiable.ts"
-import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, ScrollShadow, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react"
 import { useRef, useState } from "react"
 import { User } from "../../../../types/User.ts"
 import { useRest } from "../../../../hooks/useRest.ts"
@@ -12,6 +12,7 @@ import ErrorModal from "../../../../components/ErrorModal.tsx"
 import Download from "../../../../components/Download.tsx"
 import { Link } from "react-router-dom"
 import CustomInputList from "../../input/CustomInputList.tsx";
+import SkillList from "../../SkillList.tsx";
 
 export default function UserList({ parent }: { parent?: Resource }) {
 	const { isOpen: isErrorOpen, onOpen: onErrorOpen, onOpenChange: onErrorOpenChange } = useDisclosure()
@@ -42,13 +43,6 @@ export default function UserList({ parent }: { parent?: Resource }) {
 		onSuccess: () => {
 			get()
 			onDeleteClose()
-		},
-		onError: onErrorOpen
-	})
-	const { state: skillState, error: userSkillError, put } = useRest<string[]>(`/users/${ current?.id }/skills`, {
-		onSuccess: data => {
-			current!.skills = data
-			get()
 		},
 		onError: onErrorOpen
 	})
@@ -143,26 +137,17 @@ export default function UserList({ parent }: { parent?: Resource }) {
 				</div>
 			</CardFooter>
 
-			<ErrorModal error={ (error || kickError || skillError || userError || userSkillError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
+			<ErrorModal error={ (error || kickError || skillError || userError)! } isOpen={ isErrorOpen } onOpenChange={ onErrorOpenChange }/>
 
 			<Modal isOpen={ isDetailsOpen } onOpenChange={ onDetailsOpenChange } size="xl">
 				<ModalContent>
 					<ModalHeader className="py-3 font-bold text-xl">{ current?.lastName }, { current?.firstName } ({ current?.id })</ModalHeader>
 					<Divider/>
-					<ModalBody className="max-h-[80vh] overflow-auto flex flex-col gap-4 pb-4">
+					<ModalBody className="min-h-[50vh] max-h-[80vh] overflow-auto flex flex-col gap-4 pb-4">
 						{ current && <>
-							<CustomInputList user={ current! } readonly/>
+							<CustomInputList user={ current } readonly/>
 
-							{ current!.skills.length > 0 && <>
-								<h2 className="font-bold text-md">Fähigkeiten</h2>
-								<ScrollShadow className="p-2 pr-0 pb-0">
-									<CheckboxGroup classNames={ {wrapper: "gap-4"} } isDisabled={ skillState === "loading" } value={ current?.skills } onValueChange={ values => put({data: {skills: values}}) }>
-										{ skills?.map(skill =>
-											<Checkbox key={ skill.id } className="max-w-full p-1 hover:bg-default-100 rounded-lg" value={ skill.id }>{ skill.name }</Checkbox>
-										) }
-									</CheckboxGroup>
-								</ScrollShadow>
-							</> }
+							{ skills?.length && <SkillList target={ current } className="shadow-none"/> }
 						</> }
 					</ModalBody>
 				</ModalContent>
