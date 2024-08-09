@@ -45,7 +45,7 @@ export default function SkillList({ edit = false, target, className }: { edit?: 
 		<Card className={ className }>
 			<CardHeader className="text-xl font-bold">Fähigkeiten</CardHeader>
 			<CardBody className="pt-1">
-				<ScrollShadow>
+				<ScrollShadow className="h-full">
 					<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ target.skills } onValueChange={ values => put({ data: { skills: values } }) }>
 						<Accordion selectionMode="multiple" isCompact className="p-0" defaultExpandedKeys={ [ "" ] }>
 							{ [ ...(skillGroups || []), ...(skills?.find(s => !s.group) ? [{ id: "", name: "Andere" }] : []) ].map(group =>
