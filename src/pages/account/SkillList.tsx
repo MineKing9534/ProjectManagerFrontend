@@ -1,6 +1,6 @@
 import { useRest } from "../../hooks/useRest.ts";
 import { Skill, SkillGroup } from "../../types/Skill.ts";
-import { Accordion, AccordionItem, Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, Select, Selection, SelectItem, Tooltip, useDisclosure } from "@nextui-org/react";
+import { Accordion, AccordionItem, Button, Card, CardBody, CardFooter, CardHeader, Checkbox, CheckboxGroup, CircularProgress, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, Select, Selection, SelectItem, Tooltip, useDisclosure } from "@nextui-org/react";
 import { Package, PencilLine, Plus, Trash2 } from "lucide-react";
 import Spinner from "../../components/Spinner.tsx";
 import { useUserRequest } from "../../hooks/useUser.ts";
@@ -45,15 +45,16 @@ export default function SkillList({ edit = false, target, className }: { edit?: 
 		<Card className={ className }>
 			<CardHeader className="text-xl font-bold">Fähigkeiten</CardHeader>
 			<CardBody className="pt-1">
-				<ScrollShadow className="h-full">
-					<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ target.skills } onValueChange={ values => put({ data: { skills: values } }) }>
-						<Accordion selectionMode="multiple" isCompact className="p-0" defaultExpandedKeys={ [ "" ] }>
-							{ [ ...(skillGroups || []), ...(skills?.find(s => !s.group) ? [{ id: "", name: "Andere" }] : []) ].map(group =>
-								<AccordionItem textValue={ group.name } key={ group.id } classNames={ { content: "pl-3", base: "my-2 [&_*]:max-w-full [&_*]:overflow-hidden", trigger: "py-1.5", heading: "px-3 rounded-lg hover:bg-default-100" } } title={ group.name } HeadingComponent={
-									({ children }: { children: ReactNode }) => <span className="flex gap-4">
+				{ !(skillGroups && skills) ? <CircularProgress aria-label="Lade Fähigkeiten" className="m-auto"/> :
+					<ScrollShadow className="h-full">
+						<CheckboxGroup classNames={ { wrapper: "gap-4" } } isDisabled={ skillState === "loading" } value={ target.skills } onValueChange={ values => put({ data: { skills: values } }) }>
+							<Accordion selectionMode="multiple" isCompact className="p-0" defaultExpandedKeys="all">
+								{ [ ...(skillGroups || []), ...(skills?.find(s => !s.group) ? [{ id: "", name: "Andere" }] : []) ].map(group =>
+									<AccordionItem textValue={ group.name } key={ group.id } classNames={ { content: "pl-3", base: "my-2 [&_*]:max-w-full [&_*]:overflow-hidden", trigger: "py-1.5", heading: "px-3 rounded-lg hover:bg-default-100" } } title={ group.name } HeadingComponent={
+										({ children }: { children: ReactNode }) => <span className="flex gap-4">
 										{ children }
 
-										{ (edit && group.id) && <span className="flex gap-2">
+											{ (edit && group.id) && <span className="flex gap-2">
 											<Tooltip content="Umbenennen">
 												<button className="text-md text-default-500 hover:opacity-70 flex items-center gap-2" onClick={ () => {
 													setCurrentGroup(group.id)
@@ -71,19 +72,21 @@ export default function SkillList({ edit = false, target, className }: { edit?: 
 											</Tooltip>
 										</span> }
 									</span>
-								}>
-									<SkillGroupDisplay group={ group } skills={ skills || [] } edit={ edit } del={ skill => deleteSkill({path: `/${ skill.id }`}) } open={ skill => {
-										setCurrent(skill.id)
-										setName(skill.name)
-										setGroup(new Set([ skill.group ]))
-										setGroupName("")
-										onOpen()
-									} }/>
-								</AccordionItem>
-							) }
-						</Accordion>
-					</CheckboxGroup>
-				</ScrollShadow>
+									}>
+										<SkillGroupDisplay group={ group } skills={ skills || [] } edit={ edit } del={ skill => deleteSkill({path: `/${ skill.id }`}) } open={ skill => {
+											setCurrent(skill.id)
+											setName(skill.name)
+											setGroup(new Set([ skill.group ]))
+											setGroupName("")
+											onOpen()
+										} }/>
+									</AccordionItem>
+								) }
+							</Accordion>
+						</CheckboxGroup>
+					</ScrollShadow>
+				}
+
 				<Modal isOpen={ isOpen } onOpenChange={ onOpenChange }>
 					<ModalContent>
 						<ModalHeader className="py-3 font-bold text-xl">Fähigkeit { current ? "Bearbeiten" : "Erstellen" }</ModalHeader>
