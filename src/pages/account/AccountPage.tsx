@@ -89,14 +89,14 @@ export default function AccountPage() {
 
 						<div className="flex gap-4 flex-col xl:flex-row xl:gap-20 w-full">
 							<div className="xl:w-1/2">
-								<h2 className="font-bold text-md mb-2 flex-grow">E-Mail Einstellungen</h2>
+								<h2 className="font-bold text-md mb-2 flex-grow">Ich möchte E-Mail-Benachrichtigungen erhalten bei...</h2>
 								<CheckboxGroup value={ user.emailTypes } onValueChange={ value => patchUser({ data: { emailTypes: value } }) } isDisabled={ renameState === "loading" }>
 									<Checkbox value="INFO_UPDATE">Änderungen der Informationsdatei</Checkbox>
 									<Checkbox value="MEETING_CREATE">Ankündigungen von Veranstaltungen</Checkbox>
-									<Checkbox value="MEETING_DELETE">Absage von Veranstaltungen</Checkbox>
+									<Checkbox value="MEETING_DELETE">Absagen von Veranstaltungen</Checkbox>
 									<Checkbox value="MEETING_UPDATE">Änderungen für Veranstaltungen</Checkbox>
-									<Checkbox value="PROJECT_ADD">Neues Projekt Verfügbar</Checkbox>
-									<Checkbox value="PROJECT_DELETE">Absage van Projekten</Checkbox>
+									<Checkbox value="PROJECT_ADD">Neuen verfügbaren Projekten</Checkbox>
+									<Checkbox value="PROJECT_DELETE">Absagen von Projekten</Checkbox>
 								</CheckboxGroup>
 							</div>
 
