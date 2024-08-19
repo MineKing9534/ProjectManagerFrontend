@@ -63,7 +63,7 @@ export default function AccountPage() {
 									value={ lastName } onValueChange={ setLastName } isDisabled={ renameState === "loading" }
 									isInvalid={ !lastNameValid } errorMessage={ lastNameValid || "Bitte geben Sie einen gültigen Namen ein" }
 									type="text" autoComplete="family-name"
-									label="Namename" placeholder="Mustermann"
+									label="Nachname" placeholder="Mustermann"
 									startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 								/>
 							</div>

@@ -55,7 +55,7 @@ export default function Register({ token }: { token: string }) {
 							value={ lastName } onValueChange={ setLastName }
 							isInvalid={ !lastNameValid } errorMessage={ lastNameValid || "Bitte geben Sie einen gültigen Namen ein" }
 							type="text" autoComplete="family-name webauthn" isRequired
-							label="Namename" placeholder="Mustermann"
+							label="Nachname" placeholder="Mustermann"
 							classNames={ { inputWrapper: "!bg-default-100 hover:!bg-default-200" } }
 							startContent={ <PencilLine height="15px" strokeWidth="3" className="text-default-500"/> }
 						/>
